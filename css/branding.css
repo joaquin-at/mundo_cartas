@@ -1,0 +1,52 @@
+.brand-logo {
+  display: block;
+  width: 138px;
+  height: 108px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-inner .brand-logo {
+  width: 76px;
+  height: 42px;
+}
+
+.welcome-art {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.welcome-art .hero-logo {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(92%,520px);
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.welcome-art::before, .welcome-art::after {
+  pointer-events: none;
+}
+
+@media(max-width:520px) {
+  .brand-logo {
+    width: 66px;
+    height: 40px;
+  }
+
+  .footer-inner .brand-logo {
+    width: 66px;
+    height: 38px;
+  }
+
+  .welcome-art {
+    min-height: 220px;
+  }
+
+  .welcome-art .hero-logo {
+    width: 96%;
+  }
+
+}
