@@ -1,0 +1,346 @@
+.page-main {
+  padding-top: clamp(40px,7vw,76px);
+  padding-bottom: 100px;
+}
+
+.page-intro {
+  margin-bottom: 30px;
+}
+
+.page-intro h1 {
+  font-size: clamp(40px,6vw,64px);
+  margin: 10px 0;
+}
+
+.page-intro p {
+  font-size: 18px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.panel-pad {
+  padding: clamp(20px,3vw,34px);
+}
+
+.compact {
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.compact h2 {
+  font-size: 30px;
+}
+
+.compact p {
+  font-size: 15px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: #4e5258;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-chip:hover, .filter-chip.active {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+.filter-chip[data-filter="pokemon"].active { background:#c99617; border-color:#c99617; }
+.filter-chip[data-filter="magic"].active { background:#a43f32; border-color:#a43f32; }
+.filter-chip[data-filter="yugioh"].active { background:#594584; border-color:#594584; }
+.filter-chip[data-filter="onepiece"].active { background:#c65b43; border-color:#c65b43; }
+
+.events-list {
+  display: grid;
+  gap: 12px;
+}
+
+.event-card, .activity-row {
+  display: grid;
+  grid-template-columns: 58px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 17px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+}
+
+.event-logo {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  color: #000000;
+  font: 700 20px Oswald, sans-serif;
+}
+
+.event-logo-pokemon { background: #f8d34f; color:#382500; }
+.event-logo-magic { background: #a43f32; color:#fff; }
+.event-logo-yugioh { background: #594584; color:#fff; }
+.event-logo-onepiece { background: #c65b43; color:#fff; }
+
+.event-copy {
+  min-width: 0;
+}
+
+.event-tag {
+  font-size: 12px;
+  color: #696e74;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 800;
+}
+
+.event-copy h3 {
+  font-size: 22px;
+}
+
+.event-copy p {
+  font-size: 14px;
+}
+
+.event-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.event-side strong {
+  font-size: 18px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.ranking-table th {
+  text-align: left;
+  color: #72767c;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .09em;
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ranking-table td {
+  padding: 17px 14px;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+
+.ranking-table th:last-child, .ranking-table td:last-child {
+  text-align: right;
+}
+
+.ranking-table td:first-child {
+  font-weight: 800;
+  color: #696e74;
+}
+
+.ranking-table td strong {
+  font-size: 18px;
+}
+
+.ranking-table tr[data-game="pokemon"] td:nth-child(3) { color:#9a6800; font-weight:800; }
+.ranking-table tr[data-game="magic"] td:nth-child(3) { color:#a43f32; font-weight:800; }
+.ranking-table tr[data-game="yugioh"] td:nth-child(3) { color:#594584; font-weight:800; }
+.ranking-table tr[data-game="onepiece"] td:nth-child(3) { color:#c65b43; font-weight:800; }
+
+.rank-player {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-weight: 700;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 12px;
+  background: #edf0e4;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.highlight-row {
+  background: #f4f6ed;
+}
+
+.select-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  color: #111;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 17px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.stat-card span {
+  font-size: 14px;
+  color: #62666c;
+  font-weight: 650;
+}
+
+.stat-card strong {
+  font: 600 44px/1.1 Oswald, sans-serif;
+}
+
+.stat-card small {
+  font-size: 13px;
+  color: #7b7f85;
+}
+
+.status-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eef4df;
+  color: #4e6124;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.activity-row {
+  grid-template-columns: 58px minmax(0,1fr) auto;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding-inline: 0;
+}
+
+.activity-row:first-of-type {
+  border-top: 0;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 15px;
+}
+
+.result span {
+  font-size: 13px;
+  color: #73777d;
+}
+
+.game-grid-page {
+  padding-bottom: 15px;
+}
+
+.game-grid-page .game-card-copy p {
+  min-height: 74px;
+}
+
+.game-grid-page .game-card-copy h2 {
+  font-size: 24px;
+  margin: 7px 0 5px;
+}
+
+.site-footer {
+  background: #080808;
+  color: white;
+}
+
+.footer-inner {
+  min-height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 20px;
+}
+
+.footer-inner .brand {
+  font-size: 13px;
+}
+
+.footer-inner p, .footer-inner>span {
+  font-size: 13px;
+  color: #b6b6b6;
+}
+
+.toast {
+  position: fixed;
+  z-index: 5;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%,20px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 14px 19px;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  box-shadow: var(--shadow);
+  font-size: 15px;
+  transition: .2s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%,0);
+}
+
+[hidden] {
+  display: none!important;
+}
