@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Perfil de jugador de Mundo Cartas.">
+  <title>Mundo Cartas | Mi perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/perfil-jugador.css">
+</head>
+<body class="player-page">
+
+  <!-- encabezado de index.html -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navegación principal">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/logo-mundo-cartas-symbol.png" alt="">
+        <span>MUNDO CARTAS<small>EXPLORA MUNDOS, FORJA LEYENDAS</small></span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú">☰</button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="torneos.html">Torneos</a>
+        <a href="clasificacion.html">Clasificación</a>
+        <a href="mi-historial.html">Mi historial</a>
+        <a href="juegos.html">Juegos</a>
+      </div>
+      <div class="profile-nav">
+        <a class="notification-link" href="#notificaciones" aria-label="Ver notificaciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+          <span class="notification-dot"></span>
+        </a>
+        <a class="profile-link" href="perfil.html" aria-label="Abrir mi perfil">
+          <span class="profile-copy"><strong>Juan123</strong><small>Mi perfil</small></span>
+          <img class="profile-avatar" src="assets/mi-avatar.png" alt="Avatar del jugador">
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap page-main">
+
+    <section class="page-intro">
+        <span class="eyebrow">Mi cuenta</span>
+        <h1>Perfil del jugador</h1>
+        <p>
+            Consulta tu información, torneos,
+            puntos y resultados.
+        </p>
+    </section>
+
+   
+
+    <!-- Resumen del jugador -->
+    <section class="panel profile-overview" aria-label="Resumen del jugador">
+      <img src="assets/mi-avatar.png" alt="Avatar de Juan123">
+      <div>
+        <span class="eyebrow">Jugador registrado</span>
+        <h2>Juan123</h2>
+        <p>Bienvenido a tu espacio de jugador.</p>
+      </div>
+      <a class="button button-primary button-small" href="#mis-datos">Editar mis datos</a>
+    </section>
+
+    <div class="profile-layout">
+      <!-- Menú lateral del perfil -->
+      <nav class="panel profile-menu" aria-label="Secciones de mi perfil">
+        <a class="selected" href="#resumen">Resumen</a>
+        <a href="#mis-datos">Mis datos</a>
+        <a href="#mis-torneos">Mis torneos</a>
+        <a href="#mis-puntos">Mis puntos</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#notificaciones">Notificaciones</a>
+        <a href="#configuracion">Configuración</a>
+      </nav>
+
+      <div class="profile-sections">
+        <!-- Estadísticas -->
+        <section class="panel panel-pad" id="resumen">
+          <div class="perfil-titulo">
+            <div>
+              <span class="eyebrow">Mi actividad</span>
+              <h2>Resumen</h2>
+            </div>
+          </div>
+          <div class="stats-grid perfil-estadisticas">
+            <article class="stat-card">
+              <span>Torneos jugados</span>
+              <strong>6</strong>
+              <small>Participaciones registradas</small>
+            </article>
+            <article class="stat-card">
+              <span>Torneos inscritos</span>
+              <strong>2</strong>
+              <small>Próximas actividades</small>
+            </article>
+            <article class="stat-card">
+              <span>Juegos con puntos</span>
+              <strong>3</strong>
+              <small>Clasificaciones por juego</small>
+            </article>
+          </div>
+        </section>
+
+        
+    <!-- Datos personales -->
+    <section class="panel panel-pad" id="mis-datos">
+
+        <div class="perfil-titulo">
+            <div>
+                <span class="eyebrow">Mi cuenta</span>
+                <h2>Mis datos personales</h2>
+            </div>
+        </div>
+
+        <p class="perfil-descripcion">
+            Consulta y mantén actualizada la información de tu cuenta.
+        </p>
+
+        <!-- Información del jugador -->
+        <div class="datos-personales">
+
+            <div class="dato">
+                <span>Nombre completo</span>
+                <strong>Usuario de ejemplo</strong>
+            </div>
+
+            <div class="dato">
+                <span>Sobrenombre</span>
+                <strong>Juan123</strong>
+            </div>
+
+            <div class="dato">
+                <span>Correo electrónico</span>
+                <strong>usuario@ejemplo.com</strong>
+            </div>
+
+            <div class="dato">
+                <span>Teléfono</span>
+                <strong>Sin registrar</strong>
+            </div>
+
+        </div>
+
+        <p class="perfil-ayuda">
+            Tus datos personales no se mostrarán
+            en los rankings públicos.
+        </p>
+
+        <!-- Editar información -->
+        <details class="editar-datos">
+
+            <summary class="button button-primary button-small">
+                <span class="texto-editar">Editar mis datos</span>
+                <span class="texto-cerrar">Cerrar edición</span>
+            </summary>
+
+            <div class="editar-contenido">
+
+                <h3>Actualizar información</h3>
+
+                <p class="perfil-descripcion">
+                    Modifica los datos que deseas actualizar.
+                </p>
+
+                <form class="perfil-formulario">
+
+                    <div class="profile-fields">
+
+                        <label for="nombre">
+                            Nombre completo
+                            <input
+                                id="nombre"
+                                name="nombre"
+                                type="text"
+                                value="Usuario de ejemplo"
+                                maxlength="80"
+                                required>
+                        </label>
+
+                        <label for="apodo">
+                            Sobrenombre
+                            <input
+                                id="apodo"
+                                name="apodo"
+                                type="text"
+                                value="Juan123"
+                                maxlength="30"
+                                required>
+                        </label>
+
+                        <label for="correo">
+                            Correo electrónico
+                            <input
+                                id="correo"
+                                name="correo"
+                                type="email"
+                                value="usuario@ejemplo.com"
+                                required>
+                        </label>
+
+                        <label for="telefono">
+                            Teléfono
+                            <input
+                                id="telefono"
+                                name="telefono"
+                                type="tel"
+                                placeholder="+56 9 1234 5678">
+                        </label>
+
+                    </div>
+
+                    <button
+                        class="button button-primary button-small"
+                        type="button"
+                        disabled>
+                        Guardar cambios
+                    </button>
+
+                    
+
+                </form>
+            </div>
+
+        </details>
+
+    </section>
+
+
+        <!-- Torneos del jugador -->
+        <section class="panel panel-pad" id="mis-torneos">
+          <div class="perfil-titulo">
+            <div>
+              <span class="eyebrow">Participación</span>
+              <h2>Mis torneos</h2>
+            </div>
+          </div>
+          <article class="activity-row">
+            <div class="event-logo event-logo-pokemon">PK</div>
+            <div class="event-copy">
+              <h3>Liga Pokémon TCG</h3>
+              <p>Inscripción de ejemplo</p>
+            </div>
+            <span class="status-pill">Inscrito</span>
+          </article>
+          <article class="activity-row">
+            <div class="event-logo event-logo-onepiece">OP</div>
+            <div class="event-copy">
+              <h3>Copa One Piece</h3>
+              <p>Inscripción de ejemplo</p>
+            </div>
+            <span class="status-pill">Inscrito</span>
+          </article>
+          <article class="activity-row">
+            <div class="event-logo event-logo-yugioh">YG</div>
+            <div class="event-copy">
+              <h3>Torneo Yu-Gi-Oh!</h3>
+              <p>Participación anterior</p>
+            </div>
+            <span class="perfil-finalizado">Finalizado</span>
+          </article>
+         
+        </section>
+
+        <!-- Puntos acumulados por juego -->
+        <section class="panel panel-pad" id="mis-puntos">
+          <div class="perfil-titulo">
+            <div>
+              <span class="eyebrow">Clasificaciones</span>
+              <h2>Mis puntos por juego</h2>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="ranking-table">
+              <thead>
+                <tr><th>Juego</th><th>Puntos de liga</th><th>Posición</th></tr>
+              </thead>
+              <tbody>
+                <tr data-game="pokemon"><td>Pokémon TCG</td><td>120</td><td>3.º</td></tr>
+                <tr data-game="onepiece"><td>One Piece</td><td>50</td><td>7.º</td></tr>
+                <tr data-game="yugioh"><td>Yu-Gi-Oh!</td><td>70</td><td>5.º</td></tr>
+              </tbody>
+            </table>
+          </div>
+         
+        </section>
+        
+        <!-- Beneficios -->
+        <section class="panel panel-pad" id="beneficios">   
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Recompensas</span>
+                    <h2>Mis beneficios</h2>
+                </div>
+            </div>
+
+            <div class="perfil-beneficio">
+
+                <div class="beneficio-encabezado">
+                    <h3>Recompensa por participación</h3>
+                    <span class="status-pill">En progreso</span>
+                </div>
+
+                <h3>¡Tu próximo torneo gratis!</h3>
+
+                <p>Participa en 8 torneos y obtén una inscripción gratuita para el siguiente.</p>
+
+                <div class="beneficio-progreso">
+                    <strong>Tu progreso</strong>
+                    <span>6 de 8 torneos</span>
+                </div>
+
+                <div class="barra-progreso">
+                    <div class="progreso-actual"></div>
+                </div>
+
+                <p class="beneficio-mensaje"> ¡Te faltan solo 2 participaciones para conseguir tu recompensa!</p>
+
+            </div>
+
+            <!-- Comentarios y sugerencias -->
+            <div class="perfil-comentarios">
+                <h3>Comentarios y sugerencias</h3>
+
+                <label for="comentario">
+                    ¿Quieres dejar una sugerencia?
+                </label>
+
+                <textarea
+                    id="comentario"
+                    rows="3"
+                    placeholder="Escribe tu comentario"
+                ></textarea>
+
+                <button
+                    class="button button-primary button-small"
+                    type="button"
+                    disabled
+                >
+                    Enviar
+                </button>
+            </div>
+
+        </section>
+        <!-- Notificaciones -->
+        <section class="panel panel-pad" id="notificaciones">
+          <div class="perfil-titulo">
+            <div>
+              <span class="eyebrow">Novedades de mi cuenta</span>
+              <h2>Notificaciones</h2>
+            </div>
+          </div>
+          <article class="notice-row">
+            <div class="notice-icon">✓</div>
+            <div>
+              <strong>Inscripción registrada</strong>
+              <p> Te inscribiste en un torneo de Pokémon TCG.</p>
+              
+            </div>
+          </article>
+          <article class="notice-row">
+            <div class="notice-icon">★</div>
+            <div>
+              <strong>Resultados disponibles</strong>
+              <p>Ya puedes revisar los resultados de un torneo.</p>
+              
+            </div>
+          </article>
+        </section>
+
+        <!-- Configuración de la cuenta -->
+        <section class="panel panel-pad" id="configuracion">
+          <div class="perfil-titulo">
+            <div>
+              <span class="eyebrow">Seguridad de la cuenta</span>
+              <h2>Configuración</h2>
+            </div>
+          </div>
+          <div class="setting-row">
+            <span>
+              <strong>Desactivar mi cuenta</strong>
+              
+            </span>
+            <button class="button button-small" type="button" disabled>Desactivar</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!--  pie de página  -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/logo-mundo-cartas-symbol.png" alt="">
+        <span>MUNDO CARTAS<small>EXPLORA MUNDOS, FORJA LEYENDAS</small></span>
+      </a>
+      <p>Un lugar para jugar, competir y compartir.</p>
+      <span>© 2026 Mundo Cartas · Prototipo visual</span>
+      <div class="social-links">
+        <a href="https://www.instagram.com/mundo_cartas/?hl=es" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.facebook.com/Mundocartas/?locale=es_LA" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
+    </div>
+  </footer>
+  <script src="js/script.js" defer></script>
+</body>
+</html>

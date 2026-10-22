@@ -1,0 +1,383 @@
+
+/* =========================
+   PERFIL DEL JUGADOR
+========================= */
+
+.player-page .page-intro {
+    margin-bottom: 16px;
+}
+
+.player-page .profile-overview h2 {
+    margin: 6px 0;
+}
+
+.player-page .profile-sections > section {
+    scroll-margin-top: 24px;
+}
+
+
+/* =========================
+   TITULOS Y DESCRIPCIONES
+========================= */
+
+.perfil-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.perfil-titulo h2 {
+    font-size: 29px;
+    margin: 5px 0 0;
+}
+
+.perfil-descripcion {
+    font-size: 14px;
+}
+
+.perfil-ayuda {
+    margin-top: 15px;
+    color: #73777d;
+    font-size: 13px;
+}
+
+
+/* =========================
+   ESTADISTICAS DEL JUGADOR
+========================= */
+
+.perfil-estadisticas {
+    margin-bottom: 0;
+}
+
+.perfil-estadisticas .stat-card {
+    box-shadow: none;
+    background: #fafbf8;
+}
+
+
+/* =========================
+   DATOS PERSONALES
+========================= */
+
+.datos-personales {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.dato {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e4e5e8;
+}
+
+.dato span {
+    font-size: 13px;
+    color: #676b72;
+}
+
+.dato strong {
+    font-size: 15px;
+    color: #101114;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================
+   BOTON EDITAR DATOS
+========================= */
+
+.editar-datos {
+    margin-top: 25px;
+}
+
+.editar-datos summary {
+    list-style: none;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.editar-datos summary::-webkit-details-marker {
+    display: none;
+}
+
+.texto-cerrar {
+    display: none;
+}
+
+.editar-datos[open] .texto-editar {
+    display: none;
+}
+
+.editar-datos[open] .texto-cerrar {
+    display: inline;
+}
+
+
+/* =========================
+   FORMULARIO DE EDICION
+========================= */
+
+.editar-contenido {
+    margin-top: 20px;
+    padding: 22px;
+    background-color: #f6f7f4;
+    border: 1px solid #e4e5e8;
+    border-radius: 12px;
+}
+
+.editar-contenido h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.editar-contenido .perfil-formulario {
+    margin-top: 20px;
+}
+
+.perfil-formulario .profile-fields {
+    margin-bottom: 15px;
+}
+
+.perfil-formulario input {
+    padding: 10px 12px;
+    border: 1px solid #cfd1d5;
+    border-radius: 10px;
+    background: white;
+    color: #101114;
+    font: inherit;
+}
+
+.perfil-formulario input:focus {
+    outline: 2px solid #b9d64d;
+    outline-offset: 1px;
+}
+
+.perfil-formulario button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.perfil-formulario .perfil-ayuda {
+    margin: 10px 0 0;
+}
+
+
+/* =========================
+   TORNEOS DEL JUGADOR
+========================= */
+
+.perfil-finalizado {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #ebedf0;
+    color: #555b63;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+
+/* =========================
+   BENEFICIOS DEL JUGADOR
+========================= */
+
+.perfil-beneficio {
+    padding: 22px;
+    border-radius: 15px;
+    border: 1px solid #e1e8cb;
+    background: #f6f9ec;
+}
+
+.perfil-beneficio p {
+    font-size: 14px;
+}
+
+/* Encabezado del beneficio */
+
+.beneficio-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.beneficio-encabezado h3 {
+    font-size: 17px;
+    margin: 0;
+}
+
+/* Nombre de la recompensa */
+
+.perfil-beneficio > h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Informacion del progreso */
+
+.beneficio-progreso {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.beneficio-progreso strong {
+    font-size: 14px;
+    margin: 0;
+}
+
+.beneficio-progreso span {
+    font-size: 14px;
+    color: #45522c;
+    font-weight: 600;
+}
+
+/* Barra de progreso */
+
+.barra-progreso {
+    width: 100%;
+    height: 12px;
+    background-color: #dfe6cf;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progreso-actual {
+    width: 75%;
+    height: 100%;
+    background-color: #a4c72e;
+    border-radius: 10px;
+}
+
+/* Mensaje de recompensa */
+
+.perfil-beneficio .beneficio-mensaje {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #4e6124;
+}
+
+
+/* =========================
+   COMENTARIOS Y SUGERENCIAS
+========================= */
+
+.perfil-comentarios {
+    margin-top: 22px;
+}
+
+.perfil-comentarios h3 {
+    margin-bottom: 10px;
+    font-size: 21px;
+}
+
+.perfil-comentarios label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.perfil-comentarios textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cfd1d5;
+    border-radius: 10px;
+    font: inherit;
+    resize: vertical;
+}
+
+.perfil-comentarios textarea:focus {
+    outline: 2px solid #b9d64d;
+    outline-offset: 1px;
+}
+
+.perfil-comentarios button {
+    margin-top: 10px;
+}
+
+.perfil-comentarios button:disabled,
+.player-page .setting-row button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   DISEÑO PARA TABLETS
+========================= */
+
+@media (max-width: 760px) {
+
+    .player-page .profile-overview {
+        flex-wrap: wrap;
+    }
+
+    .perfil-estadisticas {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================
+   DISEÑO PARA CELULARES
+========================= */
+
+@media (max-width: 520px) {
+
+    /* Titulos */
+
+    .perfil-titulo h2 {
+        font-size: 25px;
+    }
+
+    /* Datos personales */
+
+    .datos-personales {
+        grid-template-columns: 1fr;
+    }
+
+    .editar-contenido {
+        padding: 15px;
+    }
+
+    /* Mis torneos */
+
+    .player-page .activity-row {
+        grid-template-columns: 46px minmax(0, 1fr);
+    }
+
+    .player-page .activity-row > .status-pill,
+    .player-page .activity-row > .perfil-finalizado {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    /* Beneficios */
+
+    .beneficio-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .beneficio-progreso {
+        flex-wrap: wrap;
+    }
+
+    .perfil-beneficio {
+        padding: 17px;
+    }
+
+}
