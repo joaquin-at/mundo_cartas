@@ -10,20 +10,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
   </head>
   <body class="home-page">
     <header class="site-header">
       <nav class="navbar" aria-label="Navegación principal">
-        <a class="brand" href="index.html">
-          <img class="brand-logo" src="assets/logo-mundo-cartas-symbol.png" alt="">
+        <a class="brand" href="{% url 'inicio' %}">
+          <img class="brand-logo" src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}" alt="">
           <span>MUNDO CARTAS<small>EXPLORA MUNDOS, FORJA LEYENDAS</small></span>
         </a>
         <button class="menu-button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú">
           ☰
         </button>
         <div class="nav-links" id="nav-links">
-          <a class="active" aria-current="page" href="index.html">
+          <a class="active" aria-current="page" href="{% url 'inicio' %}">
             Inicio
           </a>
           <a href="torneos.html">
@@ -42,7 +43,7 @@
         <div class="profile-nav">
           <a class="notification-link" href="perfil.html#notificaciones" aria-label="Ver notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot"></span></a>
           <a class="profile-link" href="perfil.html" aria-label="Abrir perfil de Juan123.">
-            <span class="profile-copy"><strong>Juan123</strong><small>Mi perfil</small></span><img class="profile-avatar" src="assets/mi-avatar.png" alt="">
+            <span class="profile-copy"><strong>Juan123</strong><small>Mi perfil</small></span><img class="profile-avatar" src="{% static 'gestion/recursos/assets/mi-avatar.png' %}" alt="">
           </a>
         </div>
       </nav>
@@ -62,7 +63,7 @@
           </div>
         </div>
         <div class="welcome-art">
-          <img class="hero-logo" src="assets/logo-grande-mundo-cartas.png" alt="">
+          <img class="hero-logo" src="{% static 'gestion/recursos/assets/logo-grande-mundo-cartas.png' %}" alt="">
         </div>
       </section>
       <div class="home-after-hero">
@@ -80,15 +81,15 @@
         </div>
         <div class="news-carousel" data-news-carousel tabindex="0" aria-label="Carrusel de noticias. Usa las flechas del teclado o arrastra para cambiar de noticia.">
           <article class="news-slide news-slide-pokemon">
-            <img src="assets/noticias/noticia-pokemon.jpg" alt="" onerror="this.remove()">
+            <img src="{% static 'gestion/recursos/assets/noticias/noticia-pokemon.jpg' %}" alt="" onerror="this.remove()">
             <div class="news-slide-copy"><span class="news-tag">Pokémon TCG · Noticias</span><h3>Novedades</h3><p>Nuevos sobres y eventos en camino: así es el set "Sobre Deluxe Mega" de Pokémon Pocket.</p><a href="pokemon.html" class="news-link">Explorar Pokémon TCG <span aria-hidden="true">→</span></a></div>
           </article>
           <article class="news-slide news-slide-magic">
-            <img src="assets/noticias/noticia-magic.jpg" alt="" onerror="this.remove()">
+            <img src="{% static 'gestion/recursos/assets/noticias/noticia-magic.jpg' %}" alt="" onerror="this.remove()">
             <div class="news-slide-copy"><span class="news-tag">Magic: The Gathering · Noticias</span><h3>Novedades</h3><p>Teaser de Magic: The Gathering - Stark Trek. Nueva información disponible.</p><a href="magic.html" class="news-link">Explorar Magic: The Gathering <span aria-hidden="true">→</span></a></div>
           </article>
           <article class="news-slide news-slide-comunidad">
-            <img src="assets/noticias/noticia-comunidad.jpg" alt="" onerror="this.remove()">
+            <img src="{% static 'gestion/recursos/assets/noticias/noticia-comunidad.jpg' %}" alt="" onerror="this.remove()">
             <div class="news-slide-copy"><span class="news-tag">Comunidad TCG · Encuentros</span><h3>Las mejores historias se comparten</h3><p>Revisa los juegos disponibles y encuentra una mesa para vivir tu próxima partida.</p><a href="torneos.html" class="news-link">Buscar encuentros <span aria-hidden="true">→</span></a></div>
           </article>
         </div>
@@ -114,7 +115,7 @@
         <div class="game-grid">
           <article class="game-card game-card-pokemon">
             <div class="game-photo photo-pokemon">
-              <img src="assets/juegos/pokemon.png" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
+              <img src="{% static 'gestion/recursos/assets/juegos/pokemon.png' %}" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
             </div>
             <div class="game-card-copy">
               <span class="game-type">JUEGO DE CARTAS</span>
@@ -129,7 +130,7 @@
           </article>
           <article class="game-card game-card-magic">
             <div class="game-photo photo-magic">
-              <img src="assets/juegos/magic.png" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
+              <img src="{% static 'gestion/recursos/assets/juegos/magic.png' %}" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
             </div>
             <div class="game-card-copy">
               <span class="game-type">JUEGO DE CARTAS</span>
@@ -144,7 +145,7 @@
           </article>
           <article class="game-card game-card-yugioh">
             <div class="game-photo photo-yugioh">
-              <img src="assets/juegos/yu-gi-oh.png" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
+              <img src="{% static 'gestion/recursos/assets/juegos/yu-gi-oh.png' %}" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
             </div>
             <div class="game-card-copy">
               <span class="game-type">JUEGO DE CARTAS</span>
@@ -159,7 +160,7 @@
           </article>
           <article class="game-card game-card-onepiece">
             <div class="game-photo photo-onepiece">
-              <img src="assets/juegos/one-piece.png" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
+              <img src="{% static 'gestion/recursos/assets/juegos/one-piece.png' %}" alt="" onerror="this.remove()"><span class="game-badge">TCG</span>
             </div>
             <div class="game-card-copy">
               <span class="game-type">JUEGO DE CARTAS</span>
@@ -190,8 +191,8 @@
     </main>
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <a class="brand" href="index.html">
-          <img class="brand-logo" src="assets/logo-mundo-cartas-symbol.png" alt="">
+        <a class="brand" href="{% url 'inicio' %}">
+          <img class="brand-logo" src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}" alt="">
           <span>MUNDO CARTAS<small>EXPLORA MUNDOS, FORJA LEYENDAS</small></span>
         </a>
         <p>
@@ -203,7 +204,7 @@
         </div>
       </div>
     </footer>
-    <script src="js/script.js" defer>
+    <script src="{% static 'gestion/recursos/js/script.js' %}" defer>
     </script>
   </body>
 </html>
