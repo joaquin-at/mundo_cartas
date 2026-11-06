@@ -3,3 +3,10 @@
 {% block titulo %}Iniciar sesión{% endblock %}
 {% block encabezado %}Bienvenido a Mundo Cartas{% endblock %}
 {% block texto_boton %}Iniciar sesión{% endblock %}
+
+{% block enlace_alternativo %}
+    <p>¿Todavía no tienes una cuenta?</p>
+    <a class="btn-secundario" href="{% url 'registro' %}">
+        Crear cuenta
+    </a>
+{% endblock %}

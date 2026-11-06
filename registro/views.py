@@ -1,8 +1,33 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.db import transaction
 from django.shortcuts import redirect, render
 
+from .forms import CustomUserCreationForm
 from .models import Perfil
+
+
+def registrar_usuario(request):
+    if request.user.is_authenticated:
+        return redirect("inicio")
+
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+
+        if form.is_valid():
+            with transaction.atomic():
+                user = form.save()
+                Perfil.objects.create(user=user)
+
+            return redirect("iniciar_sesion")
+    else:
+        form = CustomUserCreationForm()
+
+    return render(
+        request,
+        "registro/registrar_usuario.html",
+        {"form": form},
+    )
 
 
 def iniciar_sesion(request):
