@@ -1,7 +1,8 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.db import transaction
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
 
 from .forms import CustomUserCreationForm
 from .models import Perfil
@@ -54,3 +55,9 @@ def iniciar_sesion(request):
         "registro/iniciar_sesion.html",
         {"form": form},
     )
+
+
+@require_POST
+def cerrar_sesion(request):
+    logout(request)
+    return redirect("iniciar_sesion")
