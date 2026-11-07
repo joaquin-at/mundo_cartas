@@ -1,0 +1,12 @@
+{% extends "registro/base_acceso.html" %}
+
+{% block titulo %}Crear cuenta{% endblock %}
+{% block encabezado %}Crea tu cuenta de jugador{% endblock %}
+{% block texto_boton %}Crear cuenta{% endblock %}
+
+{% block enlace_alternativo %}
+    <p>¿Ya tienes una cuenta?</p>
+    <a class="btn-secundario" href="{% url 'iniciar_sesion' %}">
+        Iniciar sesión
+    </a>
+{% endblock %}
