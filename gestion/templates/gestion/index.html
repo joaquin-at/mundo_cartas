@@ -41,11 +41,30 @@
           </a>
         </div>
         <div class="profile-nav">
-          <a class="notification-link" href="perfil.html#notificaciones" aria-label="Ver notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot"></span></a>
-          <a class="profile-link" href="perfil.html" aria-label="Abrir perfil de Juan123.">
-            <span class="profile-copy"><strong>Juan123</strong><small>Mi perfil</small></span><img class="profile-avatar" src="{% static 'gestion/recursos/assets/mi-avatar.png' %}" alt="">
-          </a>
+    {% if user.is_authenticated %}
+        <div class="profile-copy">
+            <strong>{{ user.username }}</strong>
+            <small>{{ user.perfil.rol.nombre }}</small>
         </div>
+
+        <form method="post" action="{% url 'cerrar_sesion' %}">
+            {% csrf_token %}
+            <button class="button button-secondary" type="submit">
+                Cerrar sesión
+            </button>
+        </form>
+    {% else %}
+        <a class="button button-secondary"
+          href="{% url 'iniciar_sesion' %}">
+            Iniciar sesión
+        </a>
+
+        <a class="button button-primary"
+          href="{% url 'registro' %}">
+            Crear cuenta
+        </a>
+    {% endif %}
+</div>
       </nav>
     </header>
     <main>
