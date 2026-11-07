@@ -47,6 +47,12 @@
             <small>{{ user.perfil.rol.nombre }}</small>
         </div>
 
+    {% if user.is_authenticated and user.perfil.rol.nombre == "Administrador" %}
+        <a href="{% url 'panel_administrador' %}">
+            Administración
+        </a>
+    {% endif %}
+
         <form method="post" action="{% url 'cerrar_sesion' %}">
             {% csrf_token %}
             <button class="button button-secondary" type="submit">
