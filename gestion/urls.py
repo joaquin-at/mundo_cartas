@@ -9,4 +9,9 @@ urlpatterns = [
         views.panel_administrador,
         name="panel_administrador",
     ),
+     path(
+        "mi-perfil/",
+        views.mi_perfil,
+        name="mi_perfil",
+    ),
 ]
