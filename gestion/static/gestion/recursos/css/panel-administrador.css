@@ -1,0 +1,26 @@
+.admin-panel {
+    padding-block: 48px;
+    color: #f8fafc;
+}
+
+.admin-panel h1 {
+    color: #ffffff;
+    font-size: clamp(28px, 5vw, 48px);
+}
+
+.admin-panel p {
+    color: #d1d5db;
+    margin-bottom: 24px;
+}
+
+.admin-panel .button-secondary {
+    background: #ffffff;
+    color: #101114;
+    border-color: #ffffff;
+}
+
+.admin-panel .button-secondary:hover,
+.admin-panel .button-secondary:focus-visible {
+    background: #e5e7eb;
+    color: #101114;
+}

@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Acceso{% endblock %} | Mundo Cartas</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'gestion/recursos/css/login.css' %}"
+    >
+</head>
+<body>
+    <main class="fondo-patron">
+        <section class="tarjeta-acceso" aria-labelledby="titulo-acceso">
+            <div class="encabezado-logo">
+                <a href="{% url 'inicio' %}">
+                    <img
+                        class="logo"
+                        src="{% static 'gestion/recursos/img/logo.png' %}"
+                        alt="Mundo Cartas — Ir al inicio"
+                    >
+                </a>
+            </div>
+
+            <h1 id="titulo-acceso">
+                {% block encabezado %}Accede a Mundo Cartas{% endblock %}
+            </h1>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    <div class="grupo-input">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <div class="ayuda-campo">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+                <button class="btn-principal" type="submit">
+                    {% block texto_boton %}Continuar{% endblock %}
+                </button>
+            </form>
+
+            <div class="separador">
+                <span>Mundo Cartas</span>
+            </div>
+
+            <div class="seccion-registro">
+                {% block enlace_alternativo %}{% endblock %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
