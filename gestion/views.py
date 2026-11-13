@@ -20,3 +20,6 @@ def panel_administrador(request):
 @login_required
 def mi_perfil(request):
     return render(request, "gestion/mi_perfil.html")
+
+def clasificacion(request):
+    return render(request, "gestion/clasificacion.html")

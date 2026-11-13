@@ -14,4 +14,10 @@ urlpatterns = [
         views.mi_perfil,
         name="mi_perfil",
     ),
+
+    path(
+        "clasificacion/", 
+        views.clasificacion, 
+        name="clasificacion"),
+
 ]
