@@ -1,0 +1,170 @@
+
+{% load static %}
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mundo Cartas | Mi perfil</title>
+
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}">
+</head>
+
+<body class="player-page">
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Navegación principal">
+
+            <a class="brand" href="{% url 'inicio' %}">
+                <img class="brand-logo"
+                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
+                     alt="Logo Mundo Cartas">
+
+                <span>
+                    MUNDO CARTAS
+                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
+                </span>
+            </a>
+
+            <div class="nav-links">
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'mi_perfil' %}">Mi perfil</a>
+                 <button class="button button-primary button-small"
+                        type="button"
+                        title="Función pendiente de implementar">
+                    Editar perfil
+                </button>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="wrap page-main">
+
+        <section class="page-intro">
+            <span class="eyebrow">Mi cuenta</span>
+            <h1>Perfil del jugador</h1>
+            <p>Consulta la información de tu cuenta.</p>
+        </section>
+
+        <!-- Resumen del jugador -->
+        <section class="panel profile-overview">
+
+            <img src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
+                 alt="Avatar del jugador">
+
+            <div>
+                <span class="eyebrow">Jugador registrado</span>
+                <h2>{{ user.username }}</h2>
+                <p>Bienvenido a tu espacio de jugador.</p>
+            </div>
+
+        </section>
+
+    <!-- Menú lateral del perfil -->
+    <div class="profile-layout">
+
+        <nav class="panel profile-menu" aria-label="Secciones del perfil">
+            <a class="selected" href="#mis-datos">Mis datos</a>
+            <a href="#mis-torneos">Mis torneos</a>
+            <a href="#mis-puntos">Mis puntos</a>
+        </nav>
+
+    <div class="profile-sections">
+
+        <!-- Datos personales -->
+        <section class="panel panel-pad" id="mis-datos">
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Mi cuenta</span>
+                    <h2>Mis datos personales</h2>
+                </div>
+            </div>
+
+            <div class="datos-personales">
+
+                <div class="dato">
+                    <span>Nombre completo</span>
+                    <strong>{{ user.get_full_name|default:"Sin registrar" }}</strong>
+                </div>
+
+                <div class="dato">
+                    <span>Nombre de usuario</span>
+                    <strong>{{ user.username }}</strong>
+                </div>
+
+                <div class="dato">
+                    <span>Correo electrónico</span>
+                    <strong>{{ user.email|default:"Sin registrar" }}</strong>
+                </div>
+
+                <div class="dato">
+                    <span>Rol</span>
+                    <strong>{{ user.perfil.rol.nombre|default:"Sin asignar" }}</strong>
+                </div>
+
+            </div>
+
+            
+
+        </section>
+
+
+        <!-- Torneos del jugador -->
+        <section class="panel panel-pad" id="mis-torneos">
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Participación</span>
+                    <h2>Mis torneos</h2>
+                </div>
+            </div>
+
+            <p class="perfil-descripcion">
+                
+            </p>
+
+        </section>
+
+        <!-- Puntos del jugador -->
+        <section class="panel panel-pad" id="mis-puntos">
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Clasificaciones</span>
+                    <h2>Mis puntos por juego</h2>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Juego</th>
+                            <th>Puntos</th>
+                            <th>Posición</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+    </main>
+
+</body>
+</html>

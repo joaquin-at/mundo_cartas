@@ -1,0 +1,90 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mundo Cartas | Clasificación</title>
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/main.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/perfil-jugador.css' %}">
+</head>
+
+<body class="player-page">
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Navegación principal">
+
+            <a class="brand" href="{% url 'inicio' %}">
+                <img class="brand-logo"
+                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
+                     alt="Logo Mundo Cartas">
+
+                <span>
+                    MUNDO CARTAS
+                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
+                </span>
+            </a>
+
+            <div class="nav-links">
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'clasificacion' %}">Clasificación</a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'mi_perfil' %}">Mi perfil</a>
+                {% endif %}
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="wrap page-main">
+
+        <section class="page-intro">
+            <span class="eyebrow">Competencia</span>
+            <h1>Clasificación de jugadores</h1>
+            <p>
+                Consulta las posiciones y puntos de los
+                jugadores en los distintos juegos.
+            </p>
+        </section>
+
+        <!-- Clasificación general -->
+        <section class="panel panel-pad">
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Ranking</span>
+                    <h2>Tabla de clasificación</h2>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="ranking-table">
+
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Jugador</th>
+                            <th>Juego</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- Integrar datos reales -->
+                    </tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

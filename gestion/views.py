@@ -16,3 +16,10 @@ def panel_administrador(request):
         return redirect("inicio")
 
     return render(request, "gestion/panel_administrador.html")
+
+@login_required
+def mi_perfil(request):
+    return render(request, "gestion/mi_perfil.html")
+
+def clasificacion(request):
+    return render(request, "gestion/clasificacion.html")
