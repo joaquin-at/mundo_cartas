@@ -31,8 +31,17 @@ def registrar_usuario(request):
     )
 
 
+
 def iniciar_sesion(request):
     if request.user.is_authenticated:
+        es_administrador = Perfil.objects.filter(
+            user=request.user,
+            rol__nombre="Administrador"
+        ).exists()
+
+        if es_administrador:
+            return redirect("panel_administrador")
+
         return redirect("inicio")
 
     if request.method == "POST":
@@ -43,21 +52,27 @@ def iniciar_sesion(request):
 
         if form.is_valid():
             user = form.get_user()
-            Perfil.objects.get_or_create(user=user)
+
+            perfil, creado = Perfil.objects.get_or_create(
+                user=user
+            )
+
             login(request, user)
+
+            if perfil.rol.nombre == "Administrador":
+                return redirect("panel_administrador")
 
             return redirect("inicio")
     else:
         form = AuthenticationForm(request=request)
 
-    return render(
-        request,
-        "registro/iniciar_sesion.html",
-        {"form": form},
-    )
+    return render(request,"registro/iniciar_sesion.html",
+    {"form": form},
+)
+
 
 
 @require_POST
 def cerrar_sesion(request):
     logout(request)
-    return redirect("iniciar_sesion")
+    return redirect("inicio")
