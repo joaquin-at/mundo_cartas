@@ -1,0 +1,115 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Torneos | Mundo Cartas</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/main.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'torneo/css/torneos.css' %}">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <a class="brand" href="{% url 'inicio' %}">
+                <img class="brand-logo"
+                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
+                     alt="Mundo Cartas">
+                <span>
+                    MUNDO CARTAS
+                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
+                </span>
+            </a>
+
+            <a class="nav-cta" href="{% url 'inicio' %}">
+                Volver al inicio
+            </a>
+        </nav>
+    </header>
+
+    <main class="wrap page-main">
+        <section class="page-intro">
+            <span class="eyebrow">COMPETENCIA TCG</span>
+            <h1>Torneos disponibles</h1>
+            <p>
+                Explora los próximos torneos de Mundo Cartas.
+            </p>
+        </section>
+
+        <section class="torneos-grid">
+            {% for torneo in torneos %}
+                <article class="panel panel-pad torneo-card">
+
+                    <span class="status-pill">
+                        {{ torneo.torneo_estado }}
+                    </span>
+
+                    <h2>{{ torneo.torneo_nombre }}</h2>
+
+                    <p class="torneo-juego">
+                        {{ torneo.torneo_juego.juego_nombre }}
+                    </p>
+
+                    <div class="torneo-datos">
+                        <p>
+                            <strong>Liga:</strong>
+                            {{ torneo.torneo_liga|default:"Sin liga" }}
+                        </p>
+                        <p>
+                            <strong>Fecha:</strong>
+                            {{ torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                        </p>
+                        <p>
+                            <strong>Precio:</strong>
+                            ${{ torneo.torneo_precio|floatformat:0 }}
+                        </p>
+                        <p>
+                            <strong>Cupos disponibles:</strong>
+                            {{ torneo.cupos_disponibles }}
+                        </p>
+                    </div>
+
+                    {% if torneo.cupos_disponibles == 0 %}
+                        <span class="torneo-completo">
+                            Cupos completos
+                        </span>
+                    {% else %}
+                        <span class="torneo-disponible">
+                            Cupos disponibles
+                        </span>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <div class="panel panel-pad">
+                    <h2>No hay torneos publicados</h2>
+                    <p>
+                        Pronto encontrarás nuevas actividades.
+                    </p>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>Mundo Cartas · Comunidad TCG</p>
+            <span>© 2026 Mundo Cartas</span>
+        </div>
+    </footer>
+</body>
+</html>
