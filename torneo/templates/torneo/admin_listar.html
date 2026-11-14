@@ -1,0 +1,92 @@
+
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Listar torneos
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE TORNEOS</span>
+    <h1>Administrar torneos</h1>
+    <p>Consulta y administra los torneos registrados.</p>
+</section>
+
+<div class="admin-acciones">
+    <a class="button button-primary"
+       href="{% url 'admin_crear_torneo' %}">
+        + Crear torneo
+    </a>
+
+    <a class="button button-secondary"
+       href="{% url 'listar_torneos' %}">
+        Ver página pública
+    </a>
+</div>
+
+<section class="torneos-grid">
+
+    {% for torneo in torneos %}
+        <article class="panel panel-pad torneo-card">
+
+            <span class="status-pill">
+                {{ torneo.torneo_estado }}
+            </span>
+
+            <h2>{{ torneo.torneo_nombre }}</h2>
+
+            <div class="torneo-datos">
+                <p>
+                    <strong>Juego:</strong>
+                    {{ torneo.torneo_juego.juego_nombre }}
+                </p>
+
+                <p>
+                    <strong>Liga:</strong>
+                    {{ torneo.torneo_liga|default:"Sin liga" }}
+                </p>
+
+                <p>
+                    <strong>Fecha:</strong>
+                    {{ torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                </p>
+
+                <p>
+                    <strong>Precio:</strong>
+                    ${{ torneo.torneo_precio|floatformat:0 }}
+                </p>
+
+                <p>
+                    <strong>Cupos:</strong>
+                    {{ torneo.torneo_cuposOcupados }}
+                    / {{ torneo.torneo_cupoMaximo }}
+                </p>
+            </div>
+
+            <div class="admin-acciones">
+                <a class="button button-primary"
+                   href="{% url 'admin_actualizar_torneo' torneo.pk %}">
+                    Actualizar
+                </a>
+
+                {% if torneo.torneo_estado != "Cancelado" %}
+                    <a class="button button-secondary"
+                       href="{% url 'admin_eliminar_torneo' torneo.pk %}">
+                        Eliminar
+                    </a>
+                {% endif %}
+            </div>
+
+        </article>
+
+    {% empty %}
+        <div class="panel panel-pad">
+            <h2>No hay torneos registrados</h2>
+            <p>Crea un torneo para comenzar.</p>
+        </div>
+    {% endfor %}
+
+</section>
+
+{% endblock %}
