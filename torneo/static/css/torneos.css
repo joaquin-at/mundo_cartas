@@ -1,0 +1,60 @@
+.torneos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 35px;
+}
+
+.torneo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.torneo-card h2 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.torneo-juego {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.torneo-datos {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    padding-top: 15px;
+    border-top: 1px solid var(--line);
+}
+
+.torneo-datos strong {
+    color: var(--ink);
+}
+
+.torneo-disponible,
+.torneo-completo {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.torneo-disponible {
+    background: var(--lime);
+    color: var(--black);
+}
+
+.torneo-completo {
+    background: #f4e2e2;
+    color: #9a3434;
+}
+
+@media (max-width: 768px) {
+    .torneos-grid {
+        grid-template-columns: 1fr;
+    }
+}
