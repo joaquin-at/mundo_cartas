@@ -1,0 +1,164 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <title>{% block titulo_pagina %}Administración{% endblock %} | Mundo Cartas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/main.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/panel-administrador.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/torneos.css' %}">
+</head>
+
+<body class="admin-body">
+
+    <header class="site-header admin-header">
+        <nav class="navbar">
+            <a class="brand" href="{% url 'inicio' %}">
+                <img class="brand-logo"
+                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
+                     alt="">
+                <span>
+                    MUNDO CARTAS
+                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
+                </span>
+            </a>
+
+            <div class="admin-header-right">
+                <span class="admin-user">
+                    {{ request.user.username }}
+                </span>
+
+                <form method="post"
+                    action="{% url 'cerrar_sesion' %}"
+                    class="admin-logout-form">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="button button-secondary">
+                        Cerrar sesión
+                    </button>
+
+                </form>
+
+            </div>
+        </nav>
+    </header>
+
+    <div class="admin-layout" id="adminLayout">
+
+        <div class="admin-overlay" id="adminOverlay"></div>
+
+        <aside class="admin-sidebar" id="adminSidebar"
+               aria-label="Menú de administración">
+
+            <div class="sidebar-top">
+                <span class="sidebar-heading">
+                    ADMINISTRACIÓN
+                </span>
+                <button type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Contraer menú"
+                        aria-expanded="true">
+                    ☰
+                </button>
+            </div>
+
+            <nav class="sidebar-nav"
+                 aria-label="Secciones del administrador">
+
+                <a class="sidebar-link {% if request.resolver_match.url_name == 'panel_administrador' %}active{% endif %}"
+                   href="{% url 'panel_administrador' %}">
+                    <span class="sidebar-icon">▦</span>
+                    <span class="sidebar-label">Panel principal</span>
+                </a>
+
+                <button type="button"
+                        class="sidebar-link sidebar-dropdown"
+                        id="torneosMenuToggle"
+                        aria-expanded="true"
+                        aria-controls="torneosSubmenu">
+                    <span class="sidebar-icon">♜</span>
+                    <span class="sidebar-label">Torneos</span>
+                    <span class="sidebar-chevron">⌄</span>
+                </button>
+
+                <div class="sidebar-submenu" id="torneosSubmenu">
+                    <a href="{% url 'admin_listar_torneos' %}"
+                       class="{% if request.resolver_match.url_name == 'admin_listar_torneos' %}active{% endif %}">
+                        Listar torneos
+                    </a>
+                    <a href="{% url 'admin_crear_torneo' %}"
+                       class="{% if request.resolver_match.url_name == 'admin_crear_torneo' %}active{% endif %}">
+                        Crear torneo
+                    </a>
+                </div>
+
+                <div class="sidebar-link sidebar-disabled"
+                     title="Próximamente">
+                    <span class="sidebar-icon">♙</span>
+                    <span class="sidebar-label">Jugadores</span>
+                </div>
+
+                <div class="sidebar-link sidebar-disabled"
+                     title="Próximamente">
+                    <span class="sidebar-icon">▤</span>
+                    <span class="sidebar-label">Juegos</span>
+                </div>
+
+                <div class="sidebar-link sidebar-disabled"
+                     title="Próximamente">
+                    <span class="sidebar-icon">▦</span>
+                    <span class="sidebar-label">Ligas</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="{% url 'inicio' %}"
+                   class="sidebar-link">
+                    <span class="sidebar-icon">⌂</span>
+                    <span class="sidebar-label">Ir al inicio</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="admin-content" id="adminContent">
+
+            <button type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuToggle"
+                    aria-label="Abrir menú de administración">
+                ☰ Menú
+            </button>
+
+            {% if messages %}
+                {% for mensaje in messages %}
+                    <div class="admin-alert">
+                        {{ mensaje }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block contenido %}
+            {% endblock %}
+
+        </main>
+    </div>
+
+    <script src="{% static 'gestion/recursos/js/sidebar-admin.js' %}"
+            defer></script>
+</body>
+</html>

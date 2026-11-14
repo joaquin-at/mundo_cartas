@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -56,7 +57,9 @@ class Torneo(models.Model):
     torneo_juego = models.ForeignKey(
         Juego,
         on_delete=models.PROTECT,
-        related_name="torneos"
+        related_name="torneos", 
+        null=True,
+        blank=True
     )
     torneo_liga = models.ForeignKey(
         Liga,
@@ -73,19 +76,33 @@ class Torneo(models.Model):
             0
         )
 
-    def clean(self):
-        from django.core.exceptions import ValidationError
 
-        if self.torneo_liga_id:
-            if self.torneo_liga.liga_juego_id != self.torneo_juego_id:
-                raise ValidationError(
-                    "La liga debe pertenecer al mismo juego del torneo."
-                )
+def clean(self):
+    super().clean()
 
-        if self.torneo_cuposOcupados > self.torneo_cupoMaximo:
+    if self.torneo_liga_id and self.torneo_juego_id:
+        if (
+            self.torneo_liga.liga_juego_id
+            != self.torneo_juego_id
+        ):
             raise ValidationError(
-                "Los cupos ocupados no pueden superar el máximo."
+                "La liga debe pertenecer al mismo juego del torneo."
             )
+
+    if (
+        self.torneo_cuposOcupados is not None
+        and self.torneo_cupoMaximo is not None
+    ):
+        if (
+            self.torneo_cuposOcupados
+            > self.torneo_cupoMaximo
+        ):
+            raise ValidationError({
+                "torneo_cupoMaximo":
+                    "El cupo máximo no puede ser menor "
+                    "que los cupos ocupados."
+            })
+
 
     def __str__(self):
         return self.torneo_nombre
