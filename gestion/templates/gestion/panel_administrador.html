@@ -1,28 +1,74 @@
-{% load static %}
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administración | Mundo Cartas</title>
-    <link
-        rel="stylesheet"
-        href="{% static 'gestion/recursos/css/main.css' %}"
-    >
 
-    <link
-    rel="stylesheet"
-    href="{% static 'gestion/recursos/css/panel-administrador.css' %}"
->
-</head>
-<body class="home-page">
-    <main class="wrap admin-panel">
-        <h1>Administración de Mundo Cartas</h1>
-        <p>Bienvenido, {{ user.username }}.</p>
+{% extends "gestion/base_admin.html" %}
 
-        <a class="button button-secondary" href="{% url 'inicio' %}">
-            Volver al inicio
+{% block titulo_pagina %}
+Panel principal
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">
+        PANEL DE ADMINISTRACIÓN
+    </span>
+
+    <h1>Administración de Mundo Cartas</h1>
+
+    <p>
+        Bienvenido, {{ user.username }}.
+        Selecciona el módulo que deseas gestionar.
+    </p>
+</section>
+
+<section class="admin-module-grid">
+
+    <article class="panel admin-module-card">
+        <h2>Gestión de torneos</h2>
+
+        <p>
+            Crea, consulta, actualiza y cancela
+            los torneos de Mundo Cartas.
+        </p>
+
+        <a class="button button-primary"
+           href="{% url 'admin_listar_torneos' %}">
+            Gestionar torneos
         </a>
-    </main>
-</body>
-</html>
+    </article>
+
+    <article class="panel admin-module-card is-disabled">
+        <h2>Gestión de jugadores</h2>
+
+        <p>
+            Administración de usuarios,
+            jugadores y perfiles.
+        </p>
+
+        <span>Próximamente</span>
+    </article>
+
+    <article class="panel admin-module-card is-disabled">
+        <h2>Gestión de juegos</h2>
+
+        <p>
+            Administración de juegos
+            disponibles en la plataforma.
+        </p>
+
+        <span>Próximamente</span>
+    </article>
+
+    <article class="panel admin-module-card is-disabled">
+        <h2>Gestión de ligas</h2>
+
+        <p>
+            Administración de las ligas
+            y sus torneos asociados.
+        </p>
+
+        <span>Próximamente</span>
+    </article>
+
+</section>
+
+{% endblock %}
