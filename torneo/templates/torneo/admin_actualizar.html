@@ -1,4 +1,3 @@
-
 {% extends "gestion/base_admin.html" %}
 
 {% block titulo_pagina %}
@@ -18,13 +17,13 @@ Actualizar torneo
     <form method="post">
         {% csrf_token %}
 
-        {% if formulario.non_field_errors %}
+        {% if form.non_field_errors %}
             <div class="form-error">
-                {{ formulario.non_field_errors }}
+                {{ form.non_field_errors }}
             </div>
         {% endif %}
 
-        {% for campo in formulario %}
+        {% for campo in form %}
             <div class="torneo-campo">
                 <label for="{{ campo.id_for_label }}">
                     {{ campo.label }}

@@ -1,4 +1,3 @@
-
 {% load static %}
 <!doctype html>
 <html lang="es">
@@ -7,49 +6,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mundo Cartas | Mi perfil</title>
+    {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261116-2">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
 </head>
 
 <body class="player-page">
 
-    <header class="site-header">
-        <nav class="navbar" aria-label="Navegación principal">
-
-            <a class="brand" href="{% url 'inicio' %}">
-                <img class="brand-logo"
-                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
-                     alt="Logo Mundo Cartas">
-
-                <span>
-                    MUNDO CARTAS
-                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
-                </span>
-            </a>
-
-            <div class="nav-links">
-                <a href="{% url 'inicio' %}">Inicio</a>
-                <a href="{% url 'mi_perfil' %}">Mi perfil</a>
-                 <button class="button button-primary button-small"
-                        type="button"
-                        title="Función pendiente de implementar">
-                    Editar perfil
-                </button>
-            </div>
-
-        </nav>
-    </header>
+    {% include "gestion/componentes/navbar.html" %}
 
     <main class="wrap page-main">
+        {% for mensaje in messages %}
+        <div class="panel panel-pad" role="status">{{ mensaje }}</div>
+        {% endfor %}
 
         <section class="page-intro">
             <span class="eyebrow">Mi cuenta</span>
             <h1>Perfil del jugador</h1>
             <p>Consulta la información de tu cuenta.</p>
+            {% if not editar_perfil %}
+            <a class="button button-primary button-small" href="{% url 'mi_perfil' %}?editar=1#editar-perfil">Editar perfil</a>
+            {% endif %}
         </section>
 
-        <!-- Resumen del jugador -->
         <section class="panel profile-overview">
 
             <img src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
@@ -63,7 +44,6 @@
 
         </section>
 
-    <!-- Menú lateral del perfil -->
     <div class="profile-layout">
 
         <nav class="panel profile-menu" aria-label="Secciones del perfil">
@@ -74,7 +54,6 @@
 
     <div class="profile-sections">
 
-        <!-- Datos personales -->
         <section class="panel panel-pad" id="mis-datos">
 
             <div class="perfil-titulo">
@@ -84,6 +63,25 @@
                 </div>
             </div>
 
+            {% if editar_perfil %}
+            <form class="perfil-formulario" id="editar-perfil" method="post" action="{% url 'mi_perfil' %}">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="profile-fields">
+                    {% for campo in form %}
+                    <label for="{{ campo.id_for_label }}">
+                        {{ campo.label }}
+                        {{ campo }}
+                        {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
+                    </label>
+                    {% endfor %}
+                </div>
+                <div class="welcome-actions">
+                    <button class="button button-primary" type="submit">Guardar cambios</button>
+                    <a class="button button-secondary" href="{% url 'mi_perfil' %}#mis-datos">Cancelar</a>
+                </div>
+            </form>
+            {% else %}
             <div class="datos-personales">
 
                 <div class="dato">
@@ -107,13 +105,10 @@
                 </div>
 
             </div>
-
-            
+            {% endif %}
 
         </section>
 
-
-        <!-- Torneos del jugador -->
         <section class="panel panel-pad" id="mis-torneos">
 
             <div class="perfil-titulo">
@@ -123,13 +118,10 @@
                 </div>
             </div>
 
-            <p class="perfil-descripcion">
-                
-            </p>
+            <p class="perfil-descripcion">Próximamente. La inscripción y el historial de torneos todavía no están disponibles.</p>
 
         </section>
 
-        <!-- Puntos del jugador -->
         <section class="panel panel-pad" id="mis-puntos">
 
             <div class="perfil-titulo">
@@ -150,11 +142,7 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td colspan="3">
-                                
-                            </td>
-                        </tr>
+                        <tr><td colspan="3">Próximamente. Los puntos y posiciones se mostrarán cuando esté implementado el registro de resultados.</td></tr>
                     </tbody>
                 </table>
             </div>

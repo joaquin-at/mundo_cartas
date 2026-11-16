@@ -8,10 +8,10 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'gestion/recursos/css/login.css' %}"
+        href="{% static 'gestion/recursos/css/login.css' %}?v=20261116-2"
     >
 </head>
-<body>
+<body class="access-page">
     <main class="fondo-patron">
         <section class="tarjeta-acceso" aria-labelledby="titulo-acceso">
             <div class="encabezado-logo">
@@ -30,6 +30,7 @@
 
             <form method="post">
                 {% csrf_token %}
+                {% if siguiente %}<input type="hidden" name="next" value="{{ siguiente }}">{% endif %}
                 {{ form.non_field_errors }}
                 {% for field in form %}
                     <div class="grupo-input">

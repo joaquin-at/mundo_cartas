@@ -7,6 +7,7 @@ from django.db import models
 class Juego(models.Model):
     juego_nombre = models.CharField(max_length=100, unique=True)
     juego_activo = models.BooleanField(default=True)
+    juego_imagen = models.ImageField(upload_to="juegos/", blank=True)
 
     def __str__(self):
         return self.juego_nombre
@@ -57,9 +58,7 @@ class Torneo(models.Model):
     torneo_juego = models.ForeignKey(
         Juego,
         on_delete=models.PROTECT,
-        related_name="torneos", 
-        null=True,
-        blank=True
+        related_name="torneos",
     )
     torneo_liga = models.ForeignKey(
         Liga,
@@ -76,34 +75,31 @@ class Torneo(models.Model):
             0
         )
 
+    def clean(self):
+        super().clean()
 
-def clean(self):
-    super().clean()
+        if self.torneo_liga_id and self.torneo_juego_id:
+            if (
+                self.torneo_liga.liga_juego_id
+                != self.torneo_juego_id
+            ):
+                raise ValidationError(
+                    "La liga debe pertenecer al mismo juego del torneo."
+                )
 
-    if self.torneo_liga_id and self.torneo_juego_id:
         if (
-            self.torneo_liga.liga_juego_id
-            != self.torneo_juego_id
+            self.torneo_cuposOcupados is not None
+            and self.torneo_cupoMaximo is not None
         ):
-            raise ValidationError(
-                "La liga debe pertenecer al mismo juego del torneo."
-            )
-
-    if (
-        self.torneo_cuposOcupados is not None
-        and self.torneo_cupoMaximo is not None
-    ):
-        if (
-            self.torneo_cuposOcupados
-            > self.torneo_cupoMaximo
-        ):
-            raise ValidationError({
-                "torneo_cupoMaximo":
-                    "El cupo máximo no puede ser menor "
-                    "que los cupos ocupados."
-            })
-
+            if (
+                self.torneo_cuposOcupados
+                > self.torneo_cupoMaximo
+            ):
+                raise ValidationError({
+                    "torneo_cupoMaximo":
+                        "El cupo máximo no puede ser menor "
+                        "que los cupos ocupados."
+                })
 
     def __str__(self):
         return self.torneo_nombre
-

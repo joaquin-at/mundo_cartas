@@ -315,3 +315,24 @@
     font: inherit;
     white-space: nowrap;
 }
+
+.admin-game-status { display: inline-block; padding: 4px 12px; border-radius: 999px; background: #243624; color: #d8f8ca; font-size: 14px; font-weight: 700; }
+.admin-game-status.is-inactive { background: #383838; color: #eeeeee; }
+.admin-game-checkbox { display: flex; align-items: center; gap: 10px; }
+.admin-game-checkbox input { width: 20px; height: 20px; accent-color: #d7f16d; }
+.admin-game-help { display: block; margin-block: 6px; color: #50545b; }
+.admin-game-meta { margin-block: 12px; }
+
+
+.admin-header .navbar, .admin-header-right { flex-wrap: wrap; }
+.admin-game-image { width: 100%; max-width: 420px; height: 180px; margin: 0 0 18px; background: #fff; border: 1px solid #d9dde2; border-radius: 12px; overflow: hidden; }
+.admin-game-image img { width: 100%; height: 100%; padding: 12px; object-fit: contain; }
+.admin-game-file { display: block; max-width: 100%; font: inherit; }
+.admin-game-search { display: flex; align-items: end; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+.admin-game-search > div:first-child { flex: 1; min-width: 180px; }
+.admin-game-search label { display: block; margin-bottom: 6px; font-weight: 700; }
+.admin-game-results { margin-bottom: 20px; }
+@media (max-width: 640px) {
+    .admin-game-search > div { width: 100%; }
+    .admin-game-search > div:first-child { min-width: 0; }
+}

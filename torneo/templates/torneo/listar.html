@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -8,39 +7,18 @@
           content="width=device-width, initial-scale=1">
 
     <title>Torneos | Mundo Cartas</title>
+    {% include "gestion/componentes/fuentes.html" %}
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap"
-          rel="stylesheet">
-
-    <link rel="stylesheet"
+<link rel="stylesheet"
           href="{% static 'gestion/recursos/css/main.css' %}">
 
     <link rel="stylesheet"
-          href="{% static 'torneo/css/torneos.css' %}">
+          href="{% static 'css/torneos.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
 </head>
 
 <body>
-    <header class="site-header">
-        <nav class="navbar">
-            <a class="brand" href="{% url 'inicio' %}">
-                <img class="brand-logo"
-                     src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}"
-                     alt="Mundo Cartas">
-                <span>
-                    MUNDO CARTAS
-                    <small>EXPLORA MUNDOS, FORJA LEYENDAS</small>
-                </span>
-            </a>
-
-            <a class="nav-cta" href="{% url 'inicio' %}">
-                Volver al inicio
-            </a>
-        </nav>
-    </header>
+    {% include "gestion/componentes/navbar.html" %}
 
     <main class="wrap page-main">
         <section class="page-intro">
@@ -54,6 +32,7 @@
         <section class="torneos-grid">
             {% for torneo in torneos %}
                 <article class="panel panel-pad torneo-card">
+            {% include "torneo/_imagen_juego.html" %}
 
                     <span class="status-pill">
                         {{ torneo.torneo_estado }}

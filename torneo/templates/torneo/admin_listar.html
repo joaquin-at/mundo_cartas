@@ -1,4 +1,3 @@
-
 {% extends "gestion/base_admin.html" %}
 
 {% block titulo_pagina %}
@@ -20,8 +19,8 @@ Listar torneos
     </a>
 
     <a class="button button-secondary"
-       href="{% url 'listar_torneos' %}">
-        Ver página pública
+       href="{% url 'panel_administrador' %}">
+        Volver al panel
     </a>
 </div>
 
@@ -29,6 +28,7 @@ Listar torneos
 
     {% for torneo in torneos %}
         <article class="panel panel-pad torneo-card">
+            {% include "torneo/_imagen_juego.html" %}
 
             <span class="status-pill">
                 {{ torneo.torneo_estado }}
@@ -71,11 +71,9 @@ Listar torneos
                 </a>
 
                 {% if torneo.torneo_estado != "Cancelado" %}
-                    <a class="button button-secondary"
-                       href="{% url 'admin_eliminar_torneo' torneo.pk %}">
-                        Eliminar
-                    </a>
+                <a class="button button-secondary" href="{% url 'admin_cancelar_torneo' torneo.pk %}">Cancelar torneo</a>
                 {% endif %}
+                <a class="button button-danger" href="{% url 'admin_eliminar_torneo' torneo.pk %}">Eliminar definitivamente</a>
             </div>
 
         </article>

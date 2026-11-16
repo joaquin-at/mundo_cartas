@@ -1,0 +1,24 @@
+{% extends "gestion/base_admin.html" %}
+{% block titulo_pagina %}Desactivar juego{% endblock %}
+{% block contenido %}
+<section class="admin-page-heading">
+    <span class="eyebrow">Gestión de juegos</span>
+    <h1>Desactivar juego</h1>
+</section>
+<section class="panel panel-pad admin-formulario">
+    {% if juego.juego_activo %}
+    <p>¿Quieres desactivar <strong>{{ juego.juego_nombre }}</strong>?</p>
+    <p>Dejará de aparecer en el catálogo público y de ofrecerse para nuevos torneos. Sus torneos y ligas conservarán su historial.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="admin-acciones">
+            <button class="button button-primary" type="submit">Confirmar desactivación</button>
+            <a class="button button-secondary" href="{% url 'admin_listar_juegos' %}">Cancelar</a>
+        </div>
+    </form>
+    {% else %}
+    <p>Este juego ya está desactivado. Puedes activarlo desde Editar juego.</p>
+    <a class="button button-secondary" href="{% url 'admin_listar_juegos' %}">Volver a juegos</a>
+    {% endif %}
+</section>
+{% endblock %}

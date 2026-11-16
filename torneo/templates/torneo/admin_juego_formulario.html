@@ -1,0 +1,39 @@
+{% extends "gestion/base_admin.html" %}
+{% load juegos_tags %}
+{% block titulo_pagina %}{{ titulo }}{% endblock %}
+{% block contenido %}
+<section class="admin-page-heading">
+    <span class="eyebrow">Gestión de juegos</span>
+    <h1>{{ titulo }}</h1>
+    <p>Completa el nombre y define si el juego está disponible.</p>
+</section>
+<section class="panel panel-pad admin-formulario">
+    {% with imagen=juego|imagen_juego %}
+    {% if imagen %}
+    <figure class="admin-game-image">
+        <img src="{{ imagen }}" alt="Imagen actual de {{ juego.juego_nombre }}">
+    </figure>
+    {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for campo in form %}
+        <div class="torneo-campo">
+            {% if campo.field.widget.input_type == 'checkbox' %}
+            <label class="admin-game-checkbox" for="{{ campo.id_for_label }}">{{ campo }} {{ campo.label }}</label>
+            {% else %}
+            {{ campo.label_tag }}
+            {{ campo }}
+            {% endif %}
+            {% if campo.help_text %}<small class="admin-game-help">{{ campo.help_text }}</small>{% endif %}
+            {% for error in campo.errors %}<p class="form-error" role="alert">{{ error }}</p>{% endfor %}
+        </div>
+        {% endfor %}
+        <div class="admin-acciones">
+            <button class="button button-primary" type="submit">{{ texto_boton }}</button>
+            <a class="button button-secondary" href="{% url 'admin_listar_juegos' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "gestion/base_juegos.html" %}
+{% load static %}
+{% block titulo %}Juegos disponibles{% endblock %}
+{% block contenido %}
+<section class="page-intro">
+    <span class="eyebrow">Encuentra tu juego</span>
+    <h1>Juegos disponibles</h1>
+    <p>Conoce los juegos de la comunidad y consulta sus torneos publicados.</p>
+</section>
+<form class="games-search" action="{% url 'listar_juegos' %}" method="get" role="search">
+    <label for="buscar-juego">Buscar un juego</label>
+    <div class="games-search-controls">
+        <input id="buscar-juego" name="q" type="search" value="{{ busqueda }}" maxlength="100" placeholder="Nombre del juego">
+        <button class="button button-primary" type="submit">Buscar</button>
+        {% if busqueda %}<a class="button button-secondary" href="{% url 'listar_juegos' %}">Ver todos</a>{% endif %}
+    </div>
+</form>
+<section class="game-grid game-grid-page" aria-label="Catálogo de juegos">
+    {% for tarjeta in tarjetas %}
+    <article class="game-card game-card-{{ tarjeta.tema }}">
+        {% if tarjeta.imagen_url %}
+        <div class="game-photo">
+            <img src="{{ tarjeta.imagen_url }}" alt="Imagen de {{ tarjeta.juego.juego_nombre }}" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="game-card-copy">
+            <span class="game-type">{{ tarjeta.tipo }}</span>
+            <h2>{{ tarjeta.juego.juego_nombre }}</h2>
+            <p>{{ tarjeta.juego.torneos_publicados }} torneo{{ tarjeta.juego.torneos_publicados|pluralize:"s" }} publicado{{ tarjeta.juego.torneos_publicados|pluralize:"s" }}.</p>
+            <a class="button button-primary game-card-action" href="{% url 'detalle_juego' tarjeta.juego.pk %}">Explorar Juego</a>
+        </div>
+    </article>
+    {% empty %}
+    <div class="panel panel-pad games-empty" role="status">
+        {% if busqueda %}
+        <h2>No encontramos ese juego</h2>
+        <p>Prueba con otro nombre o vuelve al catálogo completo.</p>
+        {% else %}
+        <h2>Aún no hay juegos disponibles</h2>
+        <p>Los juegos aparecerán aquí cuando la tienda los registre y active.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

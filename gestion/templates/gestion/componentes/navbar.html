@@ -1,0 +1,47 @@
+{% load static %}
+{% with ruta=request.resolver_match.url_name %}
+<header class="site-header">
+    <nav class="navbar site-navbar" aria-label="Navegación principal">
+        <a class="brand" href="{% url 'inicio' %}">
+            <img class="brand-logo" src="{% static 'gestion/recursos/assets/logo-mundo-cartas-symbol.png' %}" alt="">
+            <span>MUNDO CARTAS<small>EXPLORA MUNDOS, FORJA LEYENDAS</small></span>
+        </a>
+        <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav-content" aria-label="Abrir menú principal">
+            <span aria-hidden="true">☰</span>
+        </button>
+        <div class="site-nav-content" id="site-nav-content">
+            <div class="nav-links">
+                {% if user.is_authenticated and user.perfil.rol.nombre == "Administrador" %}
+                <a href="{% url 'panel_administrador' %}" {% if ruta == 'panel_administrador' %}class="active" aria-current="page"{% endif %}>Panel principal</a>
+                <a href="{% url 'admin_listar_torneos' %}" {% if ruta == 'admin_listar_torneos' or ruta == 'admin_crear_torneo' or ruta == 'admin_actualizar_torneo' or ruta == 'admin_cancelar_torneo' or ruta == 'admin_eliminar_torneo' or ruta == 'listar_torneos' %}class="active" aria-current="page"{% endif %}>Torneos</a>
+                <a href="{% url 'admin_listar_juegos' %}" {% if ruta == 'admin_listar_juegos' or ruta == 'admin_crear_juego' or ruta == 'admin_actualizar_juego' or ruta == 'admin_desactivar_juego' or ruta == 'listar_juegos' or ruta == 'detalle_juego' %}class="active" aria-current="page"{% endif %}>Juegos</a>
+                {% else %}
+                <a href="{% url 'inicio' %}" {% if ruta == 'inicio' %}class="active" aria-current="page"{% endif %}>Inicio</a>
+                <a href="{% url 'listar_torneos' %}" {% if ruta == 'listar_torneos' %}class="active" aria-current="page"{% endif %}>Torneos</a>
+                <a href="{% url 'clasificacion' %}" {% if ruta == 'clasificacion' %}class="active" aria-current="page"{% endif %}>Clasificación</a>
+                <a href="{% url 'listar_juegos' %}" {% if ruta == 'listar_juegos' or ruta == 'detalle_juego' %}class="active" aria-current="page"{% endif %}>Juegos</a>
+                {% endif %}
+            </div>
+            <div class="profile-nav">
+                {% if user.is_authenticated %}
+                <div class="profile-copy">
+                    <strong>{{ user.username }}</strong>
+                    <small>{{ user.perfil.rol.nombre }}</small>
+                </div>
+                {% if user.perfil.rol.nombre != "Administrador" %}
+                <a class="button button-secondary" href="{% url 'mi_perfil' %}" {% if ruta == 'mi_perfil' %}aria-current="page"{% endif %}>Mi perfil</a>
+                {% endif %}
+                <form method="post" action="{% url 'cerrar_sesion' %}">
+                    {% csrf_token %}
+                    <button class="button button-secondary" type="submit">Cerrar sesión</button>
+                </form>
+                {% else %}
+                <a class="button button-secondary" href="{% url 'iniciar_sesion' %}" {% if ruta == 'iniciar_sesion' %}aria-current="page"{% endif %}>Iniciar sesión</a>
+                <a class="button button-primary" href="{% url 'registro' %}" {% if ruta == 'registro' %}aria-current="page"{% endif %}>Crear cuenta</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
+{% endwith %}
+<script src="{% static 'gestion/recursos/js/navbar.js' %}?v=20261116-2" defer></script>

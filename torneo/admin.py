@@ -1,10 +1,11 @@
-
 from django.contrib import admin
 from .models import Juego, Liga, Torneo
+from .forms import JuegoForm
 
 
 @admin.register(Juego)
 class JuegoAdmin(admin.ModelAdmin):
+    form = JuegoForm
     list_display = ("id", "juego_nombre", "juego_activo")
 
 
