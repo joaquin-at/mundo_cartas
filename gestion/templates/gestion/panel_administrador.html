@@ -1,4 +1,3 @@
-
 {% extends "gestion/base_admin.html" %}
 
 {% block titulo_pagina %}
@@ -47,15 +46,12 @@ Panel principal
         <span>Próximamente</span>
     </article>
 
-    <article class="panel admin-module-card is-disabled">
+    <article class="panel admin-module-card">
         <h2>Gestión de juegos</h2>
-
-        <p>
-            Administración de juegos
-            disponibles en la plataforma.
-        </p>
-
-        <span>Próximamente</span>
+        <p>Crea, edita y activa o desactiva los juegos de Mundo Cartas.</p>
+        <a class="button button-primary" href="{% url 'admin_listar_juegos' %}">
+            Gestionar juegos
+        </a>
     </article>
 
     <article class="panel admin-module-card is-disabled">

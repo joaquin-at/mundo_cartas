@@ -1,0 +1,19 @@
+{% extends "gestion/base_admin.html" %}
+{% block titulo_pagina %}Cancelar torneo{% endblock %}
+{% block contenido %}
+<section class="admin-page-heading"><span class="eyebrow">Gestión de torneos</span><h1>Cancelar torneo</h1></section>
+<section class="panel panel-pad admin-formulario">
+    <h2>{{ torneo.torneo_nombre }}</h2>
+    {% if torneo.torneo_estado == "Cancelado" %}
+    <p>Este torneo ya está cancelado.</p>
+    <a class="button button-secondary" href="{% url 'admin_listar_torneos' %}">Volver a torneos</a>
+    {% else %}
+    <p>El torneo dejará de aparecer entre los publicados. Se conservará en la base de datos con estado Cancelado y seguirá disponible en la gestión administrativa.</p>
+    <form method="post" class="admin-acciones">
+        {% csrf_token %}
+        <button class="button button-primary" type="submit">Confirmar cancelación</button>
+        <a class="button button-secondary" href="{% url 'admin_listar_torneos' %}">Volver sin cambios</a>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

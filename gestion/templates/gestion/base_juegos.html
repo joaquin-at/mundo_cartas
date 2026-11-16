@@ -1,0 +1,23 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Juegos{% endblock %} | Mundo Cartas</title>
+    {% include "gestion/componentes/fuentes.html" %}
+<link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/torneos.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/juegos.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-3">
+</head>
+<body class="games-page">
+    {% include "gestion/componentes/navbar.html" %}
+    <main class="wrap games-content">
+        {% block contenido %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner"><p>Mundo Cartas · Comunidad TCG</p></div>
+    </footer>
+</body>
+</html>

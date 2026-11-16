@@ -1,46 +1,23 @@
-
 {% extends "gestion/base_admin.html" %}
-
-{% block titulo_pagina %}
-Eliminar torneo
-{% endblock %}
-
+{% block titulo_pagina %}Eliminar torneo definitivamente{% endblock %}
 {% block contenido %}
-
-<section class="admin-page-heading">
-    <span class="eyebrow">GESTIÓN DE TORNEOS</span>
-    <h1>Eliminar torneo</h1>
-</section>
-
+<section class="admin-page-heading"><span class="eyebrow">Gestión de torneos</span><h1>Eliminar torneo definitivamente</h1></section>
 <section class="panel panel-pad admin-formulario">
-
     <h2>{{ torneo.torneo_nombre }}</h2>
-
-    <p>
-        ¿Estás seguro de que deseas eliminar este torneo?
-    </p>
-
-    <p>
-        El torneo cambiará al estado
-        <strong>Cancelado</strong>.
-        Se conservará en la base de datos para
-        mantener su historial.
-    </p>
-
-    <form method="post" class="admin-acciones">
+    <p>Esta acción borrará el torneo de la base de datos. No equivale a cancelarlo y no se puede deshacer desde la aplicación.</p>
+    <p>Si quieres conservar su historial, utiliza Cancelar torneo.</p>
+    <form method="post">
         {% csrf_token %}
-
-        <button type="submit"
-                class="button button-primary">
-            Confirmar eliminación
-        </button>
-
-        <a class="button button-secondary"
-           href="{% url 'admin_listar_torneos' %}">
-            Volver sin eliminar
-        </a>
+        {{ form.non_field_errors }}
+        <label class="admin-game-checkbox" for="{{ form.confirmar_eliminacion.id_for_label }}">
+            {{ form.confirmar_eliminacion }} {{ form.confirmar_eliminacion.label }}
+        </label>
+        {% for error in form.confirmar_eliminacion.errors %}<p class="form-error" role="alert">{{ error }}</p>{% endfor %}
+        <div class="admin-acciones">
+            <button class="button button-danger" type="submit">Eliminar definitivamente</button>
+            {% if torneo.torneo_estado != "Cancelado" %}<a class="button button-secondary" href="{% url 'admin_cancelar_torneo' torneo.pk %}">Cancelar torneo en su lugar</a>{% endif %}
+            <a class="button button-secondary" href="{% url 'admin_listar_torneos' %}">Volver sin cambios</a>
+        </div>
     </form>
-
 </section>
-
 {% endblock %}

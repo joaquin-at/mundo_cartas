@@ -1,0 +1,32 @@
+{% extends "gestion/base_juegos.html" %}
+{% load static %}
+{% block titulo %}{{ juego.juego_nombre }}{% endblock %}
+{% block contenido %}
+<section class="games-detail{% if not tarjeta.imagen_url %} games-detail-sin-imagen{% endif %}">
+    <div>
+        <span class="eyebrow">Juegos de Mundo Cartas</span>
+        <h1>{{ juego.juego_nombre }}</h1>
+        <p>Consulta los torneos publicados de este juego.</p>
+        <a class="button button-secondary" href="{% url 'listar_juegos' %}">Volver a juegos</a>
+    </div>
+    {% if tarjeta.imagen_url %}
+    <img src="{{ tarjeta.imagen_url }}" alt="{{ juego.juego_nombre }}">
+    {% endif %}
+</section>
+<section aria-labelledby="torneos-juego">
+    <h2 id="torneos-juego">Torneos publicados</h2>
+    <div class="games-events">
+        {% for torneo in torneos %}
+        <article class="panel panel-pad">
+            {% include "torneo/_imagen_juego.html" %}
+            <h3>{{ torneo.torneo_nombre }}</h3>
+            <p>Fecha: {{ torneo.torneo_inicio|date:"d/m/Y H:i" }}</p>
+            <p>Inscripción: ${{ torneo.torneo_precio|floatformat:0 }}</p>
+            <p>Cupos disponibles: {{ torneo.cupos_disponibles }}</p>
+        </article>
+        {% empty %}
+        <div class="panel panel-pad games-empty"><p>Este juego todavía no tiene torneos publicados.</p></div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

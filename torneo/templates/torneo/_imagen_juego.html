@@ -1,0 +1,10 @@
+{% load static juegos_tags %}
+{% with imagen=torneo.torneo_juego|imagen_juego %}
+{% if imagen %}
+<figure class="torneo-imagen">
+    <img src="{{ imagen }}"
+         alt="Imagen de {{ torneo.torneo_juego.juego_nombre|default:'Mundo Cartas' }}"
+         loading="lazy">
+</figure>
+{% endif %}
+{% endwith %}

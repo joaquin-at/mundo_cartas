@@ -136,8 +136,10 @@
 }
 
 .game-card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  background: white;
+  background: var(--game-wash, #fff);
   border: 1px solid #e4e5e8;
   border-radius: var(--radius);
   box-shadow: 0 8px 26px rgba(10,12,15,.045);
@@ -150,6 +152,7 @@
 }
 
 .game-photo {
+  flex-shrink: 0;
   position: relative;
   display: grid;
   place-items: center;
@@ -201,6 +204,7 @@
 }
 
 .game-card-copy {
+  flex: 1;
   padding: 21px 20px 23px;
 }
 

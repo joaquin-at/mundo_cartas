@@ -1,8 +1,3 @@
-
-/* =========================
-   PERFIL DEL JUGADOR
-========================= */
-
 .player-page .page-intro {
     margin-bottom: 16px;
 }
@@ -14,11 +9,6 @@
 .player-page .profile-sections > section {
     scroll-margin-top: 24px;
 }
-
-
-/* =========================
-   TITULOS Y DESCRIPCIONES
-========================= */
 
 .perfil-titulo {
     display: flex;
@@ -43,11 +33,6 @@
     font-size: 13px;
 }
 
-
-/* =========================
-   ESTADISTICAS DEL JUGADOR
-========================= */
-
 .perfil-estadisticas {
     margin-bottom: 0;
 }
@@ -56,11 +41,6 @@
     box-shadow: none;
     background: #fafbf8;
 }
-
-
-/* =========================
-   DATOS PERSONALES
-========================= */
 
 .datos-personales {
     display: grid;
@@ -88,11 +68,6 @@
     overflow-wrap: anywhere;
 }
 
-
-/* =========================
-   BOTON EDITAR DATOS
-========================= */
-
 .editar-datos {
     margin-top: 25px;
 }
@@ -119,11 +94,6 @@
     display: inline;
 }
 
-
-/* =========================
-   FORMULARIO DE EDICION
-========================= */
-
 .editar-contenido {
     margin-top: 20px;
     padding: 22px;
@@ -146,6 +116,8 @@
 }
 
 .perfil-formulario input {
+    min-width: 0;
+    max-width: 100%;
     padding: 10px 12px;
     border: 1px solid #cfd1d5;
     border-radius: 10px;
@@ -168,11 +140,6 @@
     margin: 10px 0 0;
 }
 
-
-/* =========================
-   TORNEOS DEL JUGADOR
-========================= */
-
 .perfil-finalizado {
     padding: 8px 12px;
     border-radius: 999px;
@@ -181,11 +148,6 @@
     font-size: 13px;
     font-weight: 800;
 }
-
-
-/* =========================
-   BENEFICIOS DEL JUGADOR
-========================= */
 
 .perfil-beneficio {
     padding: 22px;
@@ -197,8 +159,6 @@
 .perfil-beneficio p {
     font-size: 14px;
 }
-
-/* Encabezado del beneficio */
 
 .beneficio-encabezado {
     display: flex;
@@ -213,14 +173,10 @@
     margin: 0;
 }
 
-/* Nombre de la recompensa */
-
 .perfil-beneficio > h3 {
     font-size: 24px;
     margin-bottom: 10px;
 }
-
-/* Informacion del progreso */
 
 .beneficio-progreso {
     display: flex;
@@ -243,8 +199,6 @@
     font-weight: 600;
 }
 
-/* Barra de progreso */
-
 .barra-progreso {
     width: 100%;
     height: 12px;
@@ -260,18 +214,11 @@
     border-radius: 10px;
 }
 
-/* Mensaje de recompensa */
-
 .perfil-beneficio .beneficio-mensaje {
     margin-top: 12px;
     font-size: 13px;
     color: #4e6124;
 }
-
-
-/* =========================
-   COMENTARIOS Y SUGERENCIAS
-========================= */
 
 .perfil-comentarios {
     margin-top: 22px;
@@ -313,11 +260,6 @@
     cursor: not-allowed;
 }
 
-
-/* =========================
-   DISEÑO PARA TABLETS
-========================= */
-
 @media (max-width: 760px) {
 
     .player-page .profile-overview {
@@ -330,20 +272,11 @@
 
 }
 
-
-/* =========================
-   DISEÑO PARA CELULARES
-========================= */
-
 @media (max-width: 520px) {
-
-    /* Titulos */
 
     .perfil-titulo h2 {
         font-size: 25px;
     }
-
-    /* Datos personales */
 
     .datos-personales {
         grid-template-columns: 1fr;
@@ -352,8 +285,6 @@
     .editar-contenido {
         padding: 15px;
     }
-
-    /* Mis torneos */
 
     .player-page .activity-row {
         grid-template-columns: 46px minmax(0, 1fr);
@@ -364,8 +295,6 @@
         grid-column: 2;
         justify-self: start;
     }
-
-    /* Beneficios */
 
     .beneficio-encabezado {
         align-items: flex-start;
@@ -380,4 +309,16 @@
         padding: 17px;
     }
 
+}
+
+.player-page .profile-layout > *,
+.player-page .profile-sections > *,
+.perfil-formulario,
+.perfil-formulario .profile-fields > label {
+    min-width: 0;
+}
+
+.perfil-formulario .form-error {
+    color: #a12626;
+    font-weight: 600;
 }
