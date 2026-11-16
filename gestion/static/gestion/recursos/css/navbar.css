@@ -1,3 +1,8 @@
+.site-header,
+.site-footer {
+  background: #131217;
+}
+
 .site-header .navbar.site-navbar {
   display: flex;
   flex-direction: row;

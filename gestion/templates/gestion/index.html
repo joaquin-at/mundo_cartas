@@ -10,7 +10,8 @@
     {% include "gestion/componentes/fuentes.html" %}
 {% load static %}
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-      <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-3">
+      <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/game-cards.css' %}?v=20261116-4">
 </head>
   <body class="home-page">
     {% include "gestion/componentes/navbar.html" %}
@@ -87,10 +88,10 @@
             </div>
             {% endif %}
             <div class="game-card-copy">
-              <span class="game-type">JUEGO</span>
+              <span class="game-type">{{ tarjeta.tipo }}</span>
               <h3>{{ tarjeta.juego.juego_nombre }}</h3>
               <p>Conoce el juego y consulta sus torneos publicados.</p>
-              <a class="card-link" href="{% url 'detalle_juego' tarjeta.juego.pk %}">Explorar Juego</a>
+              <a class="button button-primary game-card-action" href="{% url 'detalle_juego' tarjeta.juego.pk %}">Explorar Juego</a>
             </div>
           </article>
           {% empty %}

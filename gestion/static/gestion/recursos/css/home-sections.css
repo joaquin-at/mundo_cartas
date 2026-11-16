@@ -133,22 +133,6 @@
 .carousel-dot { width:9px; height:9px; padding:0; border:0; border-radius:99px; background:#c7c9cb; cursor:pointer; transition:width .2s, background .2s; }
 .carousel-dot.active { width:27px; background:#111; }
 
-.game-card { border-width:2px; }
-.game-card-pokemon { --game-accent:#df9b29; --game-wash:#fff5df; border-color:#e6c17e; }
-.game-card-magic { --game-accent:#a43f32; --game-wash:#fff1ee; border-color:#c9796e; }
-.game-card-yugioh { --game-accent:#594584; --game-wash:#f3effa; border-color:#b6a7d8; }
-.game-card-onepiece { --game-accent:#c65b43; --game-wash:#fff0e9; border-color:#e9b7aa; }
-.game-card-copy { background:var(--game-wash,#fff); }
-.game-grid-page .game-card-magic,
-.game-grid-page .game-card-yugioh { border-width:2px; }
-.game-grid-page .game-card-magic .game-photo { border-bottom-color:#a43f32; }
-.game-grid-page .game-card-yugioh .game-photo { border-bottom-color:#594584; }
-.game-card-copy h3, .game-card-copy h2 { color:#111; }
-.game-type { color:var(--game-accent,#74787e); }
-.game-card .card-link { color:#111; }
-.game-card .card-link:hover { color:var(--game-accent,#697b2c); }
-.game-photo { border-bottom:4px solid var(--game-accent,#d7f16d); }
-
 .rules-hero { padding:clamp(34px,6vw,70px); margin-bottom:28px; border:2px solid var(--rules-border,#dfe2e7); border-radius:26px; background:var(--rules-bg,#fff); }
 .rules-pokemon { --rules-bg:#fff4df; --rules-border:#e6c17e; }
 .rules-magic { --rules-bg:#fff1ee; --rules-border:#c9796e; }

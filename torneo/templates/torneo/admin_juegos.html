@@ -28,24 +28,26 @@
     <a class="button button-secondary" href="{% url 'admin_listar_juegos' %}">Limpiar filtros</a>
 </form>
 <p class="admin-game-results" role="status">{{ total }} juego{{ total|pluralize:"s" }} encontrado{{ total|pluralize:"s" }}.</p>
-<section class="admin-module-grid" aria-label="Juegos registrados">
+<section class="admin-game-grid" aria-label="Juegos registrados">
     {% for juego in juegos %}
-    <article class="panel admin-module-card">
+    <article class="game-card admin-game-card">
         {% with imagen=juego|imagen_juego %}
         {% if imagen %}
-        <figure class="admin-game-image"><img src="{{ imagen }}" alt="Imagen de {{ juego.juego_nombre }}" loading="lazy"></figure>
+        <figure class="game-photo"><img src="{{ imagen }}" alt="Imagen de {{ juego.juego_nombre }}" loading="lazy"></figure>
         {% endif %}
         {% endwith %}
-        <span class="admin-game-status {% if not juego.juego_activo %}is-inactive{% endif %}">
-            {% if juego.juego_activo %}Activo{% else %}Inactivo{% endif %}
-        </span>
-        <h2>{{ juego.juego_nombre }}</h2>
-        <p class="admin-game-meta">Torneos: {{ juego.total_torneos }} · Ligas: {{ juego.total_ligas }}</p>
-        <div class="admin-acciones">
-            <a class="button button-primary" href="{% url 'admin_actualizar_juego' juego.pk %}">Editar juego</a>
-            {% if juego.juego_activo %}
-            <a class="button button-secondary" href="{% url 'admin_desactivar_juego' juego.pk %}">Desactivar</a>
-            {% endif %}
+        <div class="game-card-copy">
+            <span class="admin-game-status {% if not juego.juego_activo %}is-inactive{% endif %}">
+                {% if juego.juego_activo %}Activo{% else %}Inactivo{% endif %}
+            </span>
+            <h2>{{ juego.juego_nombre }}</h2>
+            <p class="admin-game-meta">Torneos: {{ juego.total_torneos }} · Ligas: {{ juego.total_ligas }}</p>
+            <div class="admin-acciones">
+                <a class="button button-primary" href="{% url 'admin_actualizar_juego' juego.pk %}">Editar juego</a>
+                {% if juego.juego_activo %}
+                <a class="button button-secondary" href="{% url 'admin_desactivar_juego' juego.pk %}">Desactivar</a>
+                {% endif %}
+            </div>
         </div>
     </article>
     {% empty %}

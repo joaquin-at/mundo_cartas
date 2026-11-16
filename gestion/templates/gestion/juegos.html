@@ -20,15 +20,14 @@
     <article class="game-card game-card-{{ tarjeta.tema }}">
         {% if tarjeta.imagen_url %}
         <div class="game-photo">
-            <img src="{{ tarjeta.imagen_url }}" alt="" loading="lazy">
-            <span class="game-badge">TCG</span>
+            <img src="{{ tarjeta.imagen_url }}" alt="Imagen de {{ tarjeta.juego.juego_nombre }}" loading="lazy">
         </div>
         {% endif %}
         <div class="game-card-copy">
-            <span class="game-type">Juego de cartas</span>
+            <span class="game-type">{{ tarjeta.tipo }}</span>
             <h2>{{ tarjeta.juego.juego_nombre }}</h2>
             <p>{{ tarjeta.juego.torneos_publicados }} torneo{{ tarjeta.juego.torneos_publicados|pluralize:"s" }} publicado{{ tarjeta.juego.torneos_publicados|pluralize:"s" }}.</p>
-            <a class="button button-primary" href="{% url 'detalle_juego' tarjeta.juego.pk %}">Explorar Juego</a>
+            <a class="button button-primary game-card-action" href="{% url 'detalle_juego' tarjeta.juego.pk %}">Explorar Juego</a>
         </div>
     </article>
     {% empty %}
