@@ -22,44 +22,57 @@
         <div class="panel panel-pad" role="status">{{ mensaje }}</div>
         {% endfor %}
 
-        <section class="page-intro">
-            <span class="eyebrow">Mi cuenta</span>
-            <h1>Perfil del jugador</h1>
-            <p>Consulta la información de tu cuenta.</p>
-            {% if not editar_perfil %}
-            <a class="button button-primary button-small" href="{% url 'mi_perfil' %}?editar=1#editar-perfil">Editar perfil</a>
-            {% endif %}
-        </section>
+       
 
-        <section class="panel profile-overview">
 
-            <img src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
-                 alt="Avatar del jugador">
 
-            <div>
-                <span class="eyebrow">Jugador registrado</span>
-                <h2>{{ user.username }}</h2>
-                <p>Bienvenido a tu espacio de jugador.</p>
-            </div>
-
-        </section>
+        
 
     <div class="profile-layout">
 
-        <nav class="panel profile-menu" aria-label="Secciones del perfil">
-            <a class="selected" href="#mis-datos">Mis datos</a>
-            <a href="#mis-torneos">Mis torneos</a>
-            <a href="#mis-puntos">Mis puntos</a>
-        </nav>
+        <aside class="panel perfil-lateral">
+
+            <div class="perfil-lateral-usuario">
+
+                <img
+                    class="perfil-avatar"
+                    src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
+                    alt="Avatar del jugador">
+
+                <h2>{{ user.username }}</h2>
+
+                <p>{{ user.email|default:"Sin registrar" }}</p>
+
+                {% if not editar_perfil %}
+                <a class="button button-primary button-small"
+                href="{% url 'mi_perfil' %}?editar=1#editar-perfil">
+                    Editar perfil
+                </a>
+                {% endif %}
+
+            </div>
+
+            <nav class="perfil-lateral-menu" aria-label="Secciones del perfil">
+                <a class="selected" href="#mis-datos">Resumen</a>
+                <a href="#mis-torneos">Mis torneos</a>
+                <a href="#mis-puntos">Mis puntos</a>
+            </nav>
+
+        </aside>
 
     <div class="profile-sections">
+        <section class="page-intro">
+            <span class="eyebrow">Mi cuenta</span>
+            <h1>Mi perfil</h1>
+            <p>Consulta y gestiona la información de tu cuenta.</p>
+        </section>
 
         <section class="panel panel-pad" id="mis-datos">
 
             <div class="perfil-titulo">
                 <div>
                     <span class="eyebrow">Mi cuenta</span>
-                    <h2>Mis datos personales</h2>
+                    <h2>Información personal</h2>
                 </div>
             </div>
 
@@ -109,7 +122,7 @@
 
         </section>
 
-        <section class="panel panel-pad" id="mis-torneos">
+       <section class="panel panel-pad" id="mis-torneos">
 
             <div class="perfil-titulo">
                 <div>
@@ -118,7 +131,39 @@
                 </div>
             </div>
 
-            <p class="perfil-descripcion">Próximamente. La inscripción y el historial de torneos todavía no están disponibles.</p>
+            <p class="perfil-descripcion">
+                Consulta los torneos en los que estás inscrito y tu historial de participaciones.
+            </p>
+
+            <div class="torneos-resumen">
+
+                <div class="torneos-columna">
+                    <h3>♧ Torneos inscritos</h3>
+                    <p>Torneos en los que tienes una inscripción confirmada.</p>
+
+                    <div class="torneos-vacio">
+                        <strong>Aún no tienes torneos inscritos.</strong>
+                        <span>
+                            Cuando te inscribas en un torneo,
+                            aparecerá aquí.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="torneos-columna">
+                    <h3>◷ Historial reciente</h3>
+                    <p>Tus últimos torneos finalizados o cancelados.</p>
+
+                    <div class="torneos-vacio">
+                        <strong>Todavía no hay torneos en tu historial.</strong>
+                        <span>
+                            Aquí aparecerán tus torneos
+                            finalizados y cancelados.
+                        </span>
+                    </div>
+                </div>
+
+            </div>
 
         </section>
 
