@@ -1,0 +1,97 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resultado del pago | Mundo Cartas</title>
+
+    {% include "gestion/componentes/fuentes.html" %}
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/main.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'gestion/recursos/css/navbar.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'pagos/css/webpay.css' %}">
+</head>
+
+<body>
+
+    {% include "gestion/componentes/navbar.html" %}
+
+    <main class="payment-result-page">
+
+        <section class="payment-result-card">
+
+            {% if exitoso %}
+
+                <div class="result-icon result-success">
+                    ✓
+                </div>
+
+                <h1>¡Pago realizado con éxito!</h1>
+
+                <p>
+                    Tu pago fue aprobado por Transbank
+                    y tu inscripción al torneo
+                    ha sido confirmada.
+                </p>
+
+            {% else %}
+
+                <div class="result-icon result-error">
+                    ✕
+                </div>
+
+                <h1>No se pudo completar el pago</h1>
+
+                <p>
+                    {{ mensaje }}
+                </p>
+
+            {% endif %}
+
+            {% if pago %}
+                <div class="payment-result-details">
+
+                    <p>
+                        <strong>Orden de compra:</strong>
+                        {{ pago.pago_orden_compra }}
+                    </p>
+
+                    <p>
+                        <strong>Monto:</strong>
+                        ${{ pago.pago_monto|floatformat:0 }} CLP
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ pago.pago_estado }}
+                    </p>
+
+                </div>
+            {% endif %}
+
+            <a href="{% url 'listar_torneos' %}"
+               class="payment-button payment-result-link">
+                Volver a torneos
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>Mundo Cartas · Comunidad TCG</p>
+            <span>© 2026 Mundo Cartas</span>
+        </div>
+    </footer>
+
+</body>
+</html>
