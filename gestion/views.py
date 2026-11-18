@@ -69,3 +69,7 @@ def detalle_juego(request, pk):
     return render(request, "gestion/detalle_juego.html", {
         "tarjeta": _presentacion_juego(juego), "juego": juego, "torneos": torneos,
     })
+
+@login_required
+def historial_torneos(request):
+    return render(request, "gestion/historial_torneos.html")

@@ -485,3 +485,12 @@
         height: 90px;
     }
 }
+.player-page .torneos-acciones {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.player-page .torneos-acciones .button {
+    text-align: center;
+}

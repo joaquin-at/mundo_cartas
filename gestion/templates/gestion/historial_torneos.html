@@ -1,0 +1,124 @@
+
+{% load static %}
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mundo Cartas | Historial de torneos</title>
+
+    {% include "gestion/componentes/fuentes.html" %}
+
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
+</head>
+
+<body class="player-page">
+
+    {% include "gestion/componentes/navbar.html" %}
+
+    <main class="wrap page-main">
+
+        <div class="profile-layout">
+
+            <aside class="panel perfil-lateral">
+
+                <div class="perfil-lateral-usuario">
+
+                    <img
+                        class="perfil-avatar"
+                        src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
+                        alt="Avatar del jugador">
+
+                    <h2>{{ user.username }}</h2>
+
+                    <p>{{ user.email|default:"Sin registrar" }}</p>
+
+                    <a class="button button-primary button-small"
+                       href="{% url 'mi_perfil' %}?editar=1#editar-perfil">
+                        Editar perfil
+                    </a>
+
+                </div>
+
+                <nav class="perfil-lateral-menu"
+                     aria-label="Secciones del perfil">
+
+                    <a href="{% url 'mi_perfil' %}#mis-datos">
+                        Resumen
+                    </a>
+
+                    <a href="{% url 'mi_perfil' %}#mis-torneos">
+                        Mis torneos
+                    </a>
+
+                    <a class="selected"
+                       href="{% url 'historial_torneos' %}"
+                       aria-current="page">
+                        Mi historial
+                    </a>
+
+                    <a href="{% url 'mi_perfil' %}#mis-puntos">
+                        Mis puntos
+                    </a>
+
+                </nav>
+
+            </aside>
+
+            <div class="profile-sections">
+
+                <section class="page-intro">
+
+                    <span class="eyebrow">Participación</span>
+
+                    <h1>Historial de torneos</h1>
+
+                    <p>
+                        Consulta el historial de los torneos
+                        en los que te has inscrito.
+                    </p>
+
+                    <a class="button button-secondary"
+                       href="{% url 'mi_perfil' %}#mis-torneos">
+                        Volver a mi perfil
+                    </a>
+
+                </section>
+
+                <section class="panel panel-pad">
+
+                    <div class="perfil-titulo">
+                        <div>
+                            <span class="eyebrow">Mis participaciones</span>
+                            <h2>Historial completo</h2>
+                        </div>
+                    </div>
+
+                    <div class="torneos-vacio">
+
+                        <strong>
+                            Todavía no hay torneos para mostrar.
+                        </strong>
+
+                        <span>
+                            El historial se completará con tus
+                            inscripciones reales cuando esté
+                            disponible el sistema de inscripciones.
+                        </span>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
