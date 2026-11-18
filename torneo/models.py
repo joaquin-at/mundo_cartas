@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -41,11 +42,7 @@ class Torneo(models.Model):
 
     torneo_nombre = models.CharField(max_length=150)
     torneo_inicio = models.DateTimeField()
-    torneo_precio = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
+    torneo_precio = models.PositiveIntegerField()
     torneo_cupoMaximo = models.PositiveIntegerField(
         validators=[MinValueValidator(1)]
     )
@@ -103,3 +100,51 @@ class Torneo(models.Model):
 
     def __str__(self):
         return self.torneo_nombre
+
+
+class Inscripcion(models.Model):
+    ESTADOS = [
+        ("Pendiente", "Pendiente"),
+        ("Confirmada", "Confirmada"),
+        ("Cancelada", "Cancelada"),
+    ]
+
+    inscripcion_usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.RESTRICT,
+        related_name = "inscripciones",
+    )
+
+    inscripcion_torneo = models.ForeignKey(
+        Torneo,
+        on_delete=models.RESTRICT,
+        related_name="inscripciones",
+    )
+
+    inscripcion_estado = models.CharField(
+        max_length=20,
+        choices = ESTADOS,
+        default = "Pendiente"
+    )
+
+    inscripcion_precio = models.PositiveIntegerField()
+
+    inscripcion_fecha = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = [
+                    "inscripcion_usuario",
+                    "inscripcion_torneo",
+                ],
+                name = "unique_inscripcion_usuario_torneo",
+            )
+        ]
+        def __str__(self):
+            return (
+                f"{self.inscripcion_usuario.username} - "
+                f"{self.inscripcion_torneo.torneo_nombre}"
+            )

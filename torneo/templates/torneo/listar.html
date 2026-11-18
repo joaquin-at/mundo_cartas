@@ -21,6 +21,14 @@
     {% include "gestion/componentes/navbar.html" %}
 
     <main class="wrap page-main">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="panel panel-pad" role="status"
+                    style="margin-bottom: 20px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <section class="page-intro">
             <span class="eyebrow">COMPETENCIA TCG</span>
             <h1>Torneos disponibles</h1>
@@ -72,6 +80,31 @@
                             Cupos disponibles
                         </span>
                     {% endif %}
+                
+                    {% if torneo.cupos_disponibles > 0 %}
+                        {% if user.is_authenticated %}
+                            {% if user.perfil.rol.nombre == "Jugador" %}
+                                <form
+                                    method="post"
+                                    action="{% url 'solicitar_inscripcion' torneo.pk %}"
+                                >
+                                    {% csrf_token %}
+
+                                    <button type="submit" class="button button-primary"
+                                    >
+                                        Inscribirme
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <a
+                                href="{% url 'iniciar_sesion' %}"
+                                class="button button-primary"
+                                >Inicia sesión para inscribirte
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
                 </article>
             {% empty %}
                 <div class="panel panel-pad">

@@ -1,0 +1,112 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resumen de pago | Mundo Cartas</title>
+
+    {% include "gestion/componentes/fuentes.html" %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'gestion/recursos/css/main.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'gestion/recursos/css/navbar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/torneos.css' %}"
+    >
+</head>
+
+<body>
+
+    {% include "gestion/componentes/navbar.html" %}
+
+    <main class="wrap page-main">
+
+        <section class="page-intro">
+            <span class="eyebrow">MUNDO CARTAS</span>
+
+            <h1>Resumen de inscripción</h1>
+
+            <p>
+                Revisa los datos de tu inscripción
+                antes de continuar con el pago.
+            </p>
+        </section>
+
+        <section class="panel panel-pad">
+
+            <h2>{{ torneo.torneo_nombre }}</h2>
+
+
+            <div class="torneo-datos">
+
+                <p>
+                    <strong>Jugador:</strong>
+                    {{ inscripcion.inscripcion_usuario.username }}
+                </p>
+
+                <p>
+                    <strong>Fecha de Torneo:</strong>
+                    {{ torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    {{ inscripcion.inscripcion_estado }}
+                </p>
+
+            </div>
+
+
+            <hr>
+
+            <h2>
+                Total a pagar:
+                ${{ venta.venta_total|floatformat:0 }}
+            </h2>
+
+            <p>
+                Tu inscripción se confirmará cuando
+                el pago sea aprobado.
+            </p>
+
+
+            <form method="post" action="{% url 'iniciar_pago_webpay' inscripcion.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button button-primary">
+                    Pagar
+                </button>
+            </form>
+
+
+            <a
+                href="{% url 'listar_torneos' %}"
+                class="button button-primary"
+            >
+                Volver a torneos
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>Mundo Cartas · Comunidad TCG</p>
+            <span>© 2026 Mundo Cartas</span>
+        </div>
+    </footer>
+
+</body>
+</html>

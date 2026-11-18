@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'gestion',
     'registro',
     'torneo',
+    'pagos',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,9 @@ LOGIN_URL = "iniciar_sesion"
 # Imágenes cargadas desde la gestión de juegos.
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Reintentos de Webpay en ambiente de integración.
+# No habilitar automáticamente en producción sin
+# validar las reglas y tiempos del comercio.
+WEBPAY_PERMITIR_REINTENTOS_TEST = True
+WEBPAY_MINUTOS_PARA_EXPIRAR = 5

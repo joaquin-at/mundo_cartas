@@ -9,4 +9,5 @@ urlpatterns = [
     path("administrar/<int:pk>/actualizar/", views.admin_actualizar_torneo, name="admin_actualizar_torneo"),
     path("administrar/<int:pk>/cancelar/", views.admin_cancelar_torneo, name="admin_cancelar_torneo"),
     path("administrar/<int:pk>/eliminar/", views.admin_eliminar_torneo, name="admin_eliminar_torneo"),
+    path("<int:pk>/inscribirse/", views.solicitar_inscripcion, name="solicitar_inscripcion"),
 ]

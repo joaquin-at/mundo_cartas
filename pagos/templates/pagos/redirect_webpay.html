@@ -1,0 +1,89 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Conectando con Webpay | Mundo Cartas</title>
+
+    {% include "gestion/componentes/fuentes.html" %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'gestion/recursos/css/main.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'pagos/css/webpay.css' %}"
+    >
+</head>
+
+<body>
+
+    <main class="payment-screen">
+
+        <section class="payment-card">
+
+            <div class="payment-brand">
+                MUNDO CARTAS
+            </div>
+
+            <div
+                class="payment-spinner"
+                role="status"
+                aria-label="Conectando con Webpay"
+            ></div>
+
+            <h1>Preparando tu pago</h1>
+
+            <p class="payment-description">
+                Estamos conectando con Webpay Plus
+                para que puedas completar tu inscripción
+                de forma segura.
+            </p>
+
+            <div class="payment-security">
+                🔒 Serás redirigido al sitio de Transbank.
+                No ingreses datos de tarjeta en Mundo Cartas.
+            </div>
+
+            <form
+                id="form-webpay"
+                method="post"
+                action="{{ url_webpay }}"
+            >
+                <input
+                    type="hidden"
+                    name="token_ws"
+                    value="{{ token }}"
+                >
+
+                <button
+                    type="submit"
+                    class="payment-button"
+                >
+                    Continuar a Webpay
+                </button>
+            </form>
+
+            <p class="payment-footer">
+                Mundo Cartas · Comunidad TCG
+            </p>
+
+        </section>
+
+    </main>
+
+    <script>
+        window.addEventListener("load", function () {
+            setTimeout(function () {
+                document.getElementById("form-webpay").submit();
+            }, 900);
+        });
+    </script>
+
+</body>
+</html>
