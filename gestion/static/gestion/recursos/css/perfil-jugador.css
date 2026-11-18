@@ -322,3 +322,175 @@
     color: #a12626;
     font-weight: 600;
 }
+
+
+
+.player-page .torneos-resumen {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.player-page .torneos-columna {
+    min-width: 0;
+    padding: 18px;
+    background: #f6f9ec;
+    border: 1px solid #e1e8cb;
+    border-radius: 15px;
+}
+
+.player-page .torneos-columna h3 {
+    margin: 0 0 6px;
+    font-size: 21px;
+    color: #101114;
+}
+
+.player-page .torneos-columna > p {
+    margin: 0 0 16px;
+    font-size: 13px;
+    color: #555b63;
+}
+
+.player-page .torneos-vacio {
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e4e5e8;
+    border-radius: 12px;
+}
+
+.player-page .torneos-vacio strong {
+    font-size: 14px;
+    color: #101114;
+}
+
+.player-page .torneos-vacio span {
+    font-size: 13px;
+    color: #676b72;
+}
+
+
+@media (max-width: 760px) {
+    .player-page .torneos-resumen {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.player-page .profile-layout {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+}
+
+.player-page .profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+.player-page .profile-sections .page-intro {
+    margin-bottom: 0;
+}
+
+
+.player-page .perfil-lateral {
+    min-width: 0;
+    padding: 22px 16px;
+}
+
+.player-page .perfil-lateral-usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 6px 0 24px;
+    border-bottom: 1px solid #e4e5e8;
+}
+
+.player-page .perfil-avatar {
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    border: 3px solid #b9d64d;
+    border-radius: 50%;
+}
+
+.player-page .perfil-lateral-usuario h2 {
+    margin: 4px 0 0;
+    font-size: 23px;
+    overflow-wrap: anywhere;
+}
+
+.player-page .perfil-lateral-usuario p {
+    margin: 0;
+    font-size: 13px;
+    color: #676b72;
+    overflow-wrap: anywhere;
+}
+
+.player-page .perfil-lateral-usuario .button {
+    margin-top: 8px;
+}
+
+
+
+.player-page .perfil-lateral-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 16px;
+}
+
+.player-page .perfil-lateral-menu a {
+    display: block;
+    padding: 13px 15px;
+    border-radius: 11px;
+    color: #454b55;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.player-page .perfil-lateral-menu a:hover,
+.player-page .perfil-lateral-menu a.selected {
+    background: #edf3dc;
+    color: #344719;
+}
+
+
+
+@media (max-width: 900px) {
+    .player-page .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .player-page .perfil-lateral {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .player-page .perfil-avatar {
+        width: 90px;
+        height: 90px;
+    }
+}
+.player-page .torneos-acciones {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.player-page .torneos-acciones .button {
+    text-align: center;
+}
