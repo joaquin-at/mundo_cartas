@@ -1,5 +1,5 @@
 
-{% load static %}
+{% load static juegos_tags %}
 <!doctype html>
 <html lang="es">
 
@@ -12,7 +12,7 @@
     {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-1">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
 </head>
 
@@ -89,7 +89,7 @@
 
                 </section>
 
-                <section class="panel panel-pad">
+                <section class="panel panel-pad historial-panel">
 
                     <div class="perfil-titulo">
                         <div>
@@ -98,17 +98,65 @@
                         </div>
                     </div>
 
-                    <div class="torneos-vacio">
+                    <div class="historial-listado">
 
-                        <strong>
-                            Todavía no hay torneos para mostrar.
-                        </strong>
+                        {% for inscripcion in historial %}
 
-                        <span>
-                            El historial se completará con tus
-                            inscripciones reales cuando esté
-                            disponible el sistema de inscripciones.
-                        </span>
+                            <div class="torneo-jugador">
+
+                                {% with imagen=inscripcion.inscripcion_torneo.torneo_juego|imagen_juego %}
+                                    <div class="torneo-jugador-imagen">
+                                        {% if imagen %}
+                                            <img
+                                                src="{{ imagen }}"
+                                                alt="Imagen de {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}"
+                                                loading="lazy">
+                                        {% else %}
+                                            <span>Sin imagen</span>
+                                        {% endif %}
+                                    </div>
+                                {% endwith %}
+
+                                <div class="torneo-jugador-info">
+
+                                    <h4>
+                                        {{ inscripcion.inscripcion_torneo.torneo_nombre }}
+                                    </h4>
+
+                                    <p>
+                                        <strong>Juego:</strong>
+                                        {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}
+                                    </p>
+
+                                    <p>
+                                        <strong>Fecha:</strong>
+                                        {{ inscripcion.inscripcion_torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                                    </p>
+
+                                    <p>
+                                        <strong>Estado del torneo:</strong>
+                                        {{ inscripcion.inscripcion_torneo.torneo_estado }}
+                                    </p>
+
+                                    <span class="torneo-jugador-estado">
+                                        Inscripción: {{ inscripcion.inscripcion_estado }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="torneos-vacio">
+                                <strong>Todavía no hay torneos para mostrar.</strong>
+                                <span>
+                                    Cuando participes en un torneo finalizado
+                                    o cancelado, aparecerá aquí.
+                                </span>
+                            </div>
+
+                        {% endfor %}
 
                     </div>
 

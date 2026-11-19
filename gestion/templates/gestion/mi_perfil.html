@@ -1,4 +1,4 @@
-{% load static %}
+{% load static juegos_tags %}
 <!doctype html>
 <html lang="es">
 
@@ -9,7 +9,7 @@
     {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261116-2">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-1">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
 </head>
 
@@ -138,29 +138,118 @@
             <div class="torneos-resumen">
 
                 <div class="torneos-columna">
-                    <h3>♧ Torneos inscritos</h3>
+                    <h3>Torneos inscritos</h3>
                     <p>Torneos en los que tienes una inscripción confirmada.</p>
 
-                    <div class="torneos-vacio">
-                        <strong>Aún no tienes torneos inscritos.</strong>
-                        <span>
-                            Cuando te inscribas en un torneo,
-                            aparecerá aquí.
-                        </span>
-                    </div>
+                    {% for inscripcion in torneos_inscritos %}
+
+                        <div class="torneo-jugador">
+
+                            {% with imagen=inscripcion.inscripcion_torneo.torneo_juego|imagen_juego %}
+                                <div class="torneo-jugador-imagen">
+                                    {% if imagen %}
+                                        <img
+                                            src="{{ imagen }}"
+                                            alt="Imagen de {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}"
+                                            loading="lazy">
+                                    {% else %}
+                                        <span>Sin imagen</span>
+                                    {% endif %}
+                                </div>
+                            {% endwith %}
+
+                            <div class="torneo-jugador-info">
+
+                                <h4>
+                                    {{ inscripcion.inscripcion_torneo.torneo_nombre }}
+                                </h4>
+
+                                <p>
+                                    <strong>Juego:</strong>
+                                    {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}
+                                </p>
+
+                                <p>
+                                    <strong>Fecha:</strong>
+                                    {{ inscripcion.inscripcion_torneo.torneo_inicio|date:"d/m/Y H:i" }}</p>
+
+                                <span class="torneo-jugador-estado">
+                                    Inscripción: {{ inscripcion.inscripcion_estado }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    {% empty %}
+
+                        <div class="torneos-vacio">
+                            <strong>Aún no tienes torneos inscritos.</strong>
+                            <span>
+                                Cuando tengas una inscripción confirmada,
+                                aparecerá aquí.
+                            </span>
+                        </div>
+
+                    {% endfor %}
                 </div>
 
                 <div class="torneos-columna">
-                    <h3>◷ Historial reciente</h3>
+                    <h3>Historial reciente</h3>
                     <p>Tus últimos torneos finalizados o cancelados.</p>
 
-                    <div class="torneos-vacio">
-                        <strong>Todavía no hay torneos en tu historial.</strong>
-                        <span>
-                            Aquí aparecerán tus torneos
-                            finalizados y cancelados.
-                        </span>
-                    </div>
+                    {% for inscripcion in historial_reciente %}
+
+                        <div class="torneo-jugador">
+
+                            {% with imagen=inscripcion.inscripcion_torneo.torneo_juego|imagen_juego %}
+                                <div class="torneo-jugador-imagen">
+                                    {% if imagen %}
+                                        <img
+                                            src="{{ imagen }}"
+                                            alt="Imagen de {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}"
+                                            loading="lazy">
+                                    {% else %}
+                                        <span>Sin imagen</span>
+                                    {% endif %}
+                                </div>
+                            {% endwith %}
+
+                            <div class="torneo-jugador-info">
+
+                                <h4>
+                                    {{ inscripcion.inscripcion_torneo.torneo_nombre }}
+                                </h4>
+
+                                <p>
+                                    <strong>Juego:</strong>
+                                    {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}
+                                </p>
+
+                                <p>
+                                    <strong>Fecha:</strong>
+                                    {{ inscripcion.inscripcion_torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                                </p>
+
+                                <span class="torneo-jugador-estado">
+                                    Estado: {{ inscripcion.inscripcion_torneo.torneo_estado }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    {% empty %}
+
+                        <div class="torneos-vacio">
+                            <strong>Todavía no hay torneos en tu historial.</strong>
+                            <span>
+                                Aquí aparecerán tus torneos
+                                finalizados y cancelados.
+                            </span>
+                        </div>
+
+                    {% endfor %}
                 </div>
 
             </div>
