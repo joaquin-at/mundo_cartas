@@ -4,7 +4,7 @@ from torneo.presentacion import (
 )
 
 from django.db.models import Count, Q
-from torneo.models import Juego
+from torneo.models import Inscripcion, Juego
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from registro.models import Perfil
@@ -40,9 +40,38 @@ def mi_perfil(request):
         form.save()
         messages.success(request, "Perfil actualizado correctamente.")
         return redirect("mi_perfil")
+            
+    inscripciones = (
+        Inscripcion.objects
+        .filter(
+            inscripcion_usuario=request.user,
+            inscripcion_estado="Confirmada",
+        )
+        .select_related("inscripcion_torneo__torneo_juego")
+    )
+
+    torneos_inscritos = (
+        inscripciones
+        .filter(inscripcion_torneo__torneo_estado="Publicado")
+        .order_by("inscripcion_torneo__torneo_inicio")
+    )
+
+    historial_reciente = (
+        inscripciones
+        .filter(
+            inscripcion_torneo__torneo_estado__in=[
+                "Finalizado",
+                "Cancelado",
+            ]
+        )
+        .order_by("-inscripcion_torneo__torneo_inicio")[:3]
+    )
+
     return render(request, "gestion/mi_perfil.html", {
         "form": form,
         "editar_perfil": request.method == "POST" or request.GET.get("editar") == "1",
+        "torneos_inscritos": torneos_inscritos,
+        "historial_reciente": historial_reciente,
     })
 
 def clasificacion(request):
@@ -72,4 +101,21 @@ def detalle_juego(request, pk):
 
 @login_required
 def historial_torneos(request):
-    return render(request, "gestion/historial_torneos.html")
+    
+    historial = (
+        Inscripcion.objects
+        .filter(
+            inscripcion_usuario=request.user,
+            inscripcion_estado="Confirmada",
+            inscripcion_torneo__torneo_estado__in=[
+                "Finalizado",
+                "Cancelado",
+            ],
+        )
+        .select_related("inscripcion_torneo__torneo_juego")
+        .order_by("-inscripcion_torneo__torneo_inicio")
+    )
+
+    return render(request, "gestion/historial_torneos.html", {
+        "historial": historial,
+    })

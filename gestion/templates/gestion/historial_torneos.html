@@ -98,19 +98,48 @@
                         </div>
                     </div>
 
-                    <div class="torneos-vacio">
+                    {% for inscripcion in historial %}
 
-                        <strong>
-                            Todavía no hay torneos para mostrar.
-                        </strong>
+                        <div class="torneos-vacio">
 
-                        <span>
-                            El historial se completará con tus
-                            inscripciones reales cuando esté
-                            disponible el sistema de inscripciones.
-                        </span>
+                            <strong>
+                                {{ inscripcion.inscripcion_torneo.torneo_nombre }}
+                            </strong>
 
-                    </div>
+                            <span>
+                                Juego: {{ inscripcion.inscripcion_torneo.torneo_juego.juego_nombre }}
+                            </span>
+
+                            <span>
+                                Fecha: {{ inscripcion.inscripcion_torneo.torneo_inicio|date:"d/m/Y H:i" }}
+                            </span>
+
+                            <span>
+                                Estado del torneo: {{ inscripcion.inscripcion_torneo.torneo_estado }}
+                            </span>
+
+                            <span>
+                                Inscripción: {{ inscripcion.inscripcion_estado }}
+                            </span>
+
+                        </div>
+
+                    {% empty %}
+
+                        <div class="torneos-vacio">
+
+                            <strong>
+                                Todavía no hay torneos para mostrar.
+                            </strong>
+
+                            <span>
+                                Cuando participes en un torneo finalizado
+                                o cancelado, aparecerá aquí.
+                            </span>
+
+                        </div>
+
+                    {% endfor %}
 
                 </section>
 
