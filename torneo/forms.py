@@ -1,7 +1,7 @@
 from django import forms
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
-from .models import Juego, Torneo
+from .models import Juego, Torneo, ResultadoTorneo
 from .presentacion import normalizar_nombre
 
 
@@ -108,3 +108,25 @@ class ConfirmarEliminarTorneoForm(forms.Form):
         required=True,
         error_messages={"required": "Debes confirmar la eliminación definitiva del torneo."},
     )
+
+
+
+class ResultadoTorneoForm(forms.ModelForm):
+    class Meta:
+        model = ResultadoTorneo
+
+        fields = [
+            "participo",
+            "victorias",
+            "empates",
+            "derrotas",
+            "posicion_final",
+        ]
+
+        labels = {
+            "participo": "¿Participó en el torneo?",
+            "victorias": "Victorias",
+            "empates": "Empates",
+            "derrotas": "Derrotas",
+            "posicion_final": "Posición final",
+        }

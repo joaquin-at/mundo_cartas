@@ -1,0 +1,43 @@
+
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Registrar resultado
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE RESULTADOS</span>
+
+    <h1>Registrar resultado</h1>
+
+    <p>
+        Torneo: {{ torneo.torneo_nombre }}
+    </p>
+
+    <p>
+        Jugador: {{ inscripcion.inscripcion_usuario.username }}
+    </p>
+</section>
+
+<section class="panel panel-pad">
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="button button-primary">
+            Guardar resultado
+        </button>
+    </form>
+
+    <a class="button button-primary"
+       href="{% url 'admin_resultados_detalle' torneo.pk %}">
+        Volver a participantes
+    </a>
+
+</section>
+
+{% endblock %}

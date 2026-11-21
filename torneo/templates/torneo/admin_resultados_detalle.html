@@ -1,0 +1,72 @@
+
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Resultados del torneo
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE RESULTADOS</span>
+
+    <h1>{{ torneo.torneo_nombre }}</h1>
+
+    <p>
+        Jugadores con inscripción confirmada
+        en este torneo.
+    </p>
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>Participantes inscritos</h2>
+
+    <div class="table-wrap">
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Estado de inscripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for inscripcion in inscripciones %}
+                    <tr>
+                        <td>{{ inscripcion.inscripcion_usuario.username }}</td>
+                        <td>{{ inscripcion.inscripcion_estado }}</td>
+                        <td>
+                            {% if torneo.torneo_estado == "Finalizado" %}
+                                <a class="button button-primary"
+                                   href="{% url 'admin_registrar_resultado' torneo.pk inscripcion.pk %}">
+                                    Registrar resultado
+                                </a>
+                            {% else %}
+                                <span>
+                                    Disponible al finalizar el torneo
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">
+                            Este torneo todavía no tiene
+                            inscripciones confirmadas.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a class="button button-primary"
+       href="{% url 'admin_resultados_torneos' %}">
+        Volver a resultados
+    </a>
+
+</section>
+
+{% endblock %}

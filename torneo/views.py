@@ -16,8 +16,8 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from registro.models import Perfil
 
-from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm
-from .models import Inscripcion, Juego, Torneo
+from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm
+from .models import Inscripcion, Juego, Torneo, ResultadoTorneo
 from .presentacion import normalizar_nombre
 
 
@@ -465,3 +465,79 @@ def admin_desactivar_juego(request, pk):
         "torneo/admin_juego_desactivar.html",
         {"juego": juego}
     )
+
+
+@administrador_requerido
+def admin_resultados_torneos(request):
+    torneos = (
+        Torneo.objects
+        .select_related("torneo_juego", "torneo_liga")
+        .order_by("-torneo_inicio")
+    )
+
+    return render(request, "torneo/admin_resultados.html", {
+        "torneos": torneos,
+    })
+
+@administrador_requerido
+def admin_resultados_detalle(request, pk):
+    torneo = get_object_or_404(Torneo, pk=pk)
+
+    inscripciones = (
+        Inscripcion.objects
+        .filter(
+            inscripcion_torneo=torneo,
+            inscripcion_estado="Confirmada",
+        )
+        .select_related("inscripcion_usuario")
+        .order_by("inscripcion_usuario__username")
+    )
+
+    return render(request, "torneo/admin_resultados_detalle.html", {
+        "torneo": torneo,
+        "inscripciones": inscripciones,
+    })
+
+
+@administrador_requerido
+@require_http_methods(["GET", "POST"])
+def admin_registrar_resultado(request, pk, inscripcion_id):
+    torneo = get_object_or_404(
+        Torneo,
+        pk=pk,
+        torneo_estado="Finalizado",
+    )
+
+    inscripcion = get_object_or_404(
+        Inscripcion,
+        pk=inscripcion_id,
+        inscripcion_torneo=torneo,
+        inscripcion_estado="Confirmada",
+    )
+
+    resultado = ResultadoTorneo.objects.filter(
+        inscripcion=inscripcion
+    ).first()
+
+    form = ResultadoTorneoForm(
+        request.POST if request.method == "POST" else None,
+        instance=resultado,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        resultado = form.save(commit=False)
+        resultado.inscripcion = inscripcion
+        resultado.save()
+
+        messages.success(
+            request,
+            "Resultado guardado correctamente.",
+        )
+
+        return redirect("admin_resultados_detalle", pk=torneo.pk)
+
+    return render(request, "torneo/admin_resultado_form.html", {
+        "torneo": torneo,
+        "inscripcion": inscripcion,
+        "form": form,
+    })
