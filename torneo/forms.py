@@ -130,3 +130,28 @@ class ResultadoTorneoForm(forms.ModelForm):
             "derrotas": "Derrotas",
             "posicion_final": "Posición final",
         }
+    
+    def clean(self):
+        datos = super().clean()
+
+        participo = datos.get("participo")
+        victorias = datos.get("victorias") or 0
+        empates = datos.get("empates") or 0
+        derrotas = datos.get("derrotas") or 0
+        posicion = datos.get("posicion_final")
+
+        if participo:
+            if posicion is None or posicion < 1:
+                self.add_error(
+                    "posicion_final",
+                    "Debes indicar una posición válida."
+                )
+        else:
+            if victorias or empates or derrotas or posicion is not None:
+                raise forms.ValidationError(
+                    "Un jugador que no participó no puede tener "
+                    "resultados ni posición final."
+                )
+
+        return datos
+

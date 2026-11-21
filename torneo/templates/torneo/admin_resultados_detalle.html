@@ -28,6 +28,7 @@ Resultados del torneo
                 <tr>
                     <th>Jugador</th>
                     <th>Estado de inscripción</th>
+                    <th>Resultado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -37,11 +38,41 @@ Resultados del torneo
                     <tr>
                         <td>{{ inscripcion.inscripcion_usuario.username }}</td>
                         <td>{{ inscripcion.inscripcion_estado }}</td>
+
+                        <td>
+                            {% if inscripcion.resultado_torneo_nuevo %}
+                                {% if inscripcion.resultado_torneo_nuevo.participo %}
+                                    Victorias: {{ inscripcion.resultado_torneo_nuevo.victorias }}
+                                    <br>
+                                    Empates: {{ inscripcion.resultado_torneo_nuevo.empates }}
+                                    <br>
+                                    Derrotas: {{ inscripcion.resultado_torneo_nuevo.derrotas }}
+                                    <br>
+                                    Posición: {{ inscripcion.resultado_torneo_nuevo.posicion_final }}
+
+                                    <br>
+                                    {% if inscripcion.puntos_torneo is not None %}
+                                        <strong>Puntos: {{ inscripcion.puntos_torneo }}</strong>
+                                    {% else %}
+                                        Puntos pendientes
+                                    {% endif %}
+                                {% else %}
+                                    No participó
+                                {% endif %}
+                            {% else %}
+                                Pendiente de registrar
+                            {% endif %}
+                        </td>
+                        
                         <td>
                             {% if torneo.torneo_estado == "Finalizado" %}
                                 <a class="button button-primary"
-                                   href="{% url 'admin_registrar_resultado' torneo.pk inscripcion.pk %}">
-                                    Registrar resultado
+                                href="{% url 'admin_registrar_resultado' torneo.pk inscripcion.pk %}">
+                                    {% if inscripcion.resultado_torneo_nuevo %}
+                                        Editar resultado
+                                    {% else %}
+                                        Registrar resultado
+                                    {% endif %}
                                 </a>
                             {% else %}
                                 <span>
@@ -52,7 +83,7 @@ Resultados del torneo
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             Este torneo todavía no tiene
                             inscripciones confirmadas.
                         </td>

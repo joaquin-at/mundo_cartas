@@ -17,7 +17,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 from registro.models import Perfil
 
 from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm
-from .models import Inscripcion, Juego, Torneo, ResultadoTorneo
+from .models import Inscripcion, Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo
 from .presentacion import normalizar_nombre
 
 
@@ -489,10 +489,25 @@ def admin_resultados_detalle(request, pk):
             inscripcion_torneo=torneo,
             inscripcion_estado="Confirmada",
         )
-        .select_related("inscripcion_usuario")
+        .select_related("inscripcion_usuario", "resultado_torneo_nuevo")
         .order_by("inscripcion_usuario__username")
     )
 
+    regla = ReglaPuntuacionTorneo.objects.filter(
+        nombre="Puntuación estándar"
+    ).first()
+
+    for inscripcion in inscripciones:
+        inscripcion.puntos_torneo = None
+
+        resultado = getattr(
+            inscripcion,
+            "resultado_torneo_nuevo",
+            None
+        )
+
+        if resultado is not None and resultado.participo and regla is not None:
+            inscripcion.puntos_torneo = resultado.calcular_puntos_torneo(regla)
     return render(request, "torneo/admin_resultados_detalle.html", {
         "torneo": torneo,
         "inscripciones": inscripciones,
