@@ -167,3 +167,44 @@ class PuntosHistoricosTests(TestCase):
         # Debe usar la regla original: 3 victorias × 3.
         self.assertEqual(resultado.puntos_torneo_guardados, 9)
         self.assertEqual(resultado.puntos_victoria_aplicados, 3)
+class ConfiguracionPuntuacionTests(TestCase):
+
+    def test_administrador_puede_configurar_puntos(self):
+        Usuario = get_user_model()
+
+        administrador = Usuario.objects.create_user(
+            username="admin_configuracion",
+            password="clave_prueba_123",
+        )
+
+        rol, _ = Rol.objects.get_or_create(
+            nombre="Administrador"
+        )
+
+        Perfil.objects.update_or_create(
+            user=administrador,
+            defaults={"rol": rol},
+        )
+
+        self.client.force_login(administrador)
+
+        regla, _ = ReglaPuntuacionTorneo.objects.get_or_create(
+            nombre="Puntuación estándar",
+        )
+
+        respuesta = self.client.post(
+            reverse("admin_configurar_puntuacion"),
+            {
+                "puntos_victoria": "4",
+                "puntos_empate": "2",
+                "puntos_derrota": "0",
+            },
+        )
+
+        self.assertEqual(respuesta.status_code, 302)
+
+        regla.refresh_from_db()
+
+        self.assertEqual(regla.puntos_victoria, 4)
+        self.assertEqual(regla.puntos_empate, 2)
+        self.assertEqual(regla.puntos_derrota, 0)

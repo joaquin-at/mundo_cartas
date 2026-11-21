@@ -1,0 +1,62 @@
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Configurar puntuación
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE RESULTADOS</span>
+
+    <h1>Configurar puntuación</h1>
+
+    <p>
+        Define cuántos puntos obtiene un jugador
+        por cada victoria, empate y derrota.
+    </p>
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>{{ regla.nombre }}</h2>
+
+    <p>
+        Los cambios se aplicarán a los nuevos resultados.
+        Los resultados anteriores conservarán su regla original.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for campo in form %}
+            <div class="torneo-campo">
+                <label for="{{ campo.id_for_label }}">
+                    {{ campo.label }}
+                </label>
+
+                {{ campo }}
+
+                {% for error in campo.errors %}
+                    <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="admin-acciones">
+            <button type="submit" class="button button-primary">
+                Guardar cambios
+            </button>
+
+            <a class="button button-secondary"
+               href="{% url 'admin_resultados_torneos' %}">
+                Volver a resultados
+            </a>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}

@@ -16,7 +16,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from registro.models import Perfil
 
-from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm
+from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm, ReglaPuntuacionTorneoForm
 from .models import Inscripcion, Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo, Liga
 from .presentacion import normalizar_nombre
 from .services import obtener_clasificacion_liga
@@ -599,4 +599,37 @@ def admin_clasificacion_liga(request, pk):
             "liga": liga,
             "clasificacion": clasificacion,
         }
+    )
+
+
+@administrador_requerido
+@require_http_methods(["GET", "POST"])
+def admin_configurar_puntuacion(request):
+    regla = get_object_or_404(
+        ReglaPuntuacionTorneo,
+        nombre="Puntuación estándar",
+    )
+
+    form = ReglaPuntuacionTorneoForm(
+        request.POST if request.method == "POST" else None,
+        instance=regla,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+
+        messages.success(
+            request,
+            "Reglas de puntuación actualizadas correctamente.",
+        )
+
+        return redirect("admin_configurar_puntuacion")
+
+    return render(
+        request,
+        "torneo/admin_configurar_puntuacion.html",
+        {
+            "form": form,
+            "regla": regla,
+        },
     )
