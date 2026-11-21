@@ -500,10 +500,6 @@ def admin_resultados_detalle(request, pk):
         .order_by("inscripcion_usuario__username")
     )
 
-    regla = ReglaPuntuacionTorneo.objects.filter(
-        nombre="Puntuación estándar"
-    ).first()
-
     for inscripcion in inscripciones:
         inscripcion.puntos_torneo = None
 
@@ -513,8 +509,8 @@ def admin_resultados_detalle(request, pk):
             None
         )
 
-        if resultado is not None and resultado.participo and regla is not None:
-            inscripcion.puntos_torneo = resultado.calcular_puntos_torneo(regla)
+        if resultado is not None and resultado.participo:
+            inscripcion.puntos_torneo = resultado.puntos_torneo_guardados
     return render(request, "torneo/admin_resultados_detalle.html", {
         "torneo": torneo,
         "inscripciones": inscripciones,
@@ -549,7 +545,32 @@ def admin_registrar_resultado(request, pk, inscripcion_id):
     if request.method == "POST" and form.is_valid():
         resultado = form.save(commit=False)
         resultado.inscripcion = inscripcion
+
+        if resultado.participo:
+            if (
+                resultado.puntos_victoria_aplicados is None
+                or resultado.puntos_empate_aplicados is None
+                or resultado.puntos_derrota_aplicados is None
+            ):
+                regla = get_object_or_404(
+                    ReglaPuntuacionTorneo,
+                    nombre="Puntuación estándar",
+                )
+
+                resultado.puntos_victoria_aplicados = regla.puntos_victoria
+                resultado.puntos_empate_aplicados = regla.puntos_empate
+                resultado.puntos_derrota_aplicados = regla.puntos_derrota
+
+            resultado.puntos_torneo_guardados = (
+                resultado.victorias * resultado.puntos_victoria_aplicados
+                + resultado.empates * resultado.puntos_empate_aplicados
+                + resultado.derrotas * resultado.puntos_derrota_aplicados
+            )
+        else:
+            resultado.puntos_torneo_guardados = None
+
         resultado.save()
+
 
         messages.success(
             request,

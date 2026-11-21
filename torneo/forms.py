@@ -1,7 +1,7 @@
 from django import forms
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
-from .models import Juego, Torneo, ResultadoTorneo
+from .models import Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo
 from .presentacion import normalizar_nombre
 
 
@@ -154,4 +154,20 @@ class ResultadoTorneoForm(forms.ModelForm):
                 )
 
         return datos
+
+class ReglaPuntuacionTorneoForm(forms.ModelForm):
+    class Meta:
+        model = ReglaPuntuacionTorneo
+
+        fields = [
+            "puntos_victoria",
+            "puntos_empate",
+            "puntos_derrota",
+        ]
+
+        labels = {
+            "puntos_victoria": "Puntos por victoria",
+            "puntos_empate": "Puntos por empate",
+            "puntos_derrota": "Puntos por derrota",
+        }
 

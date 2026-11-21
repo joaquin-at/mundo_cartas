@@ -166,6 +166,25 @@ class ResultadoTorneo(models.Model):
         null=True,
         blank=True,
     )
+    puntos_torneo_guardados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    puntos_victoria_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    puntos_empate_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    puntos_derrota_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
 
     def calcular_puntos_torneo(self, regla):
         return (
