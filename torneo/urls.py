@@ -13,6 +13,7 @@ urlpatterns = [
     path("administrar/resultados/", views.admin_resultados_torneos, name="admin_resultados_torneos"),
     path("administrar/resultados/<int:pk>/", views.admin_resultados_detalle, name="admin_resultados_detalle"),
     path("administrar/resultados/<int:pk>/inscripcion/<int:inscripcion_id>/", views.admin_registrar_resultado, name="admin_registrar_resultado"),
+    path("administrar/ligas/<int:pk>/clasificacion/",views.admin_clasificacion_liga,name="admin_clasificacion_liga"),
 
     
 ]

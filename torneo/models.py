@@ -174,6 +174,23 @@ class ResultadoTorneo(models.Model):
             + self.derrotas * regla.puntos_derrota
         )
 
+    def calcular_puntos_liga(self):
+        if not self.participo or self.posicion_final is None:
+            return None
+
+        posicion = self.posicion_final
+
+        if posicion == 1:
+            return 5
+        elif posicion == 2:
+            return 4
+        elif posicion <= 4:
+            return 3
+        elif posicion <= 8:
+            return 2
+        else:
+            return 1
+
     def __str__(self):
         return f"Resultado de {self.inscripcion}"
 class ReglaPuntuacionTorneo(models.Model):

@@ -17,8 +17,9 @@ from django.views.decorators.http import require_http_methods, require_POST
 from registro.models import Perfil
 
 from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm
-from .models import Inscripcion, Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo
+from .models import Inscripcion, Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo, Liga
 from .presentacion import normalizar_nombre
+from .services import obtener_clasificacion_liga
 
 
 # DECORADOR: SOLO ADMINISTRADORES
@@ -474,9 +475,15 @@ def admin_resultados_torneos(request):
         .select_related("torneo_juego", "torneo_liga")
         .order_by("-torneo_inicio")
     )
+    ligas = (
+        Liga.objects
+        .select_related("liga_juego")
+        .order_by("liga_nombre")
+    )
 
     return render(request, "torneo/admin_resultados.html", {
         "torneos": torneos,
+        "ligas": ligas,
     })
 
 @administrador_requerido
@@ -556,3 +563,19 @@ def admin_registrar_resultado(request, pk, inscripcion_id):
         "inscripcion": inscripcion,
         "form": form,
     })
+
+
+@administrador_requerido
+def admin_clasificacion_liga(request, pk):
+    liga = get_object_or_404(Liga, pk=pk)
+
+    clasificacion = obtener_clasificacion_liga(liga)
+
+    return render(
+        request,
+        "torneo/admin_clasificacion_liga.html",
+        {
+            "liga": liga,
+            "clasificacion": clasificacion,
+        }
+    )

@@ -59,4 +59,36 @@ Resultados y puntuaciones
 
 </section>
 
+<section class="panel panel-pad">
+
+    <h2>Clasificaciones de liga</h2>
+
+    <p>
+        Consulta los puntos acumulados de los jugadores
+        en cada liga.
+    </p>
+
+    {% for liga in ligas %}
+        <div class="torneo-datos">
+            <h3>{{ liga.liga_nombre }}</h3>
+
+            <p>
+                <strong>Juego:</strong>
+                {{ liga.liga_juego.juego_nombre }}
+            </p>
+
+            <a class="button button-primary"
+               href="{% url 'admin_clasificacion_liga' liga.pk %}">
+                Ver clasificación
+            </a>
+        </div>
+        <hr>
+    {% empty %}
+        <p>
+            Todavía no hay ligas registradas.
+        </p>
+    {% endfor %}
+
+</section>
+
 {% endblock %}
