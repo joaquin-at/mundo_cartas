@@ -1,0 +1,101 @@
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Resultados y puntuaciones
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE RESULTADOS</span>
+
+    <h1>Resultados y puntuaciones</h1>
+
+    <p>
+        Consulta los torneos registrados para
+        gestionar los resultados de sus jugadores.
+    </p>
+
+    <div class="admin-acciones">
+        <a class="button button-primary"
+        href="{% url 'admin_configurar_puntuacion' %}">
+            Configurar puntuación
+        </a>
+    </div>
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>Torneos registrados</h2>
+
+    {% for torneo in torneos %}
+
+        <div class="torneo-datos">
+            <h3>{{ torneo.torneo_nombre }}</h3>
+
+            <p>
+                <strong>Juego:</strong>
+                {{ torneo.torneo_juego.juego_nombre }}
+            </p>
+
+            <p>
+                <strong>Fecha:</strong>
+                {{ torneo.torneo_inicio|date:"d/m/Y H:i" }}
+            </p>
+
+            <p>
+                <strong>Estado:</strong>
+                {{ torneo.torneo_estado }}
+                
+            </p>
+            
+            <a class="button button-primary"
+                href="{% url 'admin_resultados_detalle' torneo.pk %}">
+                Ver participantes
+            </a>
+
+        </div>
+
+        <hr>
+
+    {% empty %}
+
+        <p>Todavía no hay torneos registrados.</p>
+
+    {% endfor %}
+
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>Clasificaciones de liga</h2>
+
+    <p>
+        Consulta los puntos acumulados de los jugadores
+        en cada liga.
+    </p>
+
+    {% for liga in ligas %}
+        <div class="torneo-datos">
+            <h3>{{ liga.liga_nombre }}</h3>
+
+            <p>
+                <strong>Juego:</strong>
+                {{ liga.liga_juego.juego_nombre }}
+            </p>
+
+            <a class="button button-primary"
+               href="{% url 'admin_clasificacion_liga' liga.pk %}">
+                Ver clasificación
+            </a>
+        </div>
+        <hr>
+    {% empty %}
+        <p>
+            Todavía no hay ligas registradas.
+        </p>
+    {% endfor %}
+
+</section>
+
+{% endblock %}

@@ -16,9 +16,10 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from registro.models import Perfil
 
-from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm
-from .models import Inscripcion, Juego, Torneo
+from .forms import ConfirmarEliminarTorneoForm, JuegoForm, TorneoForm, ResultadoTorneoForm, ReglaPuntuacionTorneoForm
+from .models import Inscripcion, Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo, Liga
 from .presentacion import normalizar_nombre
+from .services import obtener_clasificacion_liga
 
 
 # DECORADOR: SOLO ADMINISTRADORES
@@ -464,4 +465,171 @@ def admin_desactivar_juego(request, pk):
         request,
         "torneo/admin_juego_desactivar.html",
         {"juego": juego}
+    )
+
+
+@administrador_requerido
+def admin_resultados_torneos(request):
+    torneos = (
+        Torneo.objects
+        .select_related("torneo_juego", "torneo_liga")
+        .order_by("-torneo_inicio")
+    )
+    ligas = (
+        Liga.objects
+        .select_related("liga_juego")
+        .order_by("liga_nombre")
+    )
+
+    return render(request, "torneo/admin_resultados.html", {
+        "torneos": torneos,
+        "ligas": ligas,
+    })
+
+@administrador_requerido
+def admin_resultados_detalle(request, pk):
+    torneo = get_object_or_404(Torneo, pk=pk)
+
+    inscripciones = (
+        Inscripcion.objects
+        .filter(
+            inscripcion_torneo=torneo,
+            inscripcion_estado="Confirmada",
+        )
+        .select_related("inscripcion_usuario", "resultado_torneo_nuevo")
+        .order_by("inscripcion_usuario__username")
+    )
+
+    for inscripcion in inscripciones:
+        inscripcion.puntos_torneo = None
+
+        resultado = getattr(
+            inscripcion,
+            "resultado_torneo_nuevo",
+            None
+        )
+
+        if resultado is not None and resultado.participo:
+            inscripcion.puntos_torneo = resultado.puntos_torneo_guardados
+    return render(request, "torneo/admin_resultados_detalle.html", {
+        "torneo": torneo,
+        "inscripciones": inscripciones,
+    })
+
+
+@administrador_requerido
+@require_http_methods(["GET", "POST"])
+def admin_registrar_resultado(request, pk, inscripcion_id):
+    torneo = get_object_or_404(
+        Torneo,
+        pk=pk,
+        torneo_estado="Finalizado",
+    )
+
+    inscripcion = get_object_or_404(
+        Inscripcion,
+        pk=inscripcion_id,
+        inscripcion_torneo=torneo,
+        inscripcion_estado="Confirmada",
+    )
+
+    resultado = ResultadoTorneo.objects.filter(
+        inscripcion=inscripcion
+    ).first()
+
+    form = ResultadoTorneoForm(
+        request.POST if request.method == "POST" else None,
+        instance=resultado,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        resultado = form.save(commit=False)
+        resultado.inscripcion = inscripcion
+
+        if resultado.participo:
+            if (
+                resultado.puntos_victoria_aplicados is None
+                or resultado.puntos_empate_aplicados is None
+                or resultado.puntos_derrota_aplicados is None
+            ):
+                regla = get_object_or_404(
+                    ReglaPuntuacionTorneo,
+                    nombre="Puntuación estándar",
+                )
+
+                resultado.puntos_victoria_aplicados = regla.puntos_victoria
+                resultado.puntos_empate_aplicados = regla.puntos_empate
+                resultado.puntos_derrota_aplicados = regla.puntos_derrota
+
+            resultado.puntos_torneo_guardados = (
+                resultado.victorias * resultado.puntos_victoria_aplicados
+                + resultado.empates * resultado.puntos_empate_aplicados
+                + resultado.derrotas * resultado.puntos_derrota_aplicados
+            )
+        else:
+            resultado.puntos_torneo_guardados = None
+
+        resultado.save()
+
+
+        messages.success(
+            request,
+            "Resultado guardado correctamente.",
+        )
+
+        return redirect("admin_resultados_detalle", pk=torneo.pk)
+
+    return render(request, "torneo/admin_resultado_form.html", {
+        "torneo": torneo,
+        "inscripcion": inscripcion,
+        "form": form,
+    })
+
+
+@administrador_requerido
+def admin_clasificacion_liga(request, pk):
+    liga = get_object_or_404(Liga, pk=pk)
+
+    clasificacion = obtener_clasificacion_liga(liga)
+
+    return render(
+        request,
+        "torneo/admin_clasificacion_liga.html",
+        {
+            "liga": liga,
+            "clasificacion": clasificacion,
+        }
+    )
+
+
+@administrador_requerido
+@require_http_methods(["GET", "POST"])
+def admin_configurar_puntuacion(request):
+    regla = get_object_or_404(
+        ReglaPuntuacionTorneo,
+        nombre="Puntuación estándar",
+    )
+
+    form = ReglaPuntuacionTorneoForm(
+        request.POST if request.method == "POST" else None,
+        instance=regla,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+
+        messages.success(
+            request,
+            "Reglas de puntuación actualizadas correctamente.",
+        )
+
+        return redirect("admin_configurar_puntuacion")
+
+    return render(
+        request,
+        "torneo/admin_configurar_puntuacion.html",
+        {
+            "form": form,
+            "regla": regla,
+        },
     )

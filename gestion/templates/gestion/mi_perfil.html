@@ -281,7 +281,19 @@
                     </thead>
 
                     <tbody>
-                        <tr><td colspan="3">Próximamente. Los puntos y posiciones se mostrarán cuando esté implementado el registro de resultados.</td></tr>
+                        {% for fila in puntos_por_juego %}
+                            <tr>
+                                <td>{{ fila.juego }}</td>
+                                <td><strong>{{ fila.puntos }}</strong></td>
+                                <td>{{ fila.posicion }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">
+                                    Todavía no tienes puntos registrados.
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

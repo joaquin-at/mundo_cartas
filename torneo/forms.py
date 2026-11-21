@@ -1,7 +1,7 @@
 from django import forms
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
-from .models import Juego, Torneo
+from .models import Juego, Torneo, ResultadoTorneo, ReglaPuntuacionTorneo
 from .presentacion import normalizar_nombre
 
 
@@ -108,3 +108,66 @@ class ConfirmarEliminarTorneoForm(forms.Form):
         required=True,
         error_messages={"required": "Debes confirmar la eliminación definitiva del torneo."},
     )
+
+
+
+class ResultadoTorneoForm(forms.ModelForm):
+    class Meta:
+        model = ResultadoTorneo
+
+        fields = [
+            "participo",
+            "victorias",
+            "empates",
+            "derrotas",
+            "posicion_final",
+        ]
+
+        labels = {
+            "participo": "¿Participó en el torneo?",
+            "victorias": "Victorias",
+            "empates": "Empates",
+            "derrotas": "Derrotas",
+            "posicion_final": "Posición final",
+        }
+    
+    def clean(self):
+        datos = super().clean()
+
+        participo = datos.get("participo")
+        victorias = datos.get("victorias") or 0
+        empates = datos.get("empates") or 0
+        derrotas = datos.get("derrotas") or 0
+        posicion = datos.get("posicion_final")
+
+        if participo:
+            if posicion is None or posicion < 1:
+                self.add_error(
+                    "posicion_final",
+                    "Debes indicar una posición válida."
+                )
+        else:
+            if victorias or empates or derrotas or posicion is not None:
+                raise forms.ValidationError(
+                    "Un jugador que no participó no puede tener "
+                    "resultados ni posición final."
+                )
+
+        return datos
+
+class ReglaPuntuacionTorneoForm(forms.ModelForm):
+    class Meta:
+        model = ReglaPuntuacionTorneo
+
+        fields = [
+            "puntos_victoria",
+            "puntos_empate",
+            "puntos_derrota",
+        ]
+
+        labels = {
+            "puntos_victoria": "Puntos por victoria",
+            "puntos_empate": "Puntos por empate",
+            "puntos_derrota": "Puntos por derrota",
+        }
+

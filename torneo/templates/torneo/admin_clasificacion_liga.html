@@ -1,0 +1,63 @@
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Clasificación de liga
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">CLASIFICACIÓN DE LIGA</span>
+
+    <h1>{{ liga.liga_nombre }}</h1>
+
+    <p>
+        Juego: {{ liga.liga_juego.juego_nombre }}
+    </p>
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>Tabla de posiciones</h2>
+
+    <div class="table-wrap">
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Jugador</th>
+                    <th>Torneos jugados</th>
+                    <th>Puntos de liga</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for fila in clasificacion %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ fila.jugador.username }}</td>
+                        <td>{{ fila.torneos_jugados }}</td>
+                        <td>
+                            <strong>{{ fila.puntos }}</strong>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            Todavía no hay resultados registrados
+                            para esta liga.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a class="button button-primary"
+       href="{% url 'admin_resultados_torneos' %}">
+        Volver a resultados
+    </a>
+
+</section>
+
+{% endblock %}

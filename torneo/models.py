@@ -148,3 +148,79 @@ class Inscripcion(models.Model):
                 f"{self.inscripcion_usuario.username} - "
                 f"{self.inscripcion_torneo.torneo_nombre}"
             )
+
+class ResultadoTorneo(models.Model):
+    inscripcion = models.OneToOneField(
+        "torneo.Inscripcion",
+        on_delete=models.PROTECT,
+        related_name="resultado_torneo_nuevo",
+    )
+
+    participo = models.BooleanField(default=False)
+
+    victorias = models.PositiveIntegerField(default=0)
+    empates = models.PositiveIntegerField(default=0)
+    derrotas = models.PositiveIntegerField(default=0)
+
+    posicion_final = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    puntos_torneo_guardados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    puntos_victoria_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    puntos_empate_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    puntos_derrota_aplicados = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+
+    def calcular_puntos_torneo(self, regla):
+        return (
+            self.victorias * regla.puntos_victoria
+            + self.empates * regla.puntos_empate
+            + self.derrotas * regla.puntos_derrota
+        )
+
+    def calcular_puntos_liga(self):
+        if not self.participo or self.posicion_final is None:
+            return None
+
+        posicion = self.posicion_final
+
+        if posicion == 1:
+            return 5
+        elif posicion == 2:
+            return 4
+        elif posicion <= 4:
+            return 3
+        elif posicion <= 8:
+            return 2
+        else:
+            return 1
+
+    def __str__(self):
+        return f"Resultado de {self.inscripcion}"
+class ReglaPuntuacionTorneo(models.Model):
+    nombre = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    puntos_victoria = models.PositiveIntegerField(default=3)
+    puntos_empate = models.PositiveIntegerField(default=1)
+    puntos_derrota = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.nombre

@@ -1,0 +1,103 @@
+
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}
+Resultados del torneo
+{% endblock %}
+
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">GESTIÓN DE RESULTADOS</span>
+
+    <h1>{{ torneo.torneo_nombre }}</h1>
+
+    <p>
+        Jugadores con inscripción confirmada
+        en este torneo.
+    </p>
+</section>
+
+<section class="panel panel-pad">
+
+    <h2>Participantes inscritos</h2>
+
+    <div class="table-wrap">
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Estado de inscripción</th>
+                    <th>Resultado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for inscripcion in inscripciones %}
+                    <tr>
+                        <td>{{ inscripcion.inscripcion_usuario.username }}</td>
+                        <td>{{ inscripcion.inscripcion_estado }}</td>
+
+                        <td>
+                            {% if inscripcion.resultado_torneo_nuevo %}
+                                {% if inscripcion.resultado_torneo_nuevo.participo %}
+                                    Victorias: {{ inscripcion.resultado_torneo_nuevo.victorias }}
+                                    <br>
+                                    Empates: {{ inscripcion.resultado_torneo_nuevo.empates }}
+                                    <br>
+                                    Derrotas: {{ inscripcion.resultado_torneo_nuevo.derrotas }}
+                                    <br>
+                                    Posición: {{ inscripcion.resultado_torneo_nuevo.posicion_final }}
+
+                                    <br>
+                                    {% if inscripcion.puntos_torneo is not None %}
+                                        <strong>Puntos: {{ inscripcion.puntos_torneo }}</strong>
+                                    {% else %}
+                                        Puntos pendientes
+                                    {% endif %}
+                                {% else %}
+                                    No participó
+                                {% endif %}
+                            {% else %}
+                                Pendiente de registrar
+                            {% endif %}
+                        </td>
+                        
+                        <td>
+                            {% if torneo.torneo_estado == "Finalizado" %}
+                                <a class="button button-primary"
+                                href="{% url 'admin_registrar_resultado' torneo.pk inscripcion.pk %}">
+                                    {% if inscripcion.resultado_torneo_nuevo %}
+                                        Editar resultado
+                                    {% else %}
+                                        Registrar resultado
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                <span>
+                                    Disponible al finalizar el torneo
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            Este torneo todavía no tiene
+                            inscripciones confirmadas.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a class="button button-primary"
+       href="{% url 'admin_resultados_torneos' %}">
+        Volver a resultados
+    </a>
+
+</section>
+
+{% endblock %}
