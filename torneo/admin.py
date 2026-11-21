@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Juego, Liga, Torneo, Inscripcion
+from .models import Juego, Liga, Torneo, Inscripcion, ResultadoTorneo, ReglaPuntuacionTorneo
 from .forms import JuegoForm
 
 
@@ -53,3 +53,24 @@ class InscripcionAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = ("inscripcion_fecha",)
+    
+@admin.register(ResultadoTorneo)
+class ResultadoTorneoAdmin(admin.ModelAdmin):
+    list_display = (
+        "inscripcion",
+        "participo",
+        "victorias",
+        "empates",
+        "derrotas",
+        "posicion_final",
+    )
+
+
+@admin.register(ReglaPuntuacionTorneo)
+class ReglaPuntuacionTorneoAdmin(admin.ModelAdmin):
+    list_display = (
+        "nombre",
+        "puntos_victoria",
+        "puntos_empate",
+        "puntos_derrota",
+    )
