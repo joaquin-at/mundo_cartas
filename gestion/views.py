@@ -3,8 +3,10 @@ from torneo.presentacion import (
     presentacion_juego as _presentacion_juego,
 )
 
-from django.db.models import Count, Q
-from torneo.models import Inscripcion, Juego
+from torneo.services import obtener_ranking_por_juego
+
+from django.db.models import Count, Q,  F, Sum
+from torneo.models import Inscripcion, Juego, ResultadoTorneo
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from registro.models import Perfil
@@ -67,15 +69,27 @@ def mi_perfil(request):
         .order_by("-inscripcion_torneo__torneo_inicio")[:3]
     )
 
+    puntos_por_juego = [
+        fila
+        for fila in obtener_ranking_por_juego()
+        if fila["jugador_id"] == request.user.pk
+    ]
+
     return render(request, "gestion/mi_perfil.html", {
         "form": form,
         "editar_perfil": request.method == "POST" or request.GET.get("editar") == "1",
         "torneos_inscritos": torneos_inscritos,
         "historial_reciente": historial_reciente,
+        "puntos_por_juego": puntos_por_juego,
     })
 
 def clasificacion(request):
-    return render(request, "gestion/clasificacion.html")
+    ranking = obtener_ranking_por_juego()
+
+    return render(
+        request,
+        "gestion/clasificacion.html",{"ranking": ranking,},
+    )
 
 
 

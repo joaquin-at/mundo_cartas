@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from .models import Juego, Liga, Torneo, Inscripcion, ResultadoTorneo, ReglaPuntuacionTorneo
-from .services import obtener_clasificacion_liga
+from .services import obtener_clasificacion_liga,obtener_ranking_por_juego
 
 
 class ClasificacionLigaTests(TestCase):
@@ -208,3 +208,73 @@ class ConfiguracionPuntuacionTests(TestCase):
         self.assertEqual(regla.puntos_victoria, 4)
         self.assertEqual(regla.puntos_empate, 2)
         self.assertEqual(regla.puntos_derrota, 0)
+class RankingPorJuegoTests(TestCase):
+
+    def test_ranking_separa_los_juegos(self):
+        Usuario = get_user_model()
+
+        jugador1 = Usuario.objects.create_user(
+            username="jugador_ranking_1",
+            password="clave_prueba_123",
+        )
+
+        jugador2 = Usuario.objects.create_user(
+            username="jugador_ranking_2",
+            password="clave_prueba_123",
+        )
+
+        juego1 = Juego.objects.create(
+            juego_nombre="Juego A"
+        )
+
+        juego2 = Juego.objects.create(
+            juego_nombre="Juego B"
+        )
+
+        casos = [
+            (jugador1, juego1, 6),
+            (jugador2, juego1, 4),
+            (jugador2, juego2, 2),
+        ]
+
+        for numero, (jugador, juego, puntos) in enumerate(casos):
+            torneo = Torneo.objects.create(
+                torneo_nombre=f"Torneo ranking {numero}",
+                torneo_inicio=timezone.now(),
+                torneo_precio=0,
+                torneo_cupoMaximo=8,
+                torneo_estado="Finalizado",
+                torneo_juego=juego,
+            )
+
+            inscripcion = Inscripcion.objects.create(
+                inscripcion_usuario=jugador,
+                inscripcion_torneo=torneo,
+                inscripcion_estado="Confirmada",
+                inscripcion_precio=0,
+            )
+
+            ResultadoTorneo.objects.create(
+                inscripcion=inscripcion,
+                participo=True,
+                posicion_final=1,
+                puntos_torneo_guardados=puntos,
+            )
+
+        ranking = obtener_ranking_por_juego()
+
+        posiciones = [
+            (
+                fila["juego"],
+                fila["jugador"],
+                fila["puntos"],
+                fila["posicion"],
+            )
+            for fila in ranking
+        ]
+
+        self.assertEqual(posiciones, [
+            ("Juego A", "jugador_ranking_1", 6, 1),
+            ("Juego A", "jugador_ranking_2", 4, 2),
+            ("Juego B", "jugador_ranking_2", 2, 1),
+        ])
