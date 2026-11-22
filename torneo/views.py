@@ -605,8 +605,7 @@ def admin_clasificacion_liga(request, pk):
 @administrador_requerido
 @require_http_methods(["GET", "POST"])
 def admin_configurar_puntuacion(request):
-    regla = get_object_or_404(
-        ReglaPuntuacionTorneo,
+    regla,_ = ReglaPuntuacionTorneo.objects.get_or_create(
         nombre="Puntuación estándar",
     )
 
