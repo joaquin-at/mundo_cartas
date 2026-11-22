@@ -336,3 +336,243 @@
     .admin-game-search > div { width: 100%; }
     .admin-game-search > div:first-child { min-width: 0; }
 }
+
+
+
+
+
+
+.admin-comentarios-tabla-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e3e5da;
+    border-radius: 12px;
+}
+
+
+.admin-comentarios-tabla {
+    width: 100%;
+    min-width: 970px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #ffffff;
+}
+
+
+.admin-comentarios-tabla thead {
+    background: #edf2dc;
+}
+
+.admin-comentarios-tabla th {
+    padding: 14px 8px;
+    text-align: left;
+    color: #303d1b;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+
+.admin-comentarios-tabla td {
+    padding: 14px 8px;
+    border-top: 1px solid #e6e6e6;
+    vertical-align: top;
+    font-size: 13px;
+    color: #282828;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
+}
+
+.admin-comentarios-tabla tbody tr:hover {
+    background: #f8f9f3;
+}
+
+
+
+.admin-comentarios-tabla th:nth-child(1) {
+    width: 4%;
+}
+
+.admin-comentarios-tabla th:nth-child(2) {
+    width: 14%;
+}
+
+.admin-comentarios-tabla th:nth-child(3) {
+    width: 10%;
+}
+
+.admin-comentarios-tabla th:nth-child(4) {
+    width: 30%;
+}
+
+.admin-comentarios-tabla th:nth-child(5) {
+    width: 15%;
+}
+
+.admin-comentarios-tabla th:nth-child(6) {
+    width: 16%;
+}
+
+.admin-comentarios-tabla th:nth-child(7) {
+    width: 11%;
+}
+
+
+.admin-comentarios-tabla th:first-child,
+.admin-comentarios-tabla td:first-child,
+.admin-comentarios-tabla th:last-child,
+.admin-comentarios-tabla td:last-child {
+    text-align: center;
+}
+
+
+
+.admin-comentarios-tabla input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #718a35;
+    cursor: pointer;
+}
+
+
+
+#form-eliminar-varios {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+}
+
+#btn-eliminar-varios {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 210px;
+    padding: 11px 16px;
+
+    background: #ffffff;
+    color: #b42318;
+    border: 1px solid #d9534f;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#btn-eliminar-varios:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+#btn-eliminar-varios:not(:disabled):hover {
+    background: #fff0f0;
+}
+
+
+
+.form-estado-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+}
+
+.form-estado-comentario select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 9px 8px;
+
+    border: 1px solid #e6d8b2;
+    border-radius: 8px;
+
+    background: #fff4d9;
+    color: #795714;
+
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+
+
+.form-estado-comentario select:has(
+    option[value="revisado"]:checked
+) {
+    background: #e7f1d9;
+    color: #355c24;
+    border-color: #b8ce9d;
+}
+
+
+
+.form-estado-comentario select:has(
+    option[value="pendiente"]:checked
+) {
+    background: #fff4d9;
+    color: #795714;
+    border-color: #e6d8b2;
+}
+
+
+
+.boton-guardar-estado {
+    width: 100%;
+    padding: 9px 10px;
+
+    background: #171717;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.boton-guardar-estado:hover {
+    background: #394b1a;
+}
+
+
+
+.form-eliminar-individual {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.admin-comentarios-tabla td:last-child {
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+.boton-eliminar-comentario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 78px;
+    padding: 9px 10px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    color: #b42318;
+    border: 1px solid #d9534f;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.boton-eliminar-comentario:hover {
+    background: #fff0f0;
+}

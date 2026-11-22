@@ -9,7 +9,7 @@
     {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-1">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-2">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
 </head>
 
@@ -56,6 +56,7 @@
                 <a class="selected" href="#mis-datos">Resumen</a>
                 <a href="#mis-torneos">Mis torneos</a>
                 <a href="#mis-puntos">Mis puntos</a>
+                <a href="#comentarios-sugerencias">Comentarios y sugerencias</a>
             </nav>
 
         </aside>
@@ -300,10 +301,79 @@
 
         </section>
 
+        <section class="panel panel-pad" id="comentarios-sugerencias">
+
+            <div class="perfil-titulo">
+                <div>
+                    <span class="eyebrow">Tu opinión</span>
+                    <h2>Comentarios y sugerencias</h2>
+                </div>
+            </div>
+
+            <p>
+                Comparte tus comentarios u observaciones sobre
+                la plataforma o las actividades de Mundo Cartas.
+            </p>
+
+            <form
+                class="comentarios-form"
+                method="post"
+                action="{% url 'enviar_comentario_sugerencia' %}"
+            >
+                {% csrf_token %}
+
+                <div class="comentarios-campo">
+                    <label for="tipo-comentario">
+                        Tipo de mensaje *
+                    </label>
+
+                    <select
+                        id="tipo-comentario"
+                        name="tipo"
+                        required
+                    >
+                        <option value="comentario">Comentario</option>
+                        <option value="sugerencia">Sugerencia</option>
+                    </select>
+                </div>
+
+                <div class="comentarios-campo">
+                    <label for="mensaje-comentario">
+                        Mensaje *
+                    </label>
+
+                    <textarea
+                        id="mensaje-comentario"
+                        name="mensaje"
+                        rows="4"
+                        maxlength="500"
+                        placeholder="Escribe tu comentario o sugerencia..."
+                        required
+                    ></textarea>
+
+                    <small id="contador-comentario" class="comentarios-contador">
+                        0 / 500 caracteres
+                    </small>
+                </div>
+
+                <div class="comentarios-acciones">
+                    <button type="submit" class="button button-primary">
+                        Enviar
+                    </button>
+                </div>
+            </form>
+
+        </section>
+
     </div>
 </div>
 
     </main>
 
+    
+    <script src="{% static 'gestion/recursos/js/perfil_comentarios.js' %}?v=1" defer></script>
 </body>
+
+
+
 </html>
