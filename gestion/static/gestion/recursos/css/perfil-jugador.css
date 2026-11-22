@@ -593,3 +593,104 @@
     border: 1px solid var(--line);
     border-radius: 15px;
 }
+
+
+
+
+
+#comentarios-sugerencias .comentarios-form {
+    background: #f5f4ed;
+    border: 1px solid #e5e7dc;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#comentarios-sugerencias .comentarios-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#comentarios-sugerencias .comentarios-campo label {
+    font-weight: 700;
+    color: #242424;
+}
+
+#comentarios-sugerencias select,
+#comentarios-sugerencias textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d4d6cf;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #242424;
+    font: inherit;
+}
+
+#comentarios-sugerencias select {
+    max-width: 420px;
+}
+
+#comentarios-sugerencias textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#comentarios-sugerencias select:focus,
+#comentarios-sugerencias textarea:focus {
+    outline: 2px solid #a4bb60;
+    outline-offset: 1px;
+}
+
+#comentarios-sugerencias .comentarios-campo small {
+    color: #666b60;
+    text-align: right;
+}
+
+#comentarios-sugerencias .comentarios-acciones {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#comentarios-sugerencias .comentarios-acciones button {
+    background: #171717;
+    color: #ffffff;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 30px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#comentarios-sugerencias .comentarios-acciones button:hover {
+    background: #394b1a;
+}
+
+
+
+
+
+#comentarios-sugerencias .comentarios-contador {
+    color: #666b60;
+    text-align: right;
+    font-weight: 500;
+}
+
+#comentarios-sugerencias .comentarios-contador.limite-cerca {
+    color: #b7791f;
+    font-weight: 700;
+}
+
+#comentarios-sugerencias .comentarios-contador.limite-alcanzado {
+    color: #c62828;
+    font-weight: 700;
+}
+
+#comentarios-sugerencias textarea.limite-alcanzado {
+    border: 2px solid #c62828;
+}

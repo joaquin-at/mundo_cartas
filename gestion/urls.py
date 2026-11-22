@@ -6,7 +6,11 @@ from torneo import views as torneo_views
 urlpatterns = [
     path("", views.inicioView, name="inicio"),
     path("gestion/panel/", views.panel_administrador, name="panel_administrador"),
+    path("gestion/comentarios/",views.admin_comentarios_sugerencias,name="admin_comentarios_sugerencias",),
     path("mi-perfil/", views.mi_perfil, name="mi_perfil"),
+    path("mi-perfil/enviar-comentario/",views.enviar_comentario_sugerencia,name="enviar_comentario_sugerencia",),
+    path("gestion/comentarios/eliminar/",views.admin_eliminar_comentarios,name="admin_eliminar_comentarios",),
+    path("gestion/comentarios/<int:pk>/estado/",views.admin_cambiar_estado_comentario,name="admin_cambiar_estado_comentario",),
     path("mi-perfil/historial/", views.historial_torneos, name="historial_torneos"),
     path("clasificacion/", views.clasificacion, name="clasificacion"),
     path("juegos/", views.listar_juegos, name="listar_juegos"),

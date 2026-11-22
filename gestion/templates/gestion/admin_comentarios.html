@@ -1,0 +1,185 @@
+
+{% extends "gestion/base_admin.html" %}
+{% load static %}
+
+{% block titulo_pagina %}
+Comentarios y sugerencias
+{% endblock %}
+
+{% block contenido %}
+
+
+<section class="admin-page-heading">
+    <span class="eyebrow">ADMINISTRACIÓN</span>
+
+    <h1>Comentarios y sugerencias</h1>
+
+    <p>
+        Consulta y gestiona los comentarios y sugerencias
+        enviados por los jugadores de Mundo Cartas.
+    </p>
+</section>
+
+
+<section class="panel admin-module-card">
+
+    <form
+        id="form-eliminar-varios"
+        method="post"
+        action="{% url 'admin_eliminar_comentarios' %}"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            id="btn-eliminar-varios"
+            disabled
+        >
+            Eliminar seleccionados
+            (<span id="cantidad-seleccionados">0</span>)
+        </button>
+    </form>
+    
+    <div class="admin-comentarios-tabla-wrap">
+
+        <table class="admin-comentarios-tabla">
+
+            <thead>
+                <tr>
+
+                    <th>
+                        <input
+                            type="checkbox"
+                            id="seleccionar-todos"
+                            aria-label="Seleccionar todos los mensajes"
+                        >
+                    </th>
+
+                    <th>Usuario</th>
+                    <th>Tipo</th>
+                    <th>Mensaje</th>
+                    <th>Fecha de envío</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for comentario in comentarios %}
+
+                <tr>
+
+                    <td>
+                        <input
+                            type="checkbox"
+                            class="comentario-checkbox"
+                            name="ids"
+                            value="{{ comentario.id }}"
+                            form="form-eliminar-varios"
+                            aria-label="Seleccionar mensaje de {{ comentario.usuario.username }}"
+                        >
+                    </td>
+
+
+                    <td>
+                        {{ comentario.usuario.username }}
+                    </td>
+
+
+                    <td>
+                        {{ comentario.get_tipo_display }}
+                    </td>
+
+
+                    <td>
+                        {{ comentario.mensaje|linebreaksbr }}
+                    </td>
+
+
+                    <td>
+                        {{ comentario.fecha_envio|date:"d/m/Y H:i" }}
+                    </td>
+
+
+                    <td>
+                        <form
+                            class="form-estado-comentario"
+                            method="post"
+                            action="{% url 'admin_cambiar_estado_comentario' comentario.pk %}"
+                        >
+                            {% csrf_token %}
+
+                            <select
+                                name="estado"
+                                aria-label="Estado del comentario de {{ comentario.usuario.username }}"
+                            >
+                                <option
+                                    value="pendiente"
+                                    {% if not comentario.revisado %}selected{% endif %}
+                                >
+                                    Pendiente
+                                </option>
+
+                                <option
+                                    value="revisado"
+                                    {% if comentario.revisado %}selected{% endif %}
+                                >
+                                    Revisado
+                                </option>
+                            </select>
+
+                            <button
+                                type="submit"
+                                class="boton-guardar-estado"
+                            >
+                                Guardar
+                            </button>
+                        </form>
+                    </td>
+
+
+                    <td>
+                        <form
+                            class="form-eliminar-individual"
+                            method="post"
+                            action="{% url 'admin_eliminar_comentarios' %}"
+                        >
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="ids"
+                                value="{{ comentario.id }}"
+                            >
+
+                            <button
+                                type="submit"
+                                class="boton-eliminar-comentario"
+                                title="Eliminar mensaje"
+                            >
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                {% empty %}
+
+
+                <tr>
+                    <td colspan="7">
+                        Todavía no hay comentarios ni sugerencias registrados.
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</section>
+
+<script src="{% static 'gestion/recursos/js/admin_comentarios.js' %}?v=1"defer></script>
+
+{% endblock %}
