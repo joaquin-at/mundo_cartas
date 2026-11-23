@@ -8,20 +8,19 @@ class ComentarioSugerenciaForm(forms.ModelForm):
     class Meta:
         model = ComentarioSugerencia
 
-        fields = ["tipo", "mensaje"]
+        fields = ["mensaje"]
 
         labels = {
-            "tipo": "Tipo de mensaje",
-            "mensaje": "Mensaje",
+            "mensaje": "Tu comentario",
         }
 
         widgets = {
-            "tipo": forms.Select(),
             "mensaje": forms.Textarea(
                 attrs={
                     "rows": 4,
+                    "id": "mensaje-comentario",
                     "maxlength": 500,
-                    "placeholder": "Escribe tu comentario o sugerencia...",
+                    "placeholder": "Escribe tu comentario...",
                 }
             ),
         }
@@ -31,7 +30,9 @@ class ComentarioSugerenciaForm(forms.ModelForm):
 
         if not mensaje:
             raise forms.ValidationError(
-                "Debes escribir un comentario o sugerencia."
+                "Debes escribir un comentario."
             )
 
         return mensaje
+
+

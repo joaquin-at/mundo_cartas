@@ -1,3 +1,7 @@
+from datetime import timedelta
+from django.contrib.auth import get_user_model
+from django.db import OperationalError
+from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.urls import reverse
@@ -189,41 +193,39 @@ def historial_torneos(request):
 @login_required
 @require_POST
 def enviar_comentario_sugerencia(request):
-    # Verificar que el usuario tenga el rol de Jugador.
-    es_jugador = Perfil.objects.filter(
-        user=request.user,
-        rol__nombre="Jugador"
-    ).exists()
+    if not Perfil.objects.filter(user=request.user, rol__nombre="Jugador").exists():
+        raise PermissionDenied
 
-    if not es_jugador:
-        messages.error(
-            request,
-            "Solo los jugadores pueden enviar comentarios o sugerencias."
-        )
-        return redirect("mi_perfil")
-
-    # Recibir y validar los datos enviados.
     form = ComentarioSugerenciaForm(request.POST)
-
     if form.is_valid():
-        comentario = form.save(commit=False)
+        ahora = timezone.now()
+        try:
+            with transaction.atomic():
+                # Serializa los envíos del mismo usuario en bases que admiten bloqueo de filas.
+                get_user_model().objects.select_for_update().get(pk=request.user.pk)
+                anteriores = ComentarioSugerencia.objects.filter(usuario=request.user)
+                duplicado = anteriores.filter(
+                    mensaje=form.cleaned_data["mensaje"],
+                    fecha_envio__gte=ahora - timedelta(minutes=5),
+                ).exists()
+                if duplicado:
+                    form.add_error(None, "Ya enviaste este mensaje. Puedes consultarlo en tus mensajes enviados.")
+                elif anteriores.filter(fecha_envio__gte=ahora - timedelta(seconds=30)).exists():
+                    form.add_error(None, "Espera 30 segundos entre envíos antes de enviar otro mensaje.")
+                else:
+                    comentario = form.save(commit=False)
+                    comentario.usuario = request.user
+                    comentario.tipo = "comentario"
+                    comentario.save()
+        except OperationalError as error:
+            if "locked" not in str(error).lower():
+                raise
+            form.add_error(None, "Hay otro envío en curso. Espera unos segundos y vuelve a intentarlo.")
+        if not form.errors:
+            messages.success(request, "Tu comentario se envió correctamente.")
+            return redirect(reverse("mi_perfil") + "#comentarios-sugerencias")
 
-        # Asociar el mensaje al jugador que inició sesión.
-        comentario.usuario = request.user
-        comentario.save()
-
-        messages.success(
-            request,
-            "Tu comentario o sugerencia se envió correctamente."
-        )
-    else:
-        messages.error(
-            request,
-            "No se pudo enviar el mensaje. Verifica que tenga contenido "
-            "y no supere los 500 caracteres."
-        )
-
-    return redirect("mi_perfil")
+    return _mostrar_perfil(request, form_comentario=form)
 
 @login_required
 def admin_comentarios_sugerencias(request):
