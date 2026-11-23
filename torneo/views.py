@@ -220,9 +220,11 @@ def admin_crear_torneo(request):
 
     return render(
         request,
-        "torneo/admin_crear.html",
+        "torneo/admin_torneo_formulario.html",
         {
             "form": form,
+            "titulo": "Crear torneo",
+            "texto_boton": "Crear torneo",
         }
     )
 
@@ -252,10 +254,12 @@ def admin_actualizar_torneo(request, pk):
 
     return render(
         request,
-        "torneo/admin_actualizar.html",
+        "torneo/admin_torneo_formulario.html",
         {
             "form": form,
             "torneo": torneo,
+            "titulo": "Actualizar torneo",
+            "texto_boton": "Guardar cambios",
         }
     )
 
