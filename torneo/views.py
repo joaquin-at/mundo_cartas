@@ -552,8 +552,7 @@ def admin_registrar_resultado(request, pk, inscripcion_id):
                 or resultado.puntos_empate_aplicados is None
                 or resultado.puntos_derrota_aplicados is None
             ):
-                regla = get_object_or_404(
-                    ReglaPuntuacionTorneo,
+                regla, _ = ReglaPuntuacionTorneo.objects.get_or_create(
                     nombre="Puntuación estándar",
                 )
 
@@ -605,8 +604,7 @@ def admin_clasificacion_liga(request, pk):
 @administrador_requerido
 @require_http_methods(["GET", "POST"])
 def admin_configurar_puntuacion(request):
-    regla = get_object_or_404(
-        ReglaPuntuacionTorneo,
+    regla, _ = ReglaPuntuacionTorneo.objects.get_or_create(
         nombre="Puntuación estándar",
     )
 
