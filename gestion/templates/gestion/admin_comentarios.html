@@ -1,0 +1,136 @@
+{% extends "gestion/base_admin.html" %}
+{% load static %}
+{% block titulo_pagina %}Comentarios{% endblock %}
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">Administración</span>
+    <h1>Comentarios</h1>
+    <p>Consulta las opiniones de los jugadores y responde sus mensajes.</p>
+</section>
+
+<section class="panel panel-pad">
+    <form method="get" class="comentarios-filtros">
+        <div>
+            <label for="filtro-usuario">Usuario</label>
+            <input id="filtro-usuario" name="usuario" value="{{ usuario }}" maxlength="100" placeholder="Nombre de usuario">
+        </div>
+        <div>
+            <label for="filtro-estado">Respuesta</label>
+            <select id="filtro-estado" name="estado">
+                <option value="">Todos</option>
+                <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Sin respuesta</option>
+                <option value="respondido" {% if estado == 'respondido' %}selected{% endif %}>Con respuesta</option>
+            </select>
+        </div>
+        <div>
+            <label for="filtro-archivo">Bandeja</label>
+            <select id="filtro-archivo" name="archivo">
+                <option value="activos" {% if archivo == 'activos' %}selected{% endif %}>Activos</option>
+                <option value="archivados" {% if archivo == 'archivados' %}selected{% endif %}>Archivados</option>
+                <option value="todos" {% if archivo == 'todos' %}selected{% endif %}>Todos</option>
+            </select>
+        </div>
+        <div class="comentarios-filtros-botones">
+            <button class="button button-primary" type="submit">Filtrar</button>
+            <a class="button button-secondary" href="{% url 'admin_comentarios_sugerencias' %}">Limpiar</a>
+        </div>
+    </form>
+</section>
+
+<section class="panel panel-pad comentarios-bandeja">
+    <header class="comentarios-bandeja-cabecera">
+        <div>
+            <h2>{% if archivo == 'archivados' %}Comentarios archivados{% elif archivo == 'todos' %}Todos los comentarios{% else %}Bandeja de entrada{% endif %}</h2>
+            <p>{{ comentarios.paginator.count }} comentario{{ comentarios.paginator.count|pluralize:"s" }} · Selecciona hasta 20 por página</p>
+        </div>
+        {% if archivo == 'archivados' %}<span class="comentarios-nota-archivo">Restaurar devuelve el mensaje a la bandeja de entrada.</span>{% endif %}
+    </header>
+
+    <form id="form-acciones-comentarios" method="post" action="{% url 'admin_archivar_comentarios' %}" class="comentarios-barra-seleccion">
+        {% csrf_token %}
+        <input type="hidden" name="filtros" value="{{ filtros_accion }}">
+        <div class="comentarios-seleccion-resumen" aria-live="polite">
+            <strong id="cantidad-seleccionados">0</strong><span>seleccionados</span>
+        </div>
+        <div class="comentarios-acciones-lote">
+            {% if archivo != 'archivados' %}
+            <button class="comentarios-boton" type="submit" data-accion="archivar" data-seleccion disabled>Archivar seleccionados</button>
+            {% endif %}
+            {% if archivo != 'activos' %}
+            <button class="comentarios-boton" type="submit" formaction="{% url 'admin_restaurar_comentarios' %}" data-accion="restaurar" data-seleccion disabled>Restaurar seleccionados</button>
+            <button class="comentarios-boton comentarios-boton-peligro" type="submit" formaction="{% url 'admin_eliminar_comentarios' %}" data-accion="eliminar" data-seleccion disabled>Eliminar seleccionados</button>
+            {% endif %}
+        </div>
+    </form>
+    <noscript><p>Para archivar, restaurar o eliminar mensajes sin JavaScript, utiliza las acciones individuales.</p></noscript>
+
+    <div class="admin-comentarios-tabla-wrap" tabindex="0" role="region" aria-label="Mensajes de jugadores, tabla desplazable">
+        <table class="admin-comentarios-tabla">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="seleccionar-todos" aria-label="Seleccionar todos los mensajes de esta página"></th>
+                    <th>Jugador</th><th>Comentario</th><th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for comentario in comentarios %}
+                <tr>
+                    <td><input type="checkbox" class="comentario-checkbox" name="ids" value="{{ comentario.pk }}" form="form-acciones-comentarios" aria-label="Seleccionar mensaje {{ comentario.pk }} de {{ comentario.usuario.username }}"></td>
+                    <td>
+                        {% include "gestion/componentes/identidad_usuario.html" with usuario=comentario.usuario only %}
+                        {% if comentario.archivado %}<div class="comentarios-estados"><span class="comentarios-estado is-archivado">Archivado</span></div>{% endif %}
+                    </td>
+                    <td>
+                        <time class="comentarios-fecha" datetime="{{ comentario.fecha_envio|date:'c' }}">{{ comentario.fecha_envio|date:"d/m/Y · H:i" }}</time>
+                        <div class="comentarios-texto">{{ comentario.mensaje|linebreaksbr }}</div>
+                        {% if comentario.respuesta %}<p class="comentarios-respuesta-resumen"><strong>Respuesta:</strong> {{ comentario.respuesta|truncatechars:140 }}</p>{% endif %}
+                    </td>
+                    <td>
+                        <div class="comentarios-acciones-fila">
+                            <a class="comentarios-boton comentarios-boton-respuesta comentarios-accion-respuesta" href="{% url 'admin_responder_comentario' comentario.pk %}?filtros={{ filtros_accion|urlencode }}">{% if comentario.respuesta %}Ver respuesta{% else %}Responder{% endif %}</a>
+                            <form class="{% if not comentario.archivado %}comentarios-accion-ancha{% endif %}" method="post" action="{% if comentario.archivado %}{% url 'admin_restaurar_comentarios' %}{% else %}{% url 'admin_archivar_comentarios' %}{% endif %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="ids" value="{{ comentario.pk }}">
+                                <input type="hidden" name="filtros" value="{{ filtros_accion }}">
+                                <button class="comentarios-boton" type="submit">{% if comentario.archivado %}Restaurar{% else %}Archivar{% endif %}</button>
+                            </form>
+                            {% if comentario.archivado %}
+                            <form method="post" action="{% url 'admin_eliminar_comentarios' %}" data-eliminar-comentario>
+                                {% csrf_token %}
+                                <input type="hidden" name="ids" value="{{ comentario.pk }}">
+                                <input type="hidden" name="filtros" value="{{ filtros_accion }}">
+                                <noscript><label class="comentarios-confirmacion"><input type="checkbox" name="confirmar" required> Confirmar borrado</label></noscript>
+                                <button type="submit" class="comentarios-boton comentarios-boton-peligro">Eliminar</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}<tr><td colspan="4" class="comentarios-vacio">No hay mensajes que coincidan con los filtros.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if comentarios.has_other_pages %}
+    <nav class="comentarios-paginacion" aria-label="Páginas de comentarios">
+        {% if comentarios.has_previous %}<a href="?{% if filtros %}{{ filtros }}&amp;{% endif %}pagina={{ comentarios.previous_page_number }}">Anterior</a>{% endif %}
+        <span>Página {{ comentarios.number }} de {{ comentarios.paginator.num_pages }}</span>
+        {% if comentarios.has_next %}<a href="?{% if filtros %}{{ filtros }}&amp;{% endif %}pagina={{ comentarios.next_page_number }}">Siguiente</a>{% endif %}
+    </nav>
+    {% endif %}
+</section>
+
+<dialog id="confirmar-eliminacion" class="comentarios-dialogo" aria-labelledby="titulo-eliminacion" aria-describedby="descripcion-eliminacion">
+    <form method="dialog" id="form-confirmar-eliminacion">
+        <span class="comentarios-dialogo-etiqueta">Eliminación definitiva</span>
+        <h2 id="titulo-eliminacion">Eliminar mensaje</h2>
+        <p id="descripcion-eliminacion">Solo se pueden eliminar mensajes archivados. Esta acción no se puede deshacer.</p>
+        <label class="comentarios-dialogo-confirmacion"><input type="checkbox" id="aceptar-eliminacion" required> Entiendo que los mensajes eliminados no se pueden recuperar.</label>
+        <div class="comentarios-dialogo-botones">
+            <button class="comentarios-boton" type="button" id="cancelar-eliminacion" autofocus>Cancelar</button>
+            <button class="comentarios-boton comentarios-boton-eliminar" type="submit" id="ejecutar-eliminacion" disabled>Eliminar definitivamente</button>
+        </div>
+    </form>
+</dialog>
+<script src="{% static 'gestion/recursos/js/admin_comentarios.js' %}?v=20261122-3" defer></script>
+{% endblock %}

@@ -8,7 +8,7 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'gestion/recursos/css/login.css' %}?v=20261116-2"
+        href="{% static 'gestion/recursos/css/login.css' %}?v=20261122-1"
     >
 </head>
 <body class="access-page">
@@ -34,7 +34,7 @@
                 {{ form.non_field_errors }}
                 {% for field in form %}
                     <div class="grupo-input">
-                        {{ field.label_tag }}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
                         {{ field }}
                         {% if field.help_text %}
                             <div class="ayuda-campo">

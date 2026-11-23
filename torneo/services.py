@@ -1,5 +1,6 @@
 from .models import ResultadoTorneo
 from django.db.models import Sum
+from django.contrib.auth import get_user_model
 
 
 def obtener_clasificacion_liga(liga):
@@ -15,7 +16,7 @@ def obtener_clasificacion_liga(liga):
             participo=True,
             posicion_final__isnull=False,
         )
-        .select_related("inscripcion__inscripcion_usuario")
+        .select_related("inscripcion__inscripcion_usuario__perfil")
     )
 
     clasificacion = {}
@@ -68,6 +69,13 @@ def obtener_ranking_por_juego():
         )
     )
 
+    totales = list(totales)
+    jugadores = {
+        usuario.pk: usuario
+        for usuario in get_user_model().objects.filter(
+            pk__in=[fila["inscripcion__inscripcion_usuario_id"] for fila in totales]
+        ).select_related("perfil")
+    }
     ranking = []
     juego_anterior = None
     puntos_anteriores = None
@@ -94,6 +102,7 @@ def obtener_ranking_por_juego():
         puntos_anteriores = fila["puntos"]
 
         ranking.append({
+            "usuario": jugadores[fila["inscripcion__inscripcion_usuario_id"]],
             "juego_id": juego_id,
             "juego": fila[
                 "inscripcion__inscripcion_torneo__torneo_juego__juego_nombre"

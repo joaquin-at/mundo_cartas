@@ -1,0 +1,41 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block titulo_pagina %}{{ titulo }}{% endblock %}
+
+{% block contenido %}
+    <section class="admin-page-heading">
+        <span class="eyebrow">Gestión de torneos</span>
+        <h1>{{ titulo }}</h1>
+        {% if torneo %}
+            <p>Editando: {{ torneo.torneo_nombre }}</p>
+        {% else %}
+            <p>Completa los datos del nuevo torneo.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel panel-pad admin-formulario">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="form-error" role="alert">
+                    <p>Revisa los campos señalados antes de guardar.</p>
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            {% for campo in form %}
+                <div class="torneo-campo">
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {{ campo }}
+                    {% for error in campo.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="admin-acciones">
+                <button type="submit" class="button button-primary">{{ texto_boton }}</button>
+                <a class="button button-secondary"
+                   href="{% url 'admin_listar_torneos' %}">Volver</a>
+            </div>
+        </form>
+    </section>
+{% endblock %}

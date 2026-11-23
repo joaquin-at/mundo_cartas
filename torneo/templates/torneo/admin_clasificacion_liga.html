@@ -35,7 +35,7 @@ Clasificación de liga
                 {% for fila in clasificacion %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ fila.jugador.username }}</td>
+                        <td>{% include "gestion/componentes/identidad_usuario.html" with usuario=fila.jugador only %}</td>
                         <td>{{ fila.torneos_jugados }}</td>
                         <td>
                             <strong>{{ fila.puntos }}</strong>
