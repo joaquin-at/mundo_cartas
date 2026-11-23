@@ -33,7 +33,7 @@
     <div class="jugadores-tabla-contenedor" tabindex="0" role="region" aria-label="Listado de jugadores">
         <table class="jugadores-tabla">
             <thead>
-                <tr><th>Jugador</th><th>Contacto</th><th>Estado</th><th>Inscripciones</th></tr>
+                <tr><th>Jugador</th><th>Contacto</th><th>Estado</th><th>Inscripciones</th><th>Acciones</th></tr>
             </thead>
             <tbody>
                 {% for jugador in jugadores %}
@@ -47,10 +47,10 @@
                         <span class="jugadores-estado {% if not jugador.is_active %}is-inactivo{% endif %}">{% if jugador.is_active %}Activo{% else %}Inactivo{% endif %}</span>
                     </td>
                     <td>{{ jugador.inscripciones_total }}</td>
-                    
+                    <td><a class="comentarios-boton" href="{% url 'admin_editar_jugador' jugador.pk %}">Editar</a></td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="4" class="jugadores-vacio">No se encontraron jugadores con estos filtros.</td></tr>
+                <tr><td colspan="5" class="jugadores-vacio">No se encontraron jugadores con estos filtros.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

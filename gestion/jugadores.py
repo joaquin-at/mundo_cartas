@@ -7,9 +7,10 @@ from django.db.models import Count, Q
 from django.shortcuts import render
 from django.contrib import messages
 from django.db import IntegrityError, transaction
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404
 from django.views.decorators.http import require_http_methods
-from registro.forms import CustomUserCreationForm
+from registro.forms import CustomUserCreationForm, PerfilUsuarioForm
 from registro.models import Perfil, Rol
 from .views import _exigir_administrador
 
@@ -64,4 +65,29 @@ def admin_crear_jugador(request):
     return render(request, "gestion/admin_jugador_formulario.html", {
         "form": form, "titulo": "Crear jugador", "texto_boton": "Crear jugador",
         "descripcion": "La cuenta se creará activa y con el rol Jugador. Todos los campos marcados con * son obligatorios.",
+    })
+
+
+def _buscar_jugador(pk, bloquear=False):
+    if pk > 9223372036854775807:
+        raise Http404
+    jugadores = _jugadores()
+    if bloquear:
+        jugadores = jugadores.select_for_update()
+    return get_object_or_404(jugadores, pk=pk)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def admin_editar_jugador(request, pk):
+    _exigir_administrador(request)
+    jugador = _buscar_jugador(pk)
+    form = PerfilUsuarioForm(request.POST if request.method == "POST" else None, instance=jugador)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Datos del jugador actualizados correctamente.")
+        return redirect("admin_listar_jugadores")
+    return render(request, "gestion/admin_jugador_formulario.html", {
+        "form": form, "jugador": jugador, "titulo": "Editar jugador", "texto_boton": "Guardar cambios",
+        "descripcion": "Actualiza sus datos personales. La contraseña, el rol y el historial se conservan.",
     })
