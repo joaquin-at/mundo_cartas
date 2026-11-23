@@ -76,3 +76,20 @@ class RespuestaComentarioForm(forms.ModelForm):
     class Meta:
         model = ComentarioSugerencia
         fields = ["respuesta"]
+
+
+class ConfirmarAccionJugadorForm(forms.Form):
+    confirmar = forms.BooleanField(
+        label="Confirmo esta acción",
+        error_messages={"required": "Debes confirmar la acción para continuar."},
+    )
+
+
+class SolicitudDesactivacionForm(ConfirmarAccionJugadorForm):
+    field_order = ["motivo", "confirmar"]
+    motivo = forms.CharField(
+        label="Motivo (opcional)",
+        max_length=500,
+        required=False,
+        widget=forms.Textarea(attrs={"rows": 3, "maxlength": 500}),
+    )

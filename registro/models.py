@@ -22,6 +22,8 @@ def rol_jugador_default():
 
 class Perfil(models.Model):
     telefono = models.CharField(max_length=16, blank=True)
+    desactivacion_solicitada_el = models.DateTimeField(null=True, blank=True)
+    motivo_desactivacion = models.CharField(max_length=500, blank=True)
 
     foto = models.ImageField(
         upload_to=ruta_foto_perfil,

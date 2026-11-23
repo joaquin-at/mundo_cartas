@@ -7,7 +7,7 @@
     <div>
         <span class="eyebrow">Administración</span>
         <h1>Gestión de jugadores</h1>
-        <p>Consulta y busca las cuentas de los jugadores registrados.</p>
+        <p>Consulta sus datos, administra sus cuentas y revisa las solicitudes de desactivación.</p>
     </div>
     <a class="button button-primary" href="{% url 'admin_crear_jugador' %}">Crear jugador</a>
 </section>
@@ -24,6 +24,7 @@
                 <option value="todos" {% if estado == 'todos' %}selected{% endif %}>Todos</option>
                 <option value="activos" {% if estado == 'activos' %}selected{% endif %}>Activos</option>
                 <option value="inactivos" {% if estado == 'inactivos' %}selected{% endif %}>Inactivos</option>
+                <option value="solicitudes" {% if estado == 'solicitudes' %}selected{% endif %}>Solicitudes pendientes</option>
             </select>
         </div>
         <button class="button button-primary" type="submit">Buscar</button>
@@ -45,9 +46,25 @@
                     <td>{{ jugador.email|default:"Sin correo" }}<span class="jugadores-dato">{{ jugador.perfil.telefono|default:"Sin teléfono" }}</span></td>
                     <td>
                         <span class="jugadores-estado {% if not jugador.is_active %}is-inactivo{% endif %}">{% if jugador.is_active %}Activo{% else %}Inactivo{% endif %}</span>
+                        {% if jugador.perfil.desactivacion_solicitada_el %}
+                        <span class="jugadores-solicitud">Solicita desactivación</span>
+                        <time class="jugadores-dato" datetime="{{ jugador.perfil.desactivacion_solicitada_el|date:'c' }}">{{ jugador.perfil.desactivacion_solicitada_el|date:"d/m/Y H:i" }}</time>
+                        {% endif %}
                     </td>
                     <td>{{ jugador.inscripciones_total }}</td>
-                    <td><a class="comentarios-boton" href="{% url 'admin_editar_jugador' jugador.pk %}">Editar</a></td>
+                    <td>
+                        <div class="jugadores-acciones">
+                            <a class="comentarios-boton" href="{% url 'admin_editar_jugador' jugador.pk %}">Editar</a>
+                            {% if jugador.is_active %}
+                            <a class="comentarios-boton comentarios-boton-peligro" href="{% url 'admin_estado_jugador' jugador.pk 'desactivar' %}">{% if jugador.perfil.desactivacion_solicitada_el %}Revisar solicitud{% else %}Desactivar{% endif %}</a>
+                            {% if jugador.perfil.desactivacion_solicitada_el %}
+                            <a class="comentarios-boton" href="{% url 'admin_estado_jugador' jugador.pk 'rechazar' %}">Rechazar solicitud</a>
+                            {% endif %}
+                            {% else %}
+                            <a class="comentarios-boton" href="{% url 'admin_estado_jugador' jugador.pk 'activar' %}">Reactivar</a>
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr><td colspan="5" class="jugadores-vacio">No se encontraron jugadores con estos filtros.</td></tr>
