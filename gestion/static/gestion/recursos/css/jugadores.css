@@ -1,0 +1,166 @@
+.jugadores-cabecera,
+.jugadores-filtros,
+.jugadores-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.jugadores-cabecera {
+    justify-content: space-between;
+}
+
+.jugadores-filtros {
+    align-items: end;
+}
+
+.jugadores-filtros > div {
+    flex: 1 1 190px;
+}
+
+.jugadores-filtros label,
+.jugadores-campo > label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.jugadores-filtros input,
+.jugadores-filtros select,
+.jugadores-campo input:not([type="checkbox"]),
+.jugadores-campo textarea {
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #d4dcc7;
+    border-radius: 8px;
+    background: #fff;
+    color: #282d23;
+    font: inherit;
+}
+
+.jugadores-campo textarea {
+    resize: vertical;
+}
+
+.jugadores-total,
+.jugadores-dato,
+.jugadores-ayuda {
+    color: #62695a;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.jugadores-dato {
+    display: block;
+    margin-top: 6px;
+}
+
+.jugadores-total {
+    margin: 16px 0;
+}
+
+.jugadores-tabla-contenedor {
+    overflow-x: auto;
+    border: 1px solid #e3e6dc;
+    border-radius: 10px;
+}
+
+.jugadores-tabla {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    background: #fff;
+    color: #30352a;
+}
+
+.jugadores-tabla th,
+.jugadores-tabla td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+    border-bottom: 1px solid #e8ebe2;
+    font-size: 13px;
+}
+
+.jugadores-tabla th {
+    background: #edf2dc;
+    color: #42512f;
+}
+
+.jugadores-acciones {
+    max-width: 240px;
+    gap: 8px;
+}
+
+.jugadores-estado,
+.jugadores-solicitud {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #edf2dc;
+    color: #42512f;
+    font-size: 12px;
+}
+
+.jugadores-estado.is-inactivo {
+    background: #efefed;
+    color: #585d52;
+}
+
+.jugadores-solicitud {
+    display: block;
+    margin-top: 8px;
+    background: #fff3d6;
+    color: #785209;
+}
+
+.jugadores-tabla .jugadores-vacio {
+    text-align: center;
+}
+
+.jugadores-formulario {
+    max-width: 760px;
+}
+
+.jugadores-campo {
+    margin: 18px 0;
+}
+
+.jugadores-campo .jugadores-confirmacion {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.jugadores-confirmacion input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: #657d34;
+}
+
+.jugadores-resumen,
+.cuenta-desactivacion {
+    border-top: 1px solid #e3e6dc;
+    padding-top: 18px;
+    margin-top: 22px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.cuenta-desactivacion summary {
+    color: #9b3026;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .jugadores-filtros > div {
+        flex-basis: 100%;
+    }
+}

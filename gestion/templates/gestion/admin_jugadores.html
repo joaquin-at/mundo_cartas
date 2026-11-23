@@ -1,0 +1,65 @@
+{% extends "gestion/base_admin.html" %}
+
+{% block titulo_pagina %}Gestión de jugadores{% endblock %}
+
+{% block contenido %}
+<section class="admin-page-heading jugadores-cabecera">
+    <div>
+        <span class="eyebrow">Administración</span>
+        <h1>Gestión de jugadores</h1>
+        <p>Consulta y busca las cuentas de los jugadores registrados.</p>
+    </div>
+</section>
+
+<section class="panel panel-pad">
+    <form method="get" class="jugadores-filtros">
+        <div>
+            <label for="buscar-jugador">Buscar jugador</label>
+            <input id="buscar-jugador" name="q" value="{{ busqueda }}" maxlength="100" placeholder="Usuario, nombre, correo o teléfono">
+        </div>
+        <div>
+            <label for="estado-jugador">Estado</label>
+            <select id="estado-jugador" name="estado">
+                <option value="todos" {% if estado == 'todos' %}selected{% endif %}>Todos</option>
+                <option value="activos" {% if estado == 'activos' %}selected{% endif %}>Activos</option>
+                <option value="inactivos" {% if estado == 'inactivos' %}selected{% endif %}>Inactivos</option>
+            </select>
+        </div>
+        <button class="button button-primary" type="submit">Buscar</button>
+        <a class="button button-secondary" href="{% url 'admin_listar_jugadores' %}">Limpiar</a>
+    </form>
+    <p class="jugadores-total">{{ jugadores.paginator.count }} jugador{{ jugadores.paginator.count|pluralize:"es" }}</p>
+    <div class="jugadores-tabla-contenedor" tabindex="0" role="region" aria-label="Listado de jugadores">
+        <table class="jugadores-tabla">
+            <thead>
+                <tr><th>Jugador</th><th>Contacto</th><th>Estado</th><th>Inscripciones</th></tr>
+            </thead>
+            <tbody>
+                {% for jugador in jugadores %}
+                <tr>
+                    <td>
+                        {% include "gestion/componentes/identidad_usuario.html" with usuario=jugador only %}
+                        <span class="jugadores-dato">{{ jugador.get_full_name|default:"Sin nombre registrado" }}</span>
+                    </td>
+                    <td>{{ jugador.email|default:"Sin correo" }}<span class="jugadores-dato">{{ jugador.perfil.telefono|default:"Sin teléfono" }}</span></td>
+                    <td>
+                        <span class="jugadores-estado {% if not jugador.is_active %}is-inactivo{% endif %}">{% if jugador.is_active %}Activo{% else %}Inactivo{% endif %}</span>
+                    </td>
+                    <td>{{ jugador.inscripciones_total }}</td>
+                    
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="jugadores-vacio">No se encontraron jugadores con estos filtros.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if jugadores.has_other_pages %}
+    <nav class="comentarios-paginacion" aria-label="Páginas de jugadores">
+        {% if jugadores.has_previous %}<a href="?{{ filtros }}&amp;pagina={{ jugadores.previous_page_number }}">Anterior</a>{% endif %}
+        <span>Página {{ jugadores.number }} de {{ jugadores.paginator.num_pages }}</span>
+        {% if jugadores.has_next %}<a href="?{{ filtros }}&amp;pagina={{ jugadores.next_page_number }}">Siguiente</a>{% endif %}
+    </nav>
+    {% endif %}
+</section>
+{% endblock %}
