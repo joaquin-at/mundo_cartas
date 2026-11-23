@@ -5,6 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import render
+from django.contrib import messages
+from django.db import IntegrityError, transaction
+from django.shortcuts import redirect
+from django.views.decorators.http import require_http_methods
+from registro.forms import CustomUserCreationForm
+from registro.models import Perfil, Rol
 from .views import _exigir_administrador
 
 
@@ -36,4 +42,26 @@ def admin_listar_jugadores(request):
     return render(request, "gestion/admin_jugadores.html", {
         "jugadores": pagina, "busqueda": busqueda, "estado": estado,
         "filtros": filtros,
+    })
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def admin_crear_jugador(request):
+    _exigir_administrador(request)
+    form = CustomUserCreationForm(request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        try:
+            with transaction.atomic():
+                usuario = form.save()
+                rol, _ = Rol.objects.get_or_create(nombre="Jugador")
+                Perfil.objects.create(user=usuario, rol=rol, telefono=form.cleaned_data["telefono"])
+        except IntegrityError:
+            form.add_error(None, "No se pudo crear la cuenta. Comprueba el nombre de usuario y vuelve a intentarlo.")
+        else:
+            messages.success(request, "Jugador creado correctamente.")
+            return redirect("admin_listar_jugadores")
+    return render(request, "gestion/admin_jugador_formulario.html", {
+        "form": form, "titulo": "Crear jugador", "texto_boton": "Crear jugador",
+        "descripcion": "La cuenta se creará activa y con el rol Jugador. Todos los campos marcados con * son obligatorios.",
     })
