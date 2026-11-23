@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/game-cards.css' %}?v=20261116-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/usuarios.css' %}?v=20261122-1">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/jugadores.css' %}">
 </head>
 
 <body class="admin-body">
@@ -75,11 +76,11 @@
                     </a>
                 </div>
 
-                <div class="sidebar-link sidebar-disabled"
-                     title="Próximamente">
+                <a class="sidebar-link {% if request.resolver_match.url_name == 'admin_listar_jugadores' or request.resolver_match.url_name == 'admin_crear_jugador' or request.resolver_match.url_name == 'admin_editar_jugador' or request.resolver_match.url_name == 'admin_estado_jugador' %}active{% endif %}"
+                   href="{% url 'admin_listar_jugadores' %}" title="Gestión de jugadores">
                     <span class="sidebar-icon">♙</span>
                     <span class="sidebar-label">Jugadores</span>
-                </div>
+                </a>
 
                 <a class="sidebar-link {% if request.resolver_match.url_name == 'admin_listar_juegos' or request.resolver_match.url_name == 'admin_crear_juego' or request.resolver_match.url_name == 'admin_actualizar_juego' or request.resolver_match.url_name == 'admin_desactivar_juego' %}active{% endif %}"
                    href="{% url 'admin_listar_juegos' %}">

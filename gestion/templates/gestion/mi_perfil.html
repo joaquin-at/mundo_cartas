@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261122-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/usuarios.css' %}?v=20261122-1">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/jugadores.css' %}">
 </head>
 
 <body class="player-page">
@@ -150,6 +151,39 @@
                     <button class="button button-primary" type="submit">Guardar foto</button>
                 </form>
             </details>
+
+            {% if puede_solicitar_desactivacion %}
+            <details class="cuenta-desactivacion" {% if form_desactivacion.errors or user.perfil.desactivacion_solicitada_el %}open{% endif %}>
+                <summary>Desactivar mi cuenta</summary>
+                {% if user.perfil.desactivacion_solicitada_el %}
+                <p>Tu solicitud está pendiente de revisión. Tu cuenta sigue activa hasta que el administrador la apruebe.</p>
+                {% if user.perfil.motivo_desactivacion %}<p><strong>Motivo:</strong> {{ user.perfil.motivo_desactivacion }}</p>{% endif %}
+                <form method="post" action="{% url 'cancelar_desactivacion' %}">
+                    {% csrf_token %}
+                    <button class="button button-secondary" type="submit">Cancelar solicitud</button>
+                </form>
+
+                {% else %}
+                <p>Puedes solicitar la desactivación de tu cuenta. Cuando el administrador la apruebe, no podrás iniciar sesión. Tu historial de torneos, pagos y comentarios se conservará.</p>
+                <form method="post" action="{% url 'solicitar_desactivacion' %}">
+                    {% csrf_token %}
+                    {{ form_desactivacion.non_field_errors }}
+                    {% for campo in form_desactivacion %}
+                    <div class="jugadores-campo">
+                        {% if campo.field.widget.input_type == 'checkbox' %}
+                        <label class="jugadores-confirmacion">{{ campo }} {{ campo.label }}</label>
+                        {% else %}
+                        {{ campo.label_tag }}{{ campo }}
+                        {% endif %}
+                        {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <button class="button button-secondary" type="submit">Solicitar desactivación</button>
+                </form>
+                {% endif %}
+            </details>
+            {% endif %}
             {% endif %}
 
         </section>

@@ -26,6 +26,7 @@ from django.http import Http404, QueryDict
 from django.urls import reverse
 from django.utils import timezone
 from .forms import EliminarComentariosForm, RespuestaComentarioForm, SeleccionComentariosForm
+from .forms import SolicitudDesactivacionForm
 
 def inicioView(request):
     juegos = Juego.objects.filter(juego_activo=True).order_by("juego_nombre")
@@ -58,7 +59,7 @@ def mi_perfil(request):
     return _mostrar_perfil(request, form_perfil=form)
 
 
-def _mostrar_perfil(request, form_perfil=None, form_comentario=None, form_foto=None):
+def _mostrar_perfil(request, form_perfil=None, form_comentario=None, form_foto=None, form_desactivacion=None):
     if form_perfil is None:
         form_perfil = PerfilUsuarioForm(instance=request.user)
     es_jugador = Perfil.objects.filter(user=request.user, rol__nombre="Jugador").exists()
@@ -111,9 +112,11 @@ def _mostrar_perfil(request, form_perfil=None, form_comentario=None, form_foto=N
         "historial_reciente": historial_reciente,
         "puntos_por_juego": puntos_por_juego,
         "es_jugador": es_jugador,
+        "puede_solicitar_desactivacion": es_jugador and not request.user.is_staff and not request.user.is_superuser,
         "form_comentario": form_comentario,
         "comentarios_usuario": comentarios_usuario,
         "form_foto": form_foto,
+        "form_desactivacion": form_desactivacion if form_desactivacion is not None else SolicitudDesactivacionForm(),
         "editar_foto": form_foto is not None and (form_foto.is_bound or request.GET.get("foto") == "1"),
     })
 

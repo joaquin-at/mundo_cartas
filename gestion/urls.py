@@ -1,11 +1,18 @@
 from django.urls import path
 from . import views
 from torneo import views as torneo_views
+from . import jugadores
 
 
 urlpatterns = [
     path("", views.inicioView, name="inicio"),
     path("gestion/panel/", views.panel_administrador, name="panel_administrador"),
+    path("gestion/jugadores/", jugadores.admin_listar_jugadores, name="admin_listar_jugadores"),
+    path("gestion/jugadores/crear/", jugadores.admin_crear_jugador, name="admin_crear_jugador"),
+    path("gestion/jugadores/<int:pk>/editar/", jugadores.admin_editar_jugador, name="admin_editar_jugador"),
+    path("gestion/jugadores/<int:pk>/<str:accion>/", jugadores.admin_estado_jugador, name="admin_estado_jugador"),
+    path("mi-perfil/desactivacion/solicitar/", jugadores.solicitar_desactivacion, name="solicitar_desactivacion"),
+    path("mi-perfil/desactivacion/cancelar/", jugadores.cancelar_desactivacion, name="cancelar_desactivacion"),
     path("gestion/comentarios/",views.admin_comentarios_sugerencias,name="admin_comentarios_sugerencias",),
     path("mi-perfil/", views.mi_perfil, name="mi_perfil"),
     path("mi-perfil/foto/", views.actualizar_foto_perfil, name="actualizar_foto_perfil"),
