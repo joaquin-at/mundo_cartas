@@ -36,7 +36,7 @@ Resultados del torneo
             <tbody>
                 {% for inscripcion in inscripciones %}
                     <tr>
-                        <td>{{ inscripcion.inscripcion_usuario.username }}</td>
+                        <td>{% include "gestion/componentes/identidad_usuario.html" with usuario=inscripcion.inscripcion_usuario only %}</td>
                         <td>{{ inscripcion.inscripcion_estado }}</td>
 
                         <td>

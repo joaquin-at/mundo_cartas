@@ -694,3 +694,19 @@
 #comentarios-sugerencias textarea.limite-alcanzado {
     border: 2px solid #c62828;
 }
+
+.perfil-cambiar-foto { display: inline-block; margin-top: 12px; color: #42512f; text-decoration: underline; font-size: 13px; }
+.perfil-foto-control { border-top: 1px solid #e4e7dc; margin-top: 22px; padding-top: 18px; }
+.perfil-foto-control summary { color: #42512f; font-weight: 700; cursor: pointer; }
+.perfil-foto-formulario { display: grid; gap: 14px; margin-top: 16px; }
+.perfil-foto-formulario p { margin: 0; }
+.perfil-foto-formulario input[type="file"] { display: block; width: 100%; max-width: 100%; min-width: 0; font: inherit; font-size: 13px; }
+.perfil-foto-formulario input::file-selector-button { border: 1px solid #d4dcc7; padding: 9px; border-radius: 7px; background: #edf2dc; color: #42512f; cursor: pointer; margin-right: 10px; }
+.perfil-foto-campo { display: grid; gap: 7px; min-width: 0; }
+.perfil-foto-campo label { font-size: 14px; }
+.perfil-foto-formulario .button { justify-self: start; }
+.perfil-foto-formulario .errorlist { color: #a51d17; font-size: 13px; padding-left: 20px; }
+.perfil-formulario .profile-fields {
+.perfil-formulario .profile-fields > label {
+.perfil-formulario .profile-fields > label { align-content: start; }
+.perfil-formulario .profile-fields .perfil-ayuda { margin: 0; font-weight: 400; line-height: 1.5; }

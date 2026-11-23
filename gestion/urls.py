@@ -8,6 +8,7 @@ urlpatterns = [
     path("gestion/panel/", views.panel_administrador, name="panel_administrador"),
     path("gestion/comentarios/",views.admin_comentarios_sugerencias,name="admin_comentarios_sugerencias",),
     path("mi-perfil/", views.mi_perfil, name="mi_perfil"),
+    path("mi-perfil/foto/", views.actualizar_foto_perfil, name="actualizar_foto_perfil"),
     path("mi-perfil/enviar-comentario/",views.enviar_comentario_sugerencia,name="enviar_comentario_sugerencia",),
     path("gestion/comentarios/eliminar/",views.admin_eliminar_comentarios,name="admin_eliminar_comentarios",),
     path("gestion/comentarios/<int:pk>/estado/",views.admin_cambiar_estado_comentario,name="admin_cambiar_estado_comentario",),

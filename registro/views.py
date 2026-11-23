@@ -19,7 +19,7 @@ def registrar_usuario(request):
         if form.is_valid():
             with transaction.atomic():
                 user = form.save()
-                Perfil.objects.create(user=user)
+                Perfil.objects.create(user=user, telefono=form.cleaned_data["telefono"])
 
             return redirect("iniciar_sesion")
     else:

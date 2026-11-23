@@ -9,8 +9,9 @@
     {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-2">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261122-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/usuarios.css' %}?v=20261122-1">
 </head>
 
 <body class="player-page">
@@ -34,10 +35,7 @@
 
             <div class="perfil-lateral-usuario">
 
-                <img
-                    class="perfil-avatar"
-                    src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
-                    alt="Avatar del jugador">
+                {% include "gestion/componentes/avatar_usuario.html" with usuario=user clase="perfil-avatar" only %}
 
                 <h2>{{ user.username }}</h2>
 
@@ -50,13 +48,17 @@
                 </a>
                 {% endif %}
 
+                {% if es_jugador %}
+                <a class="perfil-cambiar-foto" href="{% url 'mi_perfil' %}?foto=1#foto-perfil">Cambiar foto</a>
+                {% endif %}
+
             </div>
 
-            <nav class="perfil-lateral-menu" aria-label="Secciones del perfil">
+            <nav class="perfil-lateral-menu" aria-label="Secciones del perfil" data-seccion-inicial="{% if form_comentario.errors %}comentarios-sugerencias{% else %}mis-datos{% endif %}">
                 <a class="selected" href="#mis-datos">Resumen</a>
                 <a href="#mis-torneos">Mis torneos</a>
                 <a href="#mis-puntos">Mis puntos</a>
-                <a href="#comentarios-sugerencias">Comentarios y sugerencias</a>
+                {% if es_jugador %}<a href="#comentarios-sugerencias">Comentarios</a>{% endif %}
             </nav>
 
         </aside>
@@ -84,8 +86,9 @@
                 <div class="profile-fields">
                     {% for campo in form %}
                     <label for="{{ campo.id_for_label }}">
-                        {{ campo.label }}
+                        {{ campo.label }}{% if campo.field.required %} *{% endif %}
                         {{ campo }}
+                        {% if campo.help_text %}<small class="perfil-ayuda">{{ campo.help_text }}</small>{% endif %}
                         {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
                     </label>
                     {% endfor %}
@@ -114,11 +117,39 @@
                 </div>
 
                 <div class="dato">
+                    <span>Teléfono</span>
+                    <strong>{{ user.perfil.telefono|default:"Sin registrar" }}</strong>
+                </div>
+
+                <div class="dato">
                     <span>Rol</span>
                     <strong>{{ user.perfil.rol.nombre|default:"Sin asignar" }}</strong>
                 </div>
 
             </div>
+            {% endif %}
+
+            {% if es_jugador %}
+            <details id="foto-perfil" class="perfil-foto-control" {% if editar_foto %}open{% endif %}>
+                <summary>Foto de perfil</summary>
+                <form method="post" enctype="multipart/form-data" action="{% url 'actualizar_foto_perfil' %}#foto-perfil" class="perfil-foto-formulario">
+                    {% csrf_token %}
+                    <p>Tu foto se mostrará en tu perfil y junto a tu nombre en comentarios, participantes y clasificaciones.</p>
+                    <p class="perfil-ayuda">JPG, PNG o WEBP · Hasta 2 MB y 4096 × 4096 píxeles.</p>
+                    {{ form_foto.non_field_errors }}
+                    {% for campo in form_foto %}
+                    <div class="perfil-foto-campo">
+                        {% if campo.name == 'quitar_foto' %}
+                        <label>{{ campo }} {{ campo.label }}</label>
+                        {% else %}
+                        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>{{ campo }}
+                        {% endif %}
+                        {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button class="button button-primary" type="submit">Guardar foto</button>
+                </form>
+            </details>
             {% endif %}
 
         </section>
@@ -301,6 +332,7 @@
 
         </section>
 
+        {% if es_jugador %}
         <section class="panel panel-pad" id="comentarios-sugerencias">
 
             <div class="perfil-titulo">
@@ -364,6 +396,7 @@
             </form>
 
         </section>
+        {% endif %}
 
     </div>
 </div>
@@ -371,7 +404,8 @@
     </main>
 
     
-    <script src="{% static 'gestion/recursos/js/perfil_comentarios.js' %}?v=1" defer></script>
+    <script src="{% static 'gestion/recursos/js/perfil_comentarios.js' %}?v=20261122-2" defer></script>
+    <script src="{% static 'gestion/recursos/js/perfil.js' %}?v=20261122-1" defer></script>
 </body>
 
 

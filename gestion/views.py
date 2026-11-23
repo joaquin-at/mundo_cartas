@@ -1,3 +1,6 @@
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.urls import reverse
 from torneo.presentacion import (
     normalizar_nombre as _nombre_normalizado,
     presentacion_juego as _presentacion_juego,
@@ -10,7 +13,7 @@ from torneo.models import Inscripcion, Juego, ResultadoTorneo
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from registro.models import Perfil
-from registro.forms import PerfilUsuarioForm
+from registro.forms import FotoPerfilForm, PerfilUsuarioForm
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods , require_POST
 
@@ -47,7 +50,23 @@ def mi_perfil(request):
         form.save()
         messages.success(request, "Perfil actualizado correctamente.")
         return redirect("mi_perfil")
-            
+    return _mostrar_perfil(request, form_perfil=form)
+
+
+def _mostrar_perfil(request, form_perfil=None, form_comentario=None, form_foto=None):
+    if form_perfil is None:
+        form_perfil = PerfilUsuarioForm(instance=request.user)
+    es_jugador = Perfil.objects.filter(user=request.user, rol__nombre="Jugador").exists()
+    comentarios_usuario = None
+    if es_jugador:
+        if form_foto is None:
+            form_foto = FotoPerfilForm(instance=request.user.perfil)
+        if form_comentario is None:
+            form_comentario = ComentarioSugerenciaForm()
+        comentarios_usuario = Paginator(
+            ComentarioSugerencia.objects.filter(usuario=request.user).order_by("-fecha_envio", "-pk"), 5
+        ).get_page(request.GET.get("mensajes_pagina"))
+
     inscripciones = (
         Inscripcion.objects
         .filter(
@@ -81,12 +100,39 @@ def mi_perfil(request):
     ]
 
     return render(request, "gestion/mi_perfil.html", {
-        "form": form,
-        "editar_perfil": request.method == "POST" or request.GET.get("editar") == "1",
+        "form": form_perfil,
+        "editar_perfil": form_perfil.is_bound or request.GET.get("editar") == "1",
         "torneos_inscritos": torneos_inscritos,
         "historial_reciente": historial_reciente,
         "puntos_por_juego": puntos_por_juego,
+        "es_jugador": es_jugador,
+        "form_comentario": form_comentario,
+        "comentarios_usuario": comentarios_usuario,
+        "form_foto": form_foto,
+        "editar_foto": form_foto is not None and (form_foto.is_bound or request.GET.get("foto") == "1"),
     })
+
+
+@login_required
+@require_POST
+def actualizar_foto_perfil(request):
+    perfil = get_object_or_404(Perfil.objects.select_related("rol"), user=request.user)
+    if perfil.rol.nombre != "Jugador":
+        raise PermissionDenied
+    foto_anterior = perfil.foto.name
+    almacenamiento = perfil.foto.storage
+    form = FotoPerfilForm(request.POST, request.FILES, instance=perfil)
+    if form.is_valid():
+        with transaction.atomic():
+            perfil = form.save(commit=False)
+            if form.cleaned_data["quitar_foto"]:
+                perfil.foto = ""
+            perfil.save(update_fields=["foto"])
+            if foto_anterior and foto_anterior != perfil.foto.name:
+                transaction.on_commit(lambda: almacenamiento.delete(foto_anterior))
+        messages.success(request, "Tu foto de perfil se actualizó correctamente.")
+        return redirect(reverse("mi_perfil") + "#mis-datos")
+    return _mostrar_perfil(request, form_foto=form)
 
 def clasificacion(request):
     ranking = obtener_ranking_por_juego()

@@ -1,6 +1,4 @@
-
 from functools import wraps
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -496,7 +494,7 @@ def admin_resultados_detalle(request, pk):
             inscripcion_torneo=torneo,
             inscripcion_estado="Confirmada",
         )
-        .select_related("inscripcion_usuario", "resultado_torneo_nuevo")
+        .select_related("inscripcion_usuario__perfil", "resultado_torneo_nuevo")
         .order_by("inscripcion_usuario__username")
     )
 
