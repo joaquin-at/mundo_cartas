@@ -9,8 +9,9 @@
     {% include "gestion/componentes/fuentes.html" %}
 
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261119-2">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261122-4">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/usuarios.css' %}?v=20261122-1">
 </head>
 
 <body class="player-page">
@@ -34,10 +35,7 @@
 
             <div class="perfil-lateral-usuario">
 
-                <img
-                    class="perfil-avatar"
-                    src="{% static 'gestion/recursos/assets/mi-avatar.png' %}"
-                    alt="Avatar del jugador">
+                {% include "gestion/componentes/avatar_usuario.html" with usuario=user clase="perfil-avatar" only %}
 
                 <h2>{{ user.username }}</h2>
 
@@ -50,13 +48,17 @@
                 </a>
                 {% endif %}
 
+                {% if es_jugador %}
+                <a class="perfil-cambiar-foto" href="{% url 'mi_perfil' %}?foto=1#foto-perfil">Cambiar foto</a>
+                {% endif %}
+
             </div>
 
-            <nav class="perfil-lateral-menu" aria-label="Secciones del perfil">
+            <nav class="perfil-lateral-menu" aria-label="Secciones del perfil" data-seccion-inicial="{% if form_comentario.errors %}comentarios-sugerencias{% else %}mis-datos{% endif %}">
                 <a class="selected" href="#mis-datos">Resumen</a>
                 <a href="#mis-torneos">Mis torneos</a>
                 <a href="#mis-puntos">Mis puntos</a>
-                <a href="#comentarios-sugerencias">Comentarios y sugerencias</a>
+                {% if es_jugador %}<a href="#comentarios-sugerencias">Comentarios</a>{% endif %}
             </nav>
 
         </aside>
@@ -84,8 +86,9 @@
                 <div class="profile-fields">
                     {% for campo in form %}
                     <label for="{{ campo.id_for_label }}">
-                        {{ campo.label }}
+                        {{ campo.label }}{% if campo.field.required %} *{% endif %}
                         {{ campo }}
+                        {% if campo.help_text %}<small class="perfil-ayuda">{{ campo.help_text }}</small>{% endif %}
                         {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
                     </label>
                     {% endfor %}
@@ -114,11 +117,39 @@
                 </div>
 
                 <div class="dato">
+                    <span>Teléfono</span>
+                    <strong>{{ user.perfil.telefono|default:"Sin registrar" }}</strong>
+                </div>
+
+                <div class="dato">
                     <span>Rol</span>
                     <strong>{{ user.perfil.rol.nombre|default:"Sin asignar" }}</strong>
                 </div>
 
             </div>
+            {% endif %}
+
+            {% if es_jugador %}
+            <details id="foto-perfil" class="perfil-foto-control" {% if editar_foto %}open{% endif %}>
+                <summary>Foto de perfil</summary>
+                <form method="post" enctype="multipart/form-data" action="{% url 'actualizar_foto_perfil' %}#foto-perfil" class="perfil-foto-formulario">
+                    {% csrf_token %}
+                    <p>Tu foto se mostrará en tu perfil y junto a tu nombre en comentarios, participantes y clasificaciones.</p>
+                    <p class="perfil-ayuda">JPG, PNG o WEBP · Hasta 2 MB y 4096 × 4096 píxeles.</p>
+                    {{ form_foto.non_field_errors }}
+                    {% for campo in form_foto %}
+                    <div class="perfil-foto-campo">
+                        {% if campo.name == 'quitar_foto' %}
+                        <label>{{ campo }} {{ campo.label }}</label>
+                        {% else %}
+                        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>{{ campo }}
+                        {% endif %}
+                        {% for error in campo.errors %}<span class="form-error" role="alert">{{ error }}</span>{% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button class="button button-primary" type="submit">Guardar foto</button>
+                </form>
+            </details>
             {% endif %}
 
         </section>
@@ -301,69 +332,61 @@
 
         </section>
 
+        {% if es_jugador %}
         <section class="panel panel-pad" id="comentarios-sugerencias">
-
             <div class="perfil-titulo">
-                <div>
-                    <span class="eyebrow">Tu opinión</span>
-                    <h2>Comentarios y sugerencias</h2>
-                </div>
+                <div><span class="eyebrow">Tu opinión</span><h2>Comentarios</h2></div>
             </div>
-
-            <p>
-                Comparte tus comentarios u observaciones sobre
-                la plataforma o las actividades de Mundo Cartas.
-            </p>
-
-            <form
-                class="comentarios-form"
-                method="post"
-                action="{% url 'enviar_comentario_sugerencia' %}"
-            >
+            <p>Comparte tu opinión sobre la plataforma o las actividades de Mundo Cartas.</p>
+            <form class="comentarios-form" method="post" action="{% url 'enviar_comentario_sugerencia' %}#comentarios-sugerencias">
                 {% csrf_token %}
-
+                {% if form_comentario.non_field_errors %}
+                <div class="comentarios-errores" role="alert">{{ form_comentario.non_field_errors }}</div>
+                {% endif %}
+                {% for campo in form_comentario %}
                 <div class="comentarios-campo">
-                    <label for="tipo-comentario">
-                        Tipo de mensaje *
-                    </label>
-
-                    <select
-                        id="tipo-comentario"
-                        name="tipo"
-                        required
-                    >
-                        <option value="comentario">Comentario</option>
-                        <option value="sugerencia">Sugerencia</option>
-                    </select>
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }} *</label>
+                    {{ campo }}
+                    {% if campo.errors %}
+                    <div id="{{ campo.auto_id }}_error" class="comentarios-errores" role="alert">{{ campo.errors }}</div>
+                    {% endif %}
+                    {% if campo.name == 'mensaje' %}
+                    <small id="contador-comentario" class="comentarios-contador">0 / 500 caracteres</small>
+                    {% endif %}
                 </div>
-
-                <div class="comentarios-campo">
-                    <label for="mensaje-comentario">
-                        Mensaje *
-                    </label>
-
-                    <textarea
-                        id="mensaje-comentario"
-                        name="mensaje"
-                        rows="4"
-                        maxlength="500"
-                        placeholder="Escribe tu comentario o sugerencia..."
-                        required
-                    ></textarea>
-
-                    <small id="contador-comentario" class="comentarios-contador">
-                        0 / 500 caracteres
-                    </small>
-                </div>
-
-                <div class="comentarios-acciones">
-                    <button type="submit" class="button button-primary">
-                        Enviar
-                    </button>
-                </div>
+                {% endfor %}
+                <p class="comentarios-ayuda">Espera 30 segundos entre envíos. Evita repetir el mismo mensaje durante 5 minutos.</p>
+                <div class="comentarios-acciones"><button type="submit" class="button button-primary">Enviar</button></div>
             </form>
 
+            <h3 class="comentarios-historial-titulo">Mis comentarios enviados ({{ comentarios_usuario.paginator.count }})</h3>
+            <div class="comentarios-historial">
+                {% for comentario in comentarios_usuario %}
+                <article class="comentario-enviado">
+                    <div class="comentario-enviado-cabecera">
+                        <time datetime="{{ comentario.fecha_envio|date:'c' }}">{{ comentario.fecha_envio|date:"d/m/Y H:i" }}</time>
+                    </div>
+                    <p class="comentario-texto">{{ comentario.mensaje|linebreaksbr }}</p>
+                    {% if comentario.respuesta %}
+                    <div class="comentario-respuesta">
+                        <div class="comentario-respuesta-cabecera"><strong>Respuesta de Mundo Cartas</strong><time datetime="{{ comentario.fecha_respuesta|date:'c' }}">{{ comentario.fecha_respuesta|date:"d/m/Y H:i" }}</time></div>
+                        <p>{{ comentario.respuesta|linebreaksbr }}</p>
+                    </div>
+                    {% endif %}
+                    {% if not comentario.respuesta %}<span class="comentario-etiqueta">Pendiente de respuesta</span>{% endif %}
+                    {% if comentario.archivado %}<span class="comentario-etiqueta">Archivado</span>{% endif %}
+                </article>
+                {% empty %}<p>Todavía no has enviado comentarios.</p>{% endfor %}
+            </div>
+            {% if comentarios_usuario.has_other_pages %}
+            <nav class="comentarios-paginacion" aria-label="Páginas de mis mensajes">
+                {% if comentarios_usuario.has_previous %}<a href="?mensajes_pagina={{ comentarios_usuario.previous_page_number }}#comentarios-sugerencias">Anterior</a>{% endif %}
+                <span>Página {{ comentarios_usuario.number }} de {{ comentarios_usuario.paginator.num_pages }}</span>
+                {% if comentarios_usuario.has_next %}<a href="?mensajes_pagina={{ comentarios_usuario.next_page_number }}#comentarios-sugerencias">Siguiente</a>{% endif %}
+            </nav>
+            {% endif %}
         </section>
+        {% endif %}
 
     </div>
 </div>
@@ -371,7 +394,8 @@
     </main>
 
     
-    <script src="{% static 'gestion/recursos/js/perfil_comentarios.js' %}?v=1" defer></script>
+    <script src="{% static 'gestion/recursos/js/perfil_comentarios.js' %}?v=20261122-2" defer></script>
+    <script src="{% static 'gestion/recursos/js/perfil.js' %}?v=20261122-1" defer></script>
 </body>
 
 

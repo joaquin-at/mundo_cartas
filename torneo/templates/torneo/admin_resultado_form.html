@@ -17,7 +17,7 @@ Registrar resultado
     </p>
 
     <p>
-        Jugador: {{ inscripcion.inscripcion_usuario.username }}
+        Jugador: {% include "gestion/componentes/identidad_usuario.html" with usuario=inscripcion.inscripcion_usuario only %}
     </p>
 </section>
 

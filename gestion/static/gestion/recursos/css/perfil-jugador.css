@@ -323,6 +323,9 @@
     font-weight: 600;
 }
 
+.perfil-formulario .profile-fields > label { align-content: start; }
+.perfil-formulario .profile-fields .perfil-ayuda { margin: 0; font-weight: 400; line-height: 1.5; }
+
 
 
 .player-page .torneos-resumen {
@@ -694,3 +697,32 @@
 #comentarios-sugerencias textarea.limite-alcanzado {
     border: 2px solid #c62828;
 }
+
+#comentarios-sugerencias .comentarios-errores { color: #a51d17; font-size: 14px; }
+#comentarios-sugerencias .errorlist { margin: 0; padding-left: 20px; }
+#comentarios-sugerencias .comentarios-ayuda { color: #666b60; font-size: 13px; margin: 0; }
+#comentarios-sugerencias button:disabled { opacity: .6; cursor: wait; }
+.comentarios-historial-titulo { margin-top: 28px; }
+.comentarios-historial { display: grid; gap: 14px; }
+.comentario-enviado { border: 1px solid #d4d6cf; border-radius: 10px; padding: 16px; background: white; min-width: 0; }
+.comentario-enviado-cabecera { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.comentario-enviado time { font-size: 13px; color: #666b60; }
+.comentario-texto { overflow-wrap: anywhere; }
+.comentario-etiqueta { display: inline-block; background: #edf2dc; color: #303d1b; padding: 4px 8px; border-radius: 7px; font-size: 12px; }
+.comentarios-paginacion { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+.comentarios-paginacion a { color: #303d1b; text-decoration: underline; padding: 8px; }
+
+.perfil-cambiar-foto { display: inline-block; margin-top: 12px; color: #42512f; text-decoration: underline; font-size: 13px; }
+.perfil-foto-control { border-top: 1px solid #e4e7dc; margin-top: 22px; padding-top: 18px; }
+.perfil-foto-control summary { color: #42512f; font-weight: 700; cursor: pointer; }
+.perfil-foto-formulario { display: grid; gap: 14px; margin-top: 16px; }
+.perfil-foto-formulario p { margin: 0; }
+.perfil-foto-formulario input[type="file"] { display: block; width: 100%; max-width: 100%; min-width: 0; font: inherit; font-size: 13px; }
+.perfil-foto-formulario input::file-selector-button { border: 1px solid #d4dcc7; padding: 9px; border-radius: 7px; background: #edf2dc; color: #42512f; cursor: pointer; margin-right: 10px; }
+.perfil-foto-campo { display: grid; gap: 7px; min-width: 0; }
+.perfil-foto-campo label { font-size: 14px; }
+.perfil-foto-formulario .button { justify-self: start; }
+.perfil-foto-formulario .errorlist { color: #a51d17; font-size: 13px; padding-left: 20px; }
+.comentario-respuesta { border-left: 3px solid #a8be6b; border-radius: 0 8px 8px 0; background: #f3f6e9; padding: 14px; margin: 15px 0; overflow-wrap: anywhere; }
+.comentario-respuesta-cabecera { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 7px; font-size: 13px; }
+.comentario-respuesta p { margin: 10px 0 0; line-height: 1.7; }

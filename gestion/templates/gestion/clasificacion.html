@@ -1,4 +1,5 @@
 {% load static %}
+
 <!doctype html>
 <html lang="es">
 
@@ -14,6 +15,7 @@
     <link rel="stylesheet"
           href="{% static 'gestion/recursos/css/perfil-jugador.css' %}?v=20261116-2">
     <link rel="stylesheet" href="{% static 'gestion/recursos/css/navbar.css' %}?v=20261116-4">
+    <link rel="stylesheet" href="{% static 'gestion/recursos/css/usuarios.css' %}?v=20261122-1">
 </head>
 
 <body class="player-page">
@@ -58,7 +60,7 @@
                         {% for fila in ranking %}
                             <tr>
                                 <td>{{ fila.posicion }}</td>
-                                <td>{{ fila.jugador }}</td>
+                                <td>{% include "gestion/componentes/identidad_usuario.html" with usuario=fila.usuario only %}</td>
                                 <td>{{ fila.juego }}</td>
                                 <td><strong>{{ fila.puntos }}</strong></td>
                             </tr>

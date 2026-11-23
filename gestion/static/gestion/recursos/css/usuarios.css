@@ -1,0 +1,9 @@
+.usuario-avatar {
+    display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+    background: #edf2dc; border: 1px solid #dbe4c8; color: #42512f;
+    font: 700 16px/1 Inter, sans-serif; vertical-align: middle;
+}
+.usuario-identidad { display: inline-flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; }
+.usuario-identidad-nombre { overflow-wrap: anywhere; font-weight: 600; font-size: 13px; }
+.usuario-avatar.perfil-avatar { display: flex; width: 112px; height: 112px; font-size: 38px; margin: 0 auto 14px; }

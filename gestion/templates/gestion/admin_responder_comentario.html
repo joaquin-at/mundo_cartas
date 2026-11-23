@@ -1,0 +1,40 @@
+{% extends "gestion/base_admin.html" %}
+{% block titulo_pagina %}Responder comentario{% endblock %}
+{% block contenido %}
+
+<section class="admin-page-heading">
+    <span class="eyebrow">Comentarios</span>
+    <h1>{% if comentario.fecha_respuesta %}Editar respuesta{% else %}Responder comentario{% endif %}</h1>
+    <p>La respuesta aparecerá en el historial privado del jugador.</p>
+</section>
+
+<div class="comentarios-respuesta-layout">
+    <section class="panel panel-pad comentarios-original">
+        <h2>Comentario del jugador</h2>
+        {% include "gestion/componentes/identidad_usuario.html" with usuario=comentario.usuario only %}
+        <p class="comentarios-fecha">{{ comentario.fecha_envio|date:"d/m/Y H:i" }}</p>
+        <div class="comentarios-texto">{{ comentario.mensaje|linebreaksbr }}</div>
+        {% if comentario.archivado %}<span class="comentarios-estado is-archivado">Archivado</span>{% endif %}
+    </section>
+
+    <section class="panel panel-pad comentarios-responder">
+        <h2>Respuesta de Mundo Cartas</h2>
+        {% if comentario.fecha_respuesta %}
+        <p class="comentarios-fecha">Última respuesta: {{ comentario.fecha_respuesta|date:"d/m/Y H:i" }}{% if comentario.respondido_por %} · {{ comentario.respondido_por.username }}{% endif %}</p>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="filtros" value="{{ filtros_accion }}">
+            {{ form.non_field_errors }}
+            <label for="{{ form.respuesta.id_for_label }}">{{ form.respuesta.label }}</label>
+            {{ form.respuesta }}
+            {% for error in form.respuesta.errors %}<p class="comentarios-error" role="alert">{{ error }}</p>{% endfor %}
+            <p class="comentarios-ayuda">Máximo 1000 caracteres. La respuesta aparecerá junto al comentario del jugador.</p>
+            <div class="comentarios-respuesta-botones">
+                <button class="button button-primary" type="submit">{% if comentario.fecha_respuesta %}Guardar respuesta{% else %}Enviar respuesta{% endif %}</button>
+                <a class="button button-secondary" href="{% url 'admin_comentarios_sugerencias' %}{% if filtros_accion %}?{{ filtros_accion }}{% endif %}">Volver a comentarios</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

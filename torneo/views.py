@@ -1,6 +1,4 @@
-
 from functools import wraps
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -222,9 +220,11 @@ def admin_crear_torneo(request):
 
     return render(
         request,
-        "torneo/admin_crear.html",
+        "torneo/admin_torneo_formulario.html",
         {
             "form": form,
+            "titulo": "Crear torneo",
+            "texto_boton": "Crear torneo",
         }
     )
 
@@ -254,10 +254,12 @@ def admin_actualizar_torneo(request, pk):
 
     return render(
         request,
-        "torneo/admin_actualizar.html",
+        "torneo/admin_torneo_formulario.html",
         {
             "form": form,
             "torneo": torneo,
+            "titulo": "Actualizar torneo",
+            "texto_boton": "Guardar cambios",
         }
     )
 
@@ -496,7 +498,7 @@ def admin_resultados_detalle(request, pk):
             inscripcion_torneo=torneo,
             inscripcion_estado="Confirmada",
         )
-        .select_related("inscripcion_usuario", "resultado_torneo_nuevo")
+        .select_related("inscripcion_usuario__perfil", "resultado_torneo_nuevo")
         .order_by("inscripcion_usuario__username")
     )
 
@@ -552,8 +554,7 @@ def admin_registrar_resultado(request, pk, inscripcion_id):
                 or resultado.puntos_empate_aplicados is None
                 or resultado.puntos_derrota_aplicados is None
             ):
-                regla = get_object_or_404(
-                    ReglaPuntuacionTorneo,
+                regla, _ = ReglaPuntuacionTorneo.objects.get_or_create(
                     nombre="Puntuación estándar",
                 )
 
@@ -605,8 +606,7 @@ def admin_clasificacion_liga(request, pk):
 @administrador_requerido
 @require_http_methods(["GET", "POST"])
 def admin_configurar_puntuacion(request):
-    regla = get_object_or_404(
-        ReglaPuntuacionTorneo,
+    regla, _ = ReglaPuntuacionTorneo.objects.get_or_create(
         nombre="Puntuación estándar",
     )
 

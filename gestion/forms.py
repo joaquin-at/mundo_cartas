@@ -8,20 +8,19 @@ class ComentarioSugerenciaForm(forms.ModelForm):
     class Meta:
         model = ComentarioSugerencia
 
-        fields = ["tipo", "mensaje"]
+        fields = ["mensaje"]
 
         labels = {
-            "tipo": "Tipo de mensaje",
-            "mensaje": "Mensaje",
+            "mensaje": "Tu comentario",
         }
 
         widgets = {
-            "tipo": forms.Select(),
             "mensaje": forms.Textarea(
                 attrs={
                     "rows": 4,
+                    "id": "mensaje-comentario",
                     "maxlength": 500,
-                    "placeholder": "Escribe tu comentario o sugerencia...",
+                    "placeholder": "Escribe tu comentario...",
                 }
             ),
         }
@@ -31,7 +30,49 @@ class ComentarioSugerenciaForm(forms.ModelForm):
 
         if not mensaje:
             raise forms.ValidationError(
-                "Debes escribir un comentario o sugerencia."
+                "Debes escribir un comentario."
             )
 
         return mensaje
+
+
+class IdentificadoresComentariosField(forms.Field):
+    widget = forms.SelectMultiple
+
+    def to_python(self, value):
+        valores = value or []
+        if len(valores) > 20:
+            raise forms.ValidationError("Selecciona como máximo 20 mensajes por operación.")
+        campo = forms.IntegerField(min_value=1, max_value=9223372036854775807)
+        try:
+            return list(dict.fromkeys(campo.clean(valor) for valor in valores))
+        except forms.ValidationError:
+            raise forms.ValidationError("La selección contiene un identificador inválido.")
+
+
+class SeleccionComentariosForm(forms.Form):
+    ids = IdentificadoresComentariosField(
+        error_messages={"required": "Debes seleccionar al menos un mensaje."}
+    )
+
+
+class EliminarComentariosForm(SeleccionComentariosForm):
+    confirmar = forms.BooleanField(
+        error_messages={"required": "Confirma la eliminación definitiva de los mensajes archivados."}
+    )
+
+
+class RespuestaComentarioForm(forms.ModelForm):
+    respuesta = forms.CharField(
+        label="Respuesta para el jugador",
+        max_length=1000,
+        widget=forms.Textarea(attrs={
+            "rows": 6, "maxlength": 1000,
+            "placeholder": "Escribe una respuesta clara para el jugador…",
+        }),
+        error_messages={"required": "Escribe una respuesta antes de enviarla."},
+    )
+
+    class Meta:
+        model = ComentarioSugerencia
+        fields = ["respuesta"]

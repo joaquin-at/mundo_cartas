@@ -200,3 +200,10 @@ h2 {
     line-height: 1.2;
     margin-bottom: 24px;
 }
+
+.grupo-input { text-align: left; }
+.grupo-input label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+.ayuda-campo { margin-top: 7px; font-size: 12px; color: #bcbcbc; line-height: 1.6; }
+.ayuda-campo ul { padding-left: 18px; }
+.access-page .errorlist { list-style: none; color: #ffb4ab; text-align: left; font-size: 13px; line-height: 1.5; margin-top: 6px; }
+.grupo-input input[aria-invalid="true"] { border-color: #e6958d; }

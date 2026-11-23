@@ -1,0 +1,5 @@
+{% if usuario.perfil.foto %}
+<img class="usuario-avatar {{ clase|default:'' }}" src="{{ usuario.perfil.foto.url }}" alt="Foto de {{ usuario.username }}" width="40" height="40" loading="lazy">
+{% else %}
+<span class="usuario-avatar usuario-avatar-inicial {{ clase|default:'' }}" role="img" aria-label="Perfil de {{ usuario.username }}">{{ usuario.username|first|upper }}</span>
+{% endif %}

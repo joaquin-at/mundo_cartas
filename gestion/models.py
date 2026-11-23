@@ -34,11 +34,20 @@ class ComentarioSugerencia(models.Model):
         default=False,
     )
 
+    archivado = models.BooleanField(default=False, db_index=True)
+
+    respuesta = models.TextField(max_length=1000, blank=True, default="")
+    fecha_respuesta = models.DateTimeField(null=True, blank=True)
+    respondido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="respuestas_comentarios",
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         ordering = ["-fecha_envio"]
 
     def __str__(self):
-        return (
-            f"{self.get_tipo_display()} "
-            f"de {self.usuario.username}"
-        )
+        return f"Comentario de {self.usuario.username}"

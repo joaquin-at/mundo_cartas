@@ -1,5 +1,12 @@
 from django.conf import settings
 from django.db import models
+from django.core.validators import FileExtensionValidator
+from pathlib import Path
+from uuid import uuid4
+
+
+def ruta_foto_perfil(instance, filename):
+    return f"perfiles/{uuid4().hex}{Path(filename).suffix.lower()}"
 
 
 class Rol(models.Model):
@@ -14,6 +21,14 @@ def rol_jugador_default():
 
 
 class Perfil(models.Model):
+    telefono = models.CharField(max_length=16, blank=True)
+
+    foto = models.ImageField(
+        upload_to=ruta_foto_perfil,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png", "webp"])],
+    )
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

@@ -1,119 +1,86 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("form-acciones-comentarios");
+    const todos = document.getElementById("seleccionar-todos");
+    const casillas = [...document.querySelectorAll(".comentario-checkbox")];
+    const contador = document.getElementById("cantidad-seleccionados");
+    const dialogo = document.getElementById("confirmar-eliminacion");
+    const formConfirmacion = document.getElementById("form-confirmar-eliminacion");
+    const aceptar = document.getElementById("aceptar-eliminacion");
+    const ejecutar = document.getElementById("ejecutar-eliminacion");
+    if (!formulario || !todos || !contador || !dialogo) return;
 
-    const formularioVarios = document.getElementById(
-        "form-eliminar-varios"
-    );
-
-    const seleccionarTodos = document.getElementById(
-        "seleccionar-todos"
-    );
-
-    const casillas = document.querySelectorAll(
-        ".comentario-checkbox"
-    );
-
-    const botonEliminar = document.getElementById(
-        "btn-eliminar-varios"
-    );
-
-    const contador = document.getElementById(
-        "cantidad-seleccionados"
-    );
-
-
-    if (
-        !formularioVarios ||
-        !seleccionarTodos ||
-        !botonEliminar ||
-        !contador
-    ) {
-        return;
-    }
-
+    let pendiente = null;
+    const confirmados = new WeakSet();
 
     function actualizarSeleccion() {
-        const seleccionados = Array.from(casillas).filter(
-            function (casilla) {
-                return casilla.checked;
-            }
-        ).length;
-
-
-        contador.textContent = seleccionados;
-
-
-        botonEliminar.disabled = seleccionados === 0;
-
-
-        seleccionarTodos.checked =
-            casillas.length > 0 &&
-            seleccionados === casillas.length;
-
-
-        seleccionarTodos.indeterminate =
-            seleccionados > 0 &&
-            seleccionados < casillas.length;
+        const cantidad = casillas.filter(casilla => casilla.checked).length;
+        contador.textContent = cantidad;
+        formulario.querySelectorAll("[data-seleccion]").forEach(boton => {
+            boton.disabled = cantidad === 0;
+        });
+        todos.checked = cantidad > 0 && cantidad === casillas.length;
+        todos.indeterminate = cantidad > 0 && cantidad < casillas.length;
+        todos.disabled = casillas.length === 0;
     }
 
-
-    seleccionarTodos.disabled = casillas.length === 0;
-
-
-    seleccionarTodos.addEventListener("change", function () {
-        casillas.forEach(function (casilla) {
-            casilla.checked = seleccionarTodos.checked;
-        });
-
-        actualizarSeleccion();
-    });
-
-
-    casillas.forEach(function (casilla) {
-        casilla.addEventListener("change", actualizarSeleccion);
-    });
-
-
-    formularioVarios.addEventListener("submit", function (evento) {
-        const cantidad = Array.from(casillas).filter(
-            function (casilla) {
-                return casilla.checked;
-            }
-        ).length;
-
-        if (cantidad === 0) {
-            evento.preventDefault();
+    function confirmarEliminacion(evento, cantidad) {
+        const form = evento.currentTarget;
+        if (confirmados.has(form)) {
+            confirmados.delete(form);
             return;
         }
+        evento.preventDefault();
+        if (dialogo.open) return;
+        pendiente = { form, boton: evento.submitter };
+        document.getElementById("titulo-eliminacion").textContent =
+            cantidad === 1 ? "Eliminar 1 mensaje" : `Eliminar ${cantidad} mensajes`;
+        aceptar.checked = false;
+        ejecutar.disabled = true;
+        dialogo.showModal();
+    }
 
-        const confirmar = window.confirm(
-            "¿Estás seguro de que deseas eliminar " +
-            cantidad +
-            " mensaje(s)? Esta acción no se puede deshacer."
-        );
+    todos.addEventListener("change", function () {
+        casillas.forEach(casilla => { casilla.checked = todos.checked; });
+        actualizarSeleccion();
+    });
+    casillas.forEach(casilla => casilla.addEventListener("change", actualizarSeleccion));
 
-        if (!confirmar) {
+    formulario.addEventListener("submit", function (evento) {
+        const cantidad = casillas.filter(casilla => casilla.checked).length;
+        if (!cantidad) {
             evento.preventDefault();
+        } else if (evento.submitter?.dataset.accion === "eliminar") {
+            confirmarEliminacion(evento, cantidad);
         }
     });
-
-
-    const formulariosIndividuales = document.querySelectorAll(
-        ".form-eliminar-individual"
-    );
-
-    formulariosIndividuales.forEach(function (formulario) {
-        formulario.addEventListener("submit", function (evento) {
-            const confirmar = window.confirm(
-                "¿Estás seguro de que deseas eliminar este mensaje? " +
-                "Esta acción no se puede deshacer."
-            );
-
-            if (!confirmar) {
-                evento.preventDefault();
-            }
-        });
+    document.querySelectorAll("[data-eliminar-comentario]").forEach(form => {
+        form.addEventListener("submit", evento => confirmarEliminacion(evento, 1));
     });
 
-
+    aceptar.addEventListener("change", function () {
+        ejecutar.disabled = !aceptar.checked;
+    });
+    document.getElementById("cancelar-eliminacion").addEventListener("click", () => dialogo.close());
+    dialogo.addEventListener("close", function () {
+        pendiente?.boton?.focus();
+        pendiente = null;
+    });
+    formConfirmacion.addEventListener("submit", function (evento) {
+        evento.preventDefault();
+        if (!aceptar.checked || !pendiente || ejecutar.disabled) return;
+        ejecutar.disabled = true;
+        const { form, boton } = pendiente;
+        let confirmacion = form.querySelector('input[type="hidden"][name="confirmar"]');
+        if (!confirmacion) {
+            confirmacion = document.createElement("input");
+            confirmacion.type = "hidden";
+            confirmacion.name = "confirmar";
+            form.append(confirmacion);
+        }
+        confirmacion.value = "on";
+        confirmados.add(form);
+        dialogo.close();
+        form.requestSubmit(boton);
+    });
     actualizarSeleccion();
 });
